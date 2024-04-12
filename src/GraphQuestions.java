@@ -655,7 +655,7 @@ public class GraphQuestions {
         }
         return true;
     }
-    private static boolean mColoringProblem(ArrayList<Edge>[] graph, int curr, int v, int[] color, int m) {
+    private static boolean   mColoringProblem(ArrayList<Edge>[] graph, int curr, int v, int[] color, int m) {
         if(curr==v-1){
             return true;
         }
