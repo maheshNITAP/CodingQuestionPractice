@@ -42,6 +42,33 @@ public class HeapQuestions {
 
     static class Heap{
 
+        public int connectRopesAtMinCost(int[] arr) {
+            PriorityQueue<Integer> minHeap= new PriorityQueue<>();
+            int cost=0;
+            for(int i=0;i<arr.length;i++){
+                minHeap.add(arr[i]);
+            }
+            while (minHeap.size()>=2){
+                int first=minHeap.remove();
+                int second= minHeap.remove();
+                cost+=first+second;
+                minHeap.add(first+second);
+            }
+            return cost;
+        }
+
+        public int sumOfElementBetweenK1thAndK2th(int[] arr, int k1, int k2) {
+            int sum=0;
+            int k1th=kthSmallestElement(arr,k1);
+            int k2th=kthSmallestElement(arr,k2);
+            for(int i=0;i<arr.length;i++){
+                if(arr[i]>k1 && arr[i]<k2){
+                    sum+=arr[i];
+                }
+            }
+            return sum;
+        }
+
         class Pair implements Comparable<Pair> {
             int number;
             int difference;
@@ -144,7 +171,6 @@ public class HeapQuestions {
                 i++;
             }
             return res;
-
         }
 
     }
@@ -185,17 +211,27 @@ public class HeapQuestions {
 //        System.out.println(res);
 
         //K-closest point to origin
-        int arr[][]={{1,3},{-2,2},{5,8},{0,1}};
-        int k=2;
-        int res[][]= hp.kClosestPointToOrigin(arr,k);
-        for(int i=0;i<res.length;i++){
-            System.out.println("closest point is x : "+res[i][0]+" y :"+res[i][1]);
-        }
+//        int arr[][]={{1,3},{-2,2},{5,8},{0,1}};
+//        int k=2;
+//        int res[][]= hp.kClosestPointToOrigin(arr,k);
+//        for(int i=0;i<res.length;i++){
+//            System.out.println("closest point is x : "+res[i][0]+" y :"+res[i][1]);
+//        }
+
+        //Connect ropes to the minimum cost
+//        int[] arr= {1,2,3,4,5};
+//        System.out.println(hp.connectRopesAtMinCost(arr));
+
+        //sum of elements between K1th smallest and k2th smallest
+        int arr[]={1,3,12,5,15,11};
+        int k1=1;
+        int k2=6;
+        System.out.println(hp.sumOfElementBetweenK1thAndK2th(arr,k1,k2));
+
 
 
 
     }
-
 
 
 
