@@ -2,6 +2,7 @@ import sun.java2d.pipe.SolidTextRenderer;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 
 public class DPQuestions {
     static class DP{
@@ -641,6 +642,82 @@ public class DPQuestions {
             }
             return t[i][j]=mn;
         }
+
+        public int evaluateExpressionToTrue(String s, int i, int j, boolean isTrue) {
+            if(i>j)
+                return 0;
+            if(i==j){
+                if(isTrue)
+                    return s.charAt(i)=='T'?1:0;
+                else
+                    return s.charAt(i)=='F'?1:0;
+            }
+            int ans=0;
+            for(int k=i+1;k<=j-1;k=k+2){
+                int leftTrue=evaluateExpressionToTrue(s,i,k-1,true);
+                int leftFalse=evaluateExpressionToTrue(s,i,k-1,false);
+                int rightTrue=evaluateExpressionToTrue(s,k+1,j,true);
+                int rightFalse=evaluateExpressionToTrue(s,k+1,j,false);
+                if(s.charAt(k)=='&'){
+                    if(isTrue)
+                        ans+=leftTrue*rightTrue;
+                    else
+                        ans+=leftTrue*rightFalse+leftFalse*rightTrue+leftFalse*rightFalse;
+                } else if (s.charAt(k)=='|') {
+                    if(isTrue)
+                        ans+=leftTrue*rightTrue+leftTrue*rightFalse+leftFalse*rightTrue;
+                    else
+                        ans+=leftFalse*rightFalse;
+                } else if (s.charAt(k)=='^') {
+                    if(isTrue)
+                        ans+=leftTrue*rightFalse+leftFalse*rightTrue;
+                    else
+                        ans+=leftTrue*rightTrue+leftFalse*rightFalse;
+                }
+            }
+            return ans;
+        }
+
+        public int evaluateExpressionToTrueWithMemoization(String s, int i, int j, boolean isTrue, HashMap<StringBuilder, Integer> map) {
+            if(i>j)
+                return 0;
+            if(i==j){
+                if(isTrue)
+                    return s.charAt(i) == 'T'?1:0;
+                else
+                    return s.charAt(i)=='F'?1:0;
+            }
+            StringBuilder temp= new StringBuilder(s.charAt(i) + "_" + s.charAt(j) + "_" + isTrue);
+            if(map.containsKey(temp))
+                return map.get(temp);
+            int ans=0;
+            for(int k=i+1;k<=j-1;k=k+2){
+                int leftTrue=evaluateExpressionToTrueWithMemoization(s,i,k-1,true,map);
+                int leftFalse=evaluateExpressionToTrueWithMemoization(s,i,k-1,false,map);
+                int rightTrue=evaluateExpressionToTrueWithMemoization(s,k+1,j,true,map);
+                int rightFalse=evaluateExpressionToTrueWithMemoization(s,k+1,j,false,map);
+
+                if(s.charAt(k)=='&'){
+                    if(isTrue)
+                        ans+=leftTrue*rightTrue;
+                    else
+                        ans+=leftTrue*rightFalse+leftFalse*rightTrue+leftFalse*rightFalse;
+                } else if (s.charAt(k)=='|') {
+                    if(isTrue)
+                        ans+=leftTrue*rightTrue+leftTrue*rightFalse+leftFalse*rightTrue;
+                    else
+                        ans+=leftFalse*rightFalse;
+                } else if (s.charAt(k)=='^') {
+                    if(isTrue)
+                        ans+=leftTrue*rightFalse+leftFalse*rightTrue;
+                    else
+                        ans+=leftTrue*rightTrue+leftFalse*rightFalse;
+                }
+            }
+            map.put(temp,ans);
+            return ans;
+
+        }
     }
     public static void main(String args[]){
 
@@ -859,9 +936,9 @@ public class DPQuestions {
 
 
         //palindrome Partitioning Recursive(Ex:- nitin,ravi,kriti)
-        String s="ravi";
-        int i=0;
-        int j=s.length()-1;
+//        String s="ravi";
+//        int i=0;
+//        int j=s.length()-1;
 //        System.out.println(mcm.palindromePartitioningRecursive(s,i,j));
 
         //palindrome partitioning  Recursive+Memoization
@@ -873,11 +950,23 @@ public class DPQuestions {
 
         ////palindrome partitioning  Recursive+Memoization+Optimized
 
-        int n=s.length();
-        int t[][]= new int[n+1][n+1];
-        for(int k=0;k<n+1;k++)
-            Arrays.fill(t[k],-1);
-        System.out.println(mcm.palindromePartitioningRecursiveWithMemoizationOptimized(s,i,j,t));
+//        int n=s.length();
+//        int t[][]= new int[n+1][n+1];
+//        for(int k=0;k<n+1;k++)
+//            Arrays.fill(t[k],-1);
+//        System.out.println(mcm.palindromePartitioningRecursiveWithMemoizationOptimized(s,i,j,t));
+
+         //Evaluate Expression to true/Boolean Parenthesization Problem
+
+        String s="T|T&F^T";
+        int i=0;
+        int j=s.length()-1;
+        boolean isTrue=true;
+//        System.out.println(mcm.evaluateExpressionToTrue(s,i,j,isTrue));
+
+        //evaluate Expression to true with memoization
+        HashMap<StringBuilder,Integer> map= new HashMap<>();
+        System.out.println(mcm.evaluateExpressionToTrueWithMemoization(s,i,j,isTrue,map));
 
 
 
