@@ -590,6 +590,57 @@ public class DPQuestions {
             }
             return t[i][j]=ans;
         }
+
+        private boolean isPalindrome(String s, int i, int j) {
+            while (i<=j){
+                if(s.charAt(i)!=s.charAt(j))
+                    return false;
+                i++;
+                j--;
+            }
+            return true;
+        }
+        public int palindromePartitioningRecursive(String s, int i, int j) {
+            if(i>=j)
+                return 0;
+            if(isPalindrome(s,i,j))
+                return 0;
+            int res=Integer.MAX_VALUE;
+            for(int k=i;k<=j-1;k++){
+                int temp=palindromePartitioningRecursive(s,i,k)+palindromePartitioningRecursive(s,k+1,j)+1;
+                res=Math.min(temp,res);
+            }
+            return res;
+        }
+
+
+        public int palindromePartitioningRecursiveWithMemoization(String s, int i, int j, int[][] t) {
+            if(i>j || isPalindrome(s,i,j))
+                return 0;
+            if(t[i][j]!=-1)
+                return t[i][j];
+            int mn=Integer.MAX_VALUE;
+            for(int k=i;k<=j-1;k++){
+                int temp=palindromePartitioningRecursiveWithMemoization(s,i,k,t)+palindromePartitioningRecursiveWithMemoization(s,k+1,j,t)+1;
+                mn=Math.min(mn,temp);
+            }
+            return t[i][j]=mn;
+        }
+
+        public int palindromePartitioningRecursiveWithMemoizationOptimized(String s, int i, int j, int[][] t) {
+            if(i>j || isPalindrome(s,i,j))
+                return 0;
+            if(t[i][j] != -1)
+                return t[i][j];
+            int mn=Integer.MAX_VALUE;
+            for(int k=i;k<=j-1;k++){
+                t[i][k]=palindromePartitioningRecursiveWithMemoizationOptimized(s,i,k,t);
+                t[k+1][j]=palindromePartitioningRecursiveWithMemoizationOptimized(s,k+1,j,t);
+                int temp=t[i][k]+t[k+1][j]+1;
+                mn=Math.min(mn,temp);
+            }
+            return t[i][j]=mn;
+        }
     }
     public static void main(String args[]){
 
@@ -794,17 +845,39 @@ public class DPQuestions {
 
         //MCM recursive
 
-        int arr[]={40,20,30,10,30};
-        int i=1;//i=1 taaki a[i-1] should not be a[-1]
-        int j= arr.length-1;// taki last main emty matrix set na bche
+//        int arr[]={40,20,30,10,30};
+//        int i=1;//i=1 taaki a[i-1] should not be a[-1]
+//        int j= arr.length-1;// taki last main emty matrix set na bche
 //        System.out.println(mcm.mcmRecursive(arr,i,j));
 
         //mcm recursive+memoization
-        int n= arr.length;
+//        int n= arr.length;
+//        int t[][]= new int[n+1][n+1];
+//        for(int k=0;k<n+1;k++)
+//            Arrays.fill(t[k],-1);
+//        System.out.println(mcm.mcmRecursiveWithMemoization(arr,i,j,t));
+
+
+        //palindrome Partitioning Recursive(Ex:- nitin,ravi,kriti)
+        String s="ravi";
+        int i=0;
+        int j=s.length()-1;
+//        System.out.println(mcm.palindromePartitioningRecursive(s,i,j));
+
+        //palindrome partitioning  Recursive+Memoization
+//        int n=s.length();
+//        int t[][]= new int[n+1][n+1];
+//        for(int k=0;k<n+1;k++)
+//            Arrays.fill(t[k],-1);
+//        System.out.println(mcm.palindromePartitioningRecursiveWithMemoization(s,i,j,t));
+
+        ////palindrome partitioning  Recursive+Memoization+Optimized
+
+        int n=s.length();
         int t[][]= new int[n+1][n+1];
         for(int k=0;k<n+1;k++)
             Arrays.fill(t[k],-1);
-//        System.out.println(mcm.mcmRecursiveWithMemoization(arr,i,j,t));
+        System.out.println(mcm.palindromePartitioningRecursiveWithMemoizationOptimized(s,i,j,t));
 
 
 
