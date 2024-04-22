@@ -718,6 +718,109 @@ public class DPQuestions {
             return ans;
 
         }
+
+        public boolean scrambledStringRecursive(String a, String b) {
+            if(a.length()!= b.length())
+                return false;
+            if(a.equals(b))
+                return true;
+            if(a.length()<=1)
+                return false;
+            int n= a.length();
+            boolean flag= false;
+            for(int i=1;i<=n-1;i++){
+                if((scrambledStringRecursive(a.substring(0,i),b.substring(n-i,n)) && scrambledStringRecursive(a.substring(i,n),b.substring(0,i)))
+                        || (scrambledStringRecursive(a.substring(0,i),b.substring(0,i)) && scrambledStringRecursive(a.substring(i,n),b.substring(i,n)))){
+                    flag=true;
+                    break;
+                }
+            }
+            return flag;
+        }
+
+        public boolean  scrambledStringRecursiveWithMemoization(String a, String b, HashMap<String, Boolean> map) {
+            if(a.length()!= b.length())
+                return false;
+            if(a.equals(b))
+                return true;
+            if(a.length()<=1)
+                return false;
+            int n=a.length();
+            boolean flag=false;
+            String s=a+"_"+b;
+            if(map.containsKey(s))
+                return map.get(s);
+            for(int i=1;i<=n-1;i++){
+                if((scrambledStringRecursiveWithMemoization(a.substring(0,i),b.substring(n-i,n),map) && scrambledStringRecursiveWithMemoization(a.substring(i,n),b.substring(0,i),map)) //swap
+                        || (scrambledStringRecursiveWithMemoization(a.substring(0,i),b.substring(0,i),map) && scrambledStringRecursiveWithMemoization(a.substring(n-i,n),b.substring(n-i,n),map))){// not swap
+                    flag=true;
+                    break;
+                }
+            }
+            map.put(s,flag);
+            return flag;
+        }
+
+        public int eggDroppingProblemRecursive(int e, int f) {
+            if(f==0 || f==1)
+                return f;
+            if(e==1)
+                return f;
+            int mn=Integer.MAX_VALUE;
+            for(int k=1;k<=f;k++){
+                int temp= 1+Math.max(eggDroppingProblemRecursive(e-1,k-1),eggDroppingProblemRecursive(e,f-k));
+                mn=Math.min(temp,mn);
+            }
+            return mn;
+        }
+
+        public int eggDroppingProblemRecursiveWithMemoization(int e, int f, int[][] t) {
+            if(e==1)
+                return f;
+            if(f==0 || f==1)
+                return f;
+            if(t[e][f]!=-1){
+                return t[e][f];
+            }
+            int mn=Integer.MAX_VALUE;
+            for(int k=1;k<=f;k++){
+                int temp=1+Math.max(eggDroppingProblemRecursiveWithMemoization(e-1,k-1,t),eggDroppingProblemRecursiveWithMemoization(e,f-k,t));
+                mn= Math.min(mn,temp);
+            }
+            t[e][f]=mn;
+            return mn;
+        }
+
+        public int eggDroppingProblemRecursiveWithMemoizationAndOptimization(int e, int f, int[][] t) {
+            if(e==1)
+                return f;
+            if(f==0 || f==1)
+                return f;
+            if(t[e][f]!=-1)
+                return t[e][f];
+
+            int mn=Integer.MAX_VALUE;
+            for(int k=1;k<=f;k++){
+                int low,high;
+                if(t[e-1][k-1]!=-1)
+                   low= t[e-1][k-1];
+                else {
+                    low=eggDroppingProblemRecursiveWithMemoizationAndOptimization(e-1,k-1,t);
+                    t[e-1][k-1]=low;
+                }
+
+                if(t[e][f-k]!=-1)
+                    high=t[e][f-k];
+                else {
+                    high=eggDroppingProblemRecursiveWithMemoizationAndOptimization(e,f-k,t);
+                    t[e][f-k]=high;
+                }
+                int tem=1+Math.max(low,high);
+                mn=Math.min(mn,tem);
+            }
+            return t[e][f]=mn;
+
+        }
     }
     public static void main(String args[]){
 
@@ -958,15 +1061,51 @@ public class DPQuestions {
 
          //Evaluate Expression to true/Boolean Parenthesization Problem
 
-        String s="T|T&F^T";
-        int i=0;
-        int j=s.length()-1;
-        boolean isTrue=true;
+//        String s="T|T&F^T";
+//        int i=0;
+//        int j=s.length()-1;
+//        boolean isTrue=true;
 //        System.out.println(mcm.evaluateExpressionToTrue(s,i,j,isTrue));
 
         //evaluate Expression to true with memoization
-        HashMap<StringBuilder,Integer> map= new HashMap<>();
-        System.out.println(mcm.evaluateExpressionToTrueWithMemoization(s,i,j,isTrue,map));
+//        HashMap<StringBuilder,Integer> map= new HashMap<>();
+//        System.out.println(mcm.evaluateExpressionToTrueWithMemoization(s,i,j,isTrue,map));
+
+        //Scrambled String Recursive
+
+//        String a= "great";
+//        String b="rgeat";
+//        System.out.println(mcm.scrambledStringRecursive(a,b));
+
+//        Scrambled String Recursive+Memoization
+//        String a= "great";
+//        String b="rgeat";
+//        HashMap<String,Boolean> map= new HashMap<>();
+//        System.out.println(mcm.scrambledStringRecursiveWithMemoization(a,b,map));
+
+        //Egg dropping problem  recursive
+//        int e=3;
+//        int f=5;
+//        System.out.println(mcm.eggDroppingProblemRecursive(e,f));
+
+        //Egg dropping problem recursive+memoization
+//        int e=3;
+//        int f=5;
+//        int t[][]= new int[e+1][f+1];
+//        for(int i=0;i<e+1;i++)
+//            Arrays.fill(t[i],-1);
+//        System.out.println(mcm.eggDroppingProblemRecursiveWithMemoization(e,f,t));
+
+        //Egg dropping problem recursive+memoization with Optimization
+
+        int e=3;
+        int f=5;
+        int t[][]= new int[e+1][f+1];
+        for(int i=0;i<e+1;i++)
+            Arrays.fill(t[i],-1);
+        System.out.println(mcm.eggDroppingProblemRecursiveWithMemoizationAndOptimization(e,f,t));
+
+
 
 
 
