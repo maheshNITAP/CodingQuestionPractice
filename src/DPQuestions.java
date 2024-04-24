@@ -845,6 +845,31 @@ public class DPQuestions {
             }
             return dp[n];
         }
+
+        public int tilingFloor(int n, int m) {
+            if(m>n || n==1 || n==0){
+                return 1;
+            }
+            if(n-m>=0){
+                return tilingFloor(n-1,m)+tilingFloor(n-m,m);
+            }else {
+                return tilingFloor(n-1,m);
+            }
+
+
+        }
+
+        public int tilingFloorWithDp(int n, int m) {
+            int dp[]= new int[n+1];
+            dp[0]=dp[1]=1;
+            for(int i=2;i<=n;i++){
+                if(i-m>=0){
+                    dp[i]=dp[i-1]+dp[i-m];
+                }else
+                    dp[i]=dp[i-1];
+            }
+            return dp[n];
+        }
     }
     public static void main(String args[]){
 
@@ -1140,8 +1165,21 @@ public class DPQuestions {
 //        System.out.println(ran.perfectSquare(n));
 
         //number of ways to tile a floor
-        int n=4;
-        System.out.println(ran.numberOfWaysToTileAFloor(n));
+//        int n=4;
+//        System.out.println(ran.numberOfWaysToTileAFloor(n));
+
+        //tiling n*m floor using 1*m tiles recursive
+//        int n=7;
+//        int m=4;
+//        System.out.println(ran.tilingFloor(n,m));
+
+        //tiling n*m floor using 1*m tiles+dp
+        int n=7;
+        int m=4;
+        System.out.println(ran.tilingFloorWithDp(n,m));
+
+
+
 
 
 
