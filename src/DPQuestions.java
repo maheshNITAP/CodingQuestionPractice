@@ -870,6 +870,29 @@ public class DPQuestions {
             }
             return dp[n];
         }
+
+        public int integerBreak(int n) {
+            if(n==1 || n==0){
+                return 1;
+            }
+            int ans=Integer.MIN_VALUE;
+            for(int k=1;k<n;k++){
+               int  temp= k*Math.max(integerBreak(n-k),n-k);//ya to devide kre ya whi rhne de
+                ans=Math.max(ans,temp);
+            }
+            return ans;
+        }
+
+        public int integerBreakDp(int n) {
+            int dp[]= new int[n+1];
+            dp[0]=dp[1]=1;
+            for(int i=2;i<=n;i++){
+                for(int k=1;k<i;k++){
+                    dp[i]=Math.max(dp[i],k*dp[i-k]);
+                }
+            }
+            return dp[n];
+        }
     }
     public static void main(String args[]){
 
@@ -1174,9 +1197,19 @@ public class DPQuestions {
 //        System.out.println(ran.tilingFloor(n,m));
 
         //tiling n*m floor using 1*m tiles+dp
-        int n=7;
-        int m=4;
-        System.out.println(ran.tilingFloorWithDp(n,m));
+//        int n=7;
+//        int m=4;
+//        System.out.println(ran.tilingFloorWithDp(n,m));
+
+        //Integer break
+            //recursive
+        int n=10;
+        System.out.println(ran.integerBreak(n));
+
+        //dp
+//        int n=10;
+//        System.out.println(ran.integerBreakDp(n));
+
 
 
 
