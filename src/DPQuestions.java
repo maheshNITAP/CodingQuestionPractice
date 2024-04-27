@@ -3,6 +3,7 @@ import sun.java2d.pipe.SolidTextRenderer;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 
 public class DPQuestions {
     static class DP{
@@ -894,6 +895,46 @@ public class DPQuestions {
             return dp[n];
         }
     }
+
+    static class Solution {
+        public boolean isValid(int land[][],boolean vis[][],int x,int y,int n,int m){
+            if(x>=0 && x<n && y>=0 && y<m && land[x][y]==1 && !vis[x][y]){
+                return true;
+            }
+            return false;
+        }
+        public void solve(int land[][],boolean vis[][],int x,int y,int t[],int n,int m){
+            vis[x][y]=true;
+            int xx[]={1,-1,0,0};
+            int yy[]={0,0,1,-1};
+            for(int i=0;i<4;i++){
+                if(isValid(land,vis,x+xx[i],y+yy[i],n,m)){
+                    solve(land,vis,x+xx[i],y+yy[i],t,n,m);
+                    t[2] = Math.max(t[2], x + xx[i]);
+                    t[3] = Math.max(t[3], y + yy[i]);
+                }
+            }
+        }
+        public int[][] findFarmland(int[][] land) {
+            int n=land.length;
+            int m=land[0].length;
+            boolean vis[][]= new boolean[n][m];
+            List<int[]> res = new ArrayList<>();
+            int l=0;
+            for(int i=0;i<n;i++){
+                for(int j=0;j<m;j++){
+                    if(land[i][j]==1 && !vis[i][j]){
+                        int t[]= new int[4];
+                        t[0]=t[2]=i;
+                        t[1]=t[3]=j;
+                        solve(land,vis,i,j,t,n,m);
+                        res.add(t);
+                    }
+                }
+            }
+            return res.toArray(new int[0][]);
+        }
+    }
     public static void main(String args[]){
 
         DP dp=new DP();
@@ -1203,12 +1244,17 @@ public class DPQuestions {
 
         //Integer break
             //recursive
-        int n=10;
-        System.out.println(ran.integerBreak(n));
+//        int n=10;
+//        System.out.println(ran.integerBreak(n));
 
         //dp
 //        int n=10;
 //        System.out.println(ran.integerBreakDp(n));
+
+        Solution s=new Solution();
+        int arr[][]= {{1,0,0},{0,1,1},{0,1,1}};
+        int t[][]=s.findFarmland(arr);
+        System.out.println(t);
 
 
 
