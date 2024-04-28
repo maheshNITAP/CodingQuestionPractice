@@ -934,6 +934,46 @@ public class DPQuestions {
             }
             return res.toArray(new int[0][]);
         }
+
+
+        public boolean isValid(int [][]g1, int [][]g2,boolean vis[][],int x,int y,int n,int m){
+            if(x>=0 && x<n && y>=0 && y<m && g2[x][y]==1 && vis[x][y]==false){
+                return true;
+            }
+            return false;
+        }
+        public boolean solve(int [][]g1,int [][]g2, boolean vis[][], int x,int y, int n,int m){
+            vis[x][y]=true;
+            int xx[]={1,-1,0,0};
+            int yy[]={0,0,1,-1};
+            for(int i=0;i<4;i++){
+                if(isValid(g1,g2,vis,x+xx[i],y+yy[i],n,m)){
+                    if(g2[x+xx[i]][y+yy[i]]==1){
+                        return solve(g1,g2,vis,x+xx[i],y+yy[i],n,m);
+                    }else {
+                        return false;
+                    }
+                }
+            }
+            return false;
+
+        }
+        public int countSubIslands(int[][] grid1, int[][] grid2) {
+            int res=0;
+            int n=grid1.length;
+            int m=grid1[0].length;
+            boolean vis[][]= new boolean[n][m];
+            for(int i=0;i<n;i++){
+                for(int j=0;j<m;j++){
+                    if(grid1[i][j]==1 && grid2[i][j]==1 && !vis[i][j]){
+                        if(solve(grid1,grid2,vis,i,j,n,m)){
+                            ++res;
+                        }
+                    }
+                }
+            }
+            return res;
+        }
     }
     public static void main(String args[]){
 
@@ -1252,9 +1292,13 @@ public class DPQuestions {
 //        System.out.println(ran.integerBreakDp(n));
 
         Solution s=new Solution();
-        int arr[][]= {{1,0,0},{0,1,1},{0,1,1}};
-        int t[][]=s.findFarmland(arr);
-        System.out.println(t);
+//        int arr[][]= {{1,0,0},{0,1,1},{0,1,1}};
+//        int t[][]=s.findFarmland(arr);
+//        System.out.println(t);
+
+        int grid1[][] = {{1,1,1,0,0},{0,1,1,1,1},{0,0,0,0,0},{1,0,0,0,0},{1,1,0,1,1}};
+        int grid2[][]={{1,1,1,0,0},{0,0,1,1,1},{0,1,0,0,0},{1,0,1,1,0},{0,1,0,1,0}};
+        System.out.println(s.countSubIslands(grid1,grid2));
 
 
 
