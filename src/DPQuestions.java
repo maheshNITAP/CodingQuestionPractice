@@ -1,5 +1,6 @@
 import sun.java2d.pipe.SolidTextRenderer;
 
+import javax.swing.tree.TreeNode;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -895,8 +896,17 @@ public class DPQuestions {
             return dp[n];
         }
     }
+    static class ListNode{
+        int val;
+        ListNode next=null;
+        ListNode(int x){
+            this.val=x;
+        }
+    }
 
     static class Solution {
+
+
         public boolean isValid(int land[][],boolean vis[][],int x,int y,int n,int m){
             if(x>=0 && x<n && y>=0 && y<m && land[x][y]==1 && !vis[x][y]){
                 return true;
@@ -970,6 +980,74 @@ public class DPQuestions {
                             ++res;
                         }
                     }
+                }
+            }
+            return res;
+        }
+
+        public ListNode createList(int[] lis) {
+            ListNode head=null;
+            ListNode curr=null;
+            for(int i=0;i<lis.length;i++){
+                ListNode node= new ListNode(lis[i]);
+                if(head== null){
+                    head=node;
+                    curr=node;
+                }else {
+                    curr.next=node;
+                    curr=node;
+                }
+            }
+            return head;
+        }
+
+        public ListNode mergeNodes(ListNode head) {
+            ListNode p = head;
+            while (p != null && p.next != null) {
+                if (p.val == 0) {
+                    p = p.next;
+                } else{
+                    while(p!= null && p.next.val!= 0){
+                        p.val+=p.next.val;
+                        p.next=p.next.next;
+                    }
+                    p=p.next;
+                }
+            }
+            return head;
+
+        }
+        public int bs(int arr[],int ele){
+            int start=0;
+            int end=arr.length-1;
+            int closest=-1;
+            while(start<=end){
+                int mid=start+(end-start)/2;
+                if(arr[mid]==ele){
+                    return mid;
+                }else if(arr[mid]>ele){
+                    end=mid-1;
+                }else{
+                    start=mid+1;
+                }
+            }
+            if(start == arr.length){
+                return end;
+            }else if(end<0){
+                return start;
+            }
+            if(closest==-1){
+                closest= Math.abs(arr[start]-ele)<=Math.abs(arr[end]-ele)?start:end;
+            }
+            return closest;
+        }
+        public int findTheDistanceValue(int[] arr1, int[] arr2, int d) {
+            Arrays.sort(arr2);
+            int res=0;
+            for(int i=0;i<arr1.length;i++){
+                int closest=bs(arr2,arr1[i]);
+                if(Math.abs(arr2[closest]-arr1[i])>d){
+                    ++res;
                 }
             }
             return res;
@@ -1296,9 +1374,19 @@ public class DPQuestions {
 //        int t[][]=s.findFarmland(arr);
 //        System.out.println(t);
 
-        int grid1[][] = {{1,1,1,0,0},{0,1,1,1,1},{0,0,0,0,0},{1,0,0,0,0},{1,1,0,1,1}};
-        int grid2[][]={{1,1,1,0,0},{0,0,1,1,1},{0,1,0,0,0},{1,0,1,1,0},{0,1,0,1,0}};
-        System.out.println(s.countSubIslands(grid1,grid2));
+//        int grid1[][] = {{1,1,1,0,0},{0,1,1,1,1},{0,0,0,0,0},{1,0,0,0,0},{1,1,0,1,1}};
+//        int grid2[][]={{1,1,1,0,0},{0,0,1,1,1},{0,1,0,0,0},{1,0,1,1,0},{0,1,0,1,0}};
+//        System.out.println(s.countSubIslands(grid1,grid2));
+
+//        int lis[]={0,3,1,0,4,5,2,0};
+//        ListNode head=s.createList(lis);
+//        s.mergeNodes(head);
+
+
+        int []arr1 = {2,1,100,3};
+        int []arr2 = {-5,-2,10,-3,7};
+        int d = 6;
+        System.out.println(s.findTheDistanceValue(arr1,arr2,d));
 
 
 
