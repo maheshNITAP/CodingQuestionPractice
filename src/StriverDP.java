@@ -85,6 +85,54 @@ public class StriverDP {
             }
             return dp[n];
         }
+
+        public int houseRobber(int[] arr, int ind) {
+            if(ind==0)
+                return arr[0];
+            if(ind<0)
+                return 0;
+            int pick=arr[ind]+houseRobber(arr,ind-2);
+            int notPick=houseRobber(arr,ind-1);
+            return Math.max(pick,notPick);
+        }
+
+        public int houseRobberWithMemoization(int[] arr, int ind, int[] dp) {
+            if(ind==0)
+                return arr[0];
+            if(ind<0)
+                return 0;
+            if(dp[ind]!=-1)
+                return dp[ind];
+            int pick=arr[ind]+houseRobberWithMemoization(arr, ind-2, dp);
+            int notPick=houseRobberWithMemoization(arr,ind-1,dp);
+            return dp[ind]=Math.max(pick,notPick);
+        }
+
+        public int houseRobberWithTabulation(int[] arr, int n) {
+            int dp[]= new int [n];
+            dp[0]=arr[0];
+            for(int i=1;i<n;i++){
+                int pick=arr[i]; if(i>1) pick+=dp[i-2];
+                int notPick=dp[i-1];
+
+                dp[i]=Math.max(pick,notPick);
+            }
+            return dp[n-1];
+        }
+
+        public int houseRobberWithTabulationAndSpaceOptimization(int[] arr, int n) {
+            int prev=arr[0];
+            int prev2=0;
+            int curr=0;
+            for(int i=1;i<n;i++){
+                int pick=arr[i]; if(i>1) pick+=prev2;
+                int notPick=prev;
+                curr=Math.max(pick,notPick);
+                prev2=prev;
+                prev=curr;
+            }
+            return prev;
+        }
     }
     public static void main(String args[]){
 
@@ -108,7 +156,25 @@ public class StriverDP {
 //        Arrays.fill(dp,-1);
 //        System.out.println(d.frogJumpWithKDistanceByMemoization(height,n,k,dp));
 
-        System.out.println(d.frogJumpWithKDistanceByTabulation(height,n,k));
+//        System.out.println(d.frogJumpWithKDistanceByTabulation(height,n,k));
+
+
+        //maximum sum of non-adjacent element-->house robber
+        int arr[]={2,1,4,9};
+        int ind=arr.length-1;
+//        System.out.println(d.houseRobber(arr,ind));
+        int dp[]= new int[n+1];
+        Arrays.fill(dp,-1);
+
+
+        //house robber with memoization
+//        System.out.println(d.houseRobberWithMemoization(arr,ind,dp));
+
+        //house robber with tabulation
+//        System.out.println(d.houseRobberWithTabulation(arr,arr.length));
+
+        //house robber with tabulation+Space Optimization
+        System.out.println(d.houseRobberWithTabulationAndSpaceOptimization(arr,arr.length));
 
 
     }
