@@ -133,13 +133,130 @@ public class StriverDP {
             }
             return prev;
         }
+
+        public int ninjasTraining(int[][] task, int day, int last) {
+            int maxi=Integer.MIN_VALUE;
+            if(day==0){
+                for(int i=0;i<3;i++){
+                    if(i!=last){
+                        maxi=Math.max(maxi,task[day][i]);
+                    }
+                }
+                return maxi;
+            }
+            int temp=0;
+            for(int i=0;i<3;i++){
+                if(i!=last){
+                    temp=task[day][i]+ninjasTraining(task,day-1,i);
+                    maxi=Math.max(maxi,temp);
+                }
+            }
+            return maxi;
+        }
+
+        public int ninjasTrainingWithMemoization(int[][] task, int day, int last, int[][] dp) {
+            int maxi=Integer.MIN_VALUE;
+            if(day==0){
+                for(int i=0;i<3;i++){
+                    if(i!= last)
+                        maxi=Math.max(maxi,task[day][i]);
+                }
+                return maxi;
+            }
+            if(dp[day][last]!= -1)
+                return dp[day][last];
+            int temp=0;
+            for(int i=0;i<3;i++){
+                if(i!=last){
+                    temp=task[day][i]+ninjasTrainingWithMemoization(task, day-1, i, dp);
+                    maxi=Math.max(maxi,temp);
+                }
+            }
+            return dp[day][last]=maxi;
+        }
+        public int ninjasTrainingWithTabulation(int[][] points, int n) {
+            int dp[][]= new int[n][4];//4--3 types of training
+            dp[0][0]=Math.max(points[0][1],points[0][2]);
+            dp[0][1]=Math.max(points[0][0],points[0][2]);
+            dp[0][2]=Math.max(points[0][0],points[0][1]);
+            dp[0][3]=Math.max(points[0][0],Math.max(points[0][1],points[0][2]));
+
+            for(int day=1;day<n;day++){
+                for(int last=0;last<4;last++){
+                    dp[day][last]=0;
+                    int maxi=0;
+                    for(int task=0;task<3;task++){
+                        if(task!=last){
+                            int point=points[day][task]+dp[day-1][task];
+                            maxi=Math.max(maxi,point);
+                        }
+                    }
+                    dp[day][last]=maxi;
+                }
+            }
+            return dp[n-1][3];
+        }
+
+        public int countVowelStrings(int n) {
+            StringBuilder s= new StringBuilder("");
+           return solve(n,s);
+        }
+
+        private int solve(int n, StringBuilder s) {
+            int ans=0;
+            if(n==0){
+                if(s.length()>0){
+                    return 1;
+                }
+                return 0;
+            }
+            for(int i=0;i<5;i++){
+                if(s.length()==0){
+                    s.append(Character.toChars(i));
+                    ans+=solve(n-1,s);
+                    s.deleteCharAt(s.length()-1);
+                }else {
+                    char[] chars = Character.toChars(i);
+                    if(chars[0]>=s.charAt(s.length()-1)){
+                        s.append(Character.toChars(i));
+                        ans+=solve(n-1,s);
+                        s.deleteCharAt(s.length()-1);
+                    }
+                }
+
+            }
+            return ans;
+        }
+
+
+        public int totalUniquePaths(int n, int m) {
+            int dp[][]=new int[n][m];
+            int up=0;
+            int left=0;
+            for(int i=0;i<n;i++){
+                for(int j=0;j<m;j++){
+                    if(i==0 && j==0)
+                        dp[i][j]=1;
+                    else{
+                        up=0;
+                        left=0;
+                        if(i>0)
+                            up=dp[i-1][j];
+                        if(j>0)
+                            left=dp[i][j-1];
+                        dp[i][j]=up+left;
+                    }
+                }
+            }
+            return dp[n-1][m-1];
+        }
     }
     public static void main(String args[]){
 
         //frog jump
         DP d= new DP();
         int height[]={10,20,30,10};
-        int n= height.length-1;
+//        int n= height.length-1;
 //        System.out.println(d.frogJump(height,n));
         //frog jump by tabulation
 //        int dp[]= new int[n+1];
@@ -160,11 +277,11 @@ public class StriverDP {
 
 
         //maximum sum of non-adjacent element-->house robber
-        int arr[]={2,1,4,9};
-        int ind=arr.length-1;
+//        int arr[]={2,1,4,9};
+//        int ind=arr.length-1;
 //        System.out.println(d.houseRobber(arr,ind));
-        int dp[]= new int[n+1];
-        Arrays.fill(dp,-1);
+//        int dp[]= new int[n+1];
+//        Arrays.fill(dp,-1);
 
 
         //house robber with memoization
@@ -174,7 +291,31 @@ public class StriverDP {
 //        System.out.println(d.houseRobberWithTabulation(arr,arr.length));
 
         //house robber with tabulation+Space Optimization
-        System.out.println(d.houseRobberWithTabulationAndSpaceOptimization(arr,arr.length));
+//        System.out.println(d.houseRobberWithTabulationAndSpaceOptimization(arr,arr.length));
+
+        //ninja's Training
+        int task[][]={{1,2,3},{3,1,1},{3,3,5}};
+        int day=task.length;
+        int last=3;
+////        System.out.println(d.ninjasTraining(task,day-1,last));
+//
+//        //ninja's training
+//        int dp[][]=new int[n][4];
+//        for(int i=0;i<n;i++){
+//            Arrays.fill(dp[i],-1);
+//        }
+//        System.out.println(d.ninjasTrainingWithMemoization(task,day-1,last,dp));
+
+//        System.out.println(d.ninjasTrainingWithTabulation(task,day));
+//       int n=2;
+//        System.out.println(d.countVowelStrings(n));
+
+        //total Unique Paths--tabulation
+        int n=3;
+        int m=7;
+        System.out.println(d.totalUniquePaths(n,m));
+
+
 
 
     }
