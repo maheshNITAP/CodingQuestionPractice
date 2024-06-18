@@ -250,6 +250,16 @@ public class StriverDP {
             }
             return dp[n-1][m-1];
         }
+
+        public int totalUniquePathsWithObstacles(int[][] path, int n, int m) {
+            if(n>=0 && m>=0 && path[n][m]==-1)
+                return 0;
+            if(n==0 && m==0)
+                return 1;
+            if(n<0 || m<0)
+                return 0;
+            return totalUniquePathsWithObstacles(path,n-1,m)+totalUniquePathsWithObstacles(path,n,m-1);
+        }
     }
     public static void main(String args[]){
 
@@ -313,7 +323,16 @@ public class StriverDP {
         //total Unique Paths--tabulation
         int n=3;
         int m=7;
-        System.out.println(d.totalUniquePaths(n,m));
+//        System.out.println(d.totalUniquePaths(n,m));
+
+        int path[][]={{0,0,0,0,-1,0,0},{0,0,0,0,0,-1,0},{-1,0,0,-1,0,0,0}};
+        System.out.println(d.totalUniquePathsWithObstacles(path,n-1,m-1));
+
+
+
+
+
+
 
 
 
