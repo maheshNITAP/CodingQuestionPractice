@@ -260,6 +260,68 @@ public class StriverDP {
                 return 0;
             return totalUniquePathsWithObstacles(path,n-1,m)+totalUniquePathsWithObstacles(path,n,m-1);
         }
+
+        public int minPathSumRecursive(int[][] grid) {
+            int n=grid.length;
+            int m=grid[0].length;
+            return minPathSumRec(n-1,m-1,grid);
+        }
+
+        private int minPathSumRec(int i, int j, int[][] grid) {
+            if(i<0 || j<0)
+                return Integer.MAX_VALUE-9;
+            if(i==0 && j==0)
+                return grid[i][j];
+            int up=grid[i][j]+minPathSumRec(i-1,j,grid);
+            int left=grid[i][j]+minPathSumRec(i,j-1,grid);
+            return Math.min(up,left);
+        }
+
+        public int minPathSumRecursiveWithMemoization(int[][] grid) {
+            int n= grid.length;
+            int m=grid[0].length;
+            int t[][]= new int[n][m];
+            for(int i=0;i<n;i++){
+                Arrays.fill(t[i],-1);
+            }
+            return minPathSumRecWithMemo(n-1,m-1,grid,t);
+
+        }
+
+        private int minPathSumRecWithMemo(int i, int j, int[][] grid, int[][] t) {
+            if(i==0 && j==0)
+                return grid[i][j];
+            if(i<0 || j<0)
+                return Integer.MAX_VALUE/2;//we divided by 2 so it should not be integer Overflow
+            if(t[i][j]!=-1)
+                return t[i][j];
+            return t[i][j]=grid[i][j]+Math.min(minPathSumRecWithMemo(i-1,j,grid,t),minPathSumRecWithMemo(i,j-1,grid,t));
+        }
+
+        public int minPathSumTabulation(int[][] grid) {
+            int n=grid.length;
+            int m=grid[0].length;
+            int dp[][]= new int[n][m];
+            for(int i=0;i<n;i++){
+                for(int j=0;j<m;j++){
+                    if(i==0 && j==0){
+                        dp[i][j]=grid[i][j];
+                    }else {
+                        int up,left;
+                        if(i>0)
+                            up=grid[i][j]+dp[i-1][j];
+                        else
+                            up=Integer.MAX_VALUE;
+                        if(j>0)
+                            left=grid[i][j]+dp[i][j-1];
+                        else
+                            left=Integer.MAX_VALUE;
+                        dp[i][j]=Math.min(up,left);
+                    }
+                }
+            }
+            return dp[n-1][m-1];
+        }
     }
     public static void main(String args[]){
 
@@ -325,8 +387,21 @@ public class StriverDP {
         int m=7;
 //        System.out.println(d.totalUniquePaths(n,m));
 
-        int path[][]={{0,0,0,0,-1,0,0},{0,0,0,0,0,-1,0},{-1,0,0,-1,0,0,0}};
-        System.out.println(d.totalUniquePathsWithObstacles(path,n-1,m-1));
+        //total Unique Paths with Obstacles
+
+//        int path[][]={{0,0,0,0,-1,0,0},{0,0,0,0,0,-1,0},{-1,0,0,-1,0,0,0}};
+//        System.out.println(d.totalUniquePathsWithObstacles(path,n-1,m-1));
+
+        //Min Path sum recursive
+        int grid[][]={{1,2,3},{4,5,4},{7,5,9}};
+//        System.out.println(d.minPathSumRecursive(grid));
+
+        //Min Path sum memoization
+//        System.out.println(d.minPathSumRecursiveWithMemoization(grid));
+
+        //Min Path sum tabulation
+        System.out.println(d.minPathSumTabulation(grid));
+
 
 
 
