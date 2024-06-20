@@ -322,6 +322,46 @@ public class StriverDP {
             }
             return dp[n-1][m-1];
         }
+
+        public int minPathSumOfTriangularArraylist(int[][] grid, int n) {
+
+            //min Path sum of Triangular Array list recursive solution
+//            return minPathSumOfTriangularArraylistRec(0,0,grid,n);
+
+            //min Path sum of Triangular Array list recursive with memoization
+            int dp[][]= new int[n][n];
+            for(int i=0;i<n;i++){
+                Arrays.fill(dp[i],-1);
+            }
+            return minPathSumOfTriangularArraylistRecWithMemoization(0,0,n,grid,dp);
+
+        }
+
+        private int minPathSumOfTriangularArraylistRecWithMemoization(int i, int j, int n, int[][] grid, int[][] dp) {
+            if(i==n-1)
+                return grid[i][j];
+            if(dp[i][j]!= -1)
+                return dp[i][j];
+            return dp[i][j]=grid[i][j]+Math.min(minPathSumOfTriangularArraylistRecWithMemoization(i+1,j,n,grid,dp),minPathSumOfTriangularArraylistRecWithMemoization(i+1,j+1,n,grid,dp));
+        }
+
+        private int minPathSumOfTriangularArraylistRec(int i, int j, int[][] grid, int n) {
+            if(i==n-1)
+                return grid[n-1][j];
+            return grid[i][j]+Math.min(minPathSumOfTriangularArraylistRec(i+1,j,grid,n),minPathSumOfTriangularArraylistRec(i+1,j+1,grid,n));
+        }
+
+        public int minPathSumOfTriangularArraylistWithTabulation(int[][] grid, int n) {
+            int dp[][]= new int[n][n];
+            for(int j=0;j<n;j++)
+                dp[n-1][j]=grid[n-1][j];
+            for(int i=n-2;i>=0;--i){
+                for(int j=i;j>=0;--j){
+                    dp[i][j]=grid[i][j]+Math.min(dp[i+1][j],dp[i+1][j+1]);
+                }
+            }
+            return dp[0][0];
+        }
     }
     public static void main(String args[]){
 
@@ -383,8 +423,8 @@ public class StriverDP {
 //        System.out.println(d.countVowelStrings(n));
 
         //total Unique Paths--tabulation
-        int n=3;
-        int m=7;
+//        int n=3;
+//        int m=7;
 //        System.out.println(d.totalUniquePaths(n,m));
 
         //total Unique Paths with Obstacles
@@ -393,14 +433,29 @@ public class StriverDP {
 //        System.out.println(d.totalUniquePathsWithObstacles(path,n-1,m-1));
 
         //Min Path sum recursive
-        int grid[][]={{1,2,3},{4,5,4},{7,5,9}};
+//        int grid[][]={{1,2,3},{4,5,4},{7,5,9}};
 //        System.out.println(d.minPathSumRecursive(grid));
 
         //Min Path sum memoization
 //        System.out.println(d.minPathSumRecursiveWithMemoization(grid));
 
         //Min Path sum tabulation
-        System.out.println(d.minPathSumTabulation(grid));
+//        System.out.println(d.minPathSumTabulation(grid));
+
+        //minimum pathSum of Triangular Arraylist( recursive and memoization)
+
+        int grid[][]={{1},{2, 3},{15, 6, 7},{8,9,6,10}};
+        int n=4;
+//        System.out.println(d.minPathSumOfTriangularArraylist(grid,n));
+
+        //minimum pathSum of Triangular Arraylist tabulation
+        System.out.println(d.minPathSumOfTriangularArraylistWithTabulation(grid,n));
+
+
+
+
+
+
 
 
 
