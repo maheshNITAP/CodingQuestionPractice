@@ -362,6 +362,27 @@ public class StriverDP {
             }
             return dp[0][0];
         }
+
+        public int maxPathSumInMatrix(int[][] grid, int n, int m) {
+            int max=Integer.MIN_VALUE;
+            for (int j=0;j<m;j++){
+                max=Math.max(max,maxPathSumInMatrixByRecursion(grid,n,m,n-1,j));
+            }
+            return max;
+        }
+
+        private int maxPathSumInMatrixByRecursion(int[][] grid, int n, int m, int i, int j) {
+            if(j<0 || j>=m){
+                return Integer.MIN_VALUE;
+            }
+            if(i==0){
+                return grid[i][j];
+            }
+            int up=grid[i][j]+maxPathSumInMatrixByRecursion(grid, n, m, i-1, j);
+            int leftDiagonal=grid[i][j]+maxPathSumInMatrixByRecursion(grid, n, m, i-1, j-1);
+            int rightDiagonal=grid[i][j]+maxPathSumInMatrixByRecursion(grid, n, m, i-1, j+1);
+            return Math.max(up,Math.max(leftDiagonal,rightDiagonal));
+        }
     }
     public static void main(String args[]){
 
@@ -444,12 +465,19 @@ public class StriverDP {
 
         //minimum pathSum of Triangular Arraylist( recursive and memoization)
 
-        int grid[][]={{1},{2, 3},{15, 6, 7},{8,9,6,10}};
-        int n=4;
+//        int grid[][]={{1},{2, 3},{15, 6, 7},{8,9,6,10}};
+//        int n=4;
 //        System.out.println(d.minPathSumOfTriangularArraylist(grid,n));
 
         //minimum pathSum of Triangular Arraylist tabulation
-        System.out.println(d.minPathSumOfTriangularArraylistWithTabulation(grid,n));
+//        System.out.println(d.minPathSumOfTriangularArraylistWithTabulation(grid,n));
+
+
+        //maximum path sum in the matrix where path can start from any cell of first row and end at any cell of last row
+        int grid[][]={{1, 2, 10, 4},{100, 3, 2, 1},{1, 1, 20, 2},{1, 2, 2, 1}};
+        int n=4;
+        int m=4;
+        System.out.println(d.maxPathSumInMatrix(grid,n,m));
 
 
 
