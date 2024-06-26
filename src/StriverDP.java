@@ -365,10 +365,32 @@ public class StriverDP {
 
         public int maxPathSumInMatrix(int[][] grid, int n, int m) {
             int max=Integer.MIN_VALUE;
-            for (int j=0;j<m;j++){
-                max=Math.max(max,maxPathSumInMatrixByRecursion(grid,n,m,n-1,j));
-            }
+            //By recursion
+//            for (int j=0;j<m;j++){
+//                max=Math.max(max,maxPathSumInMatrixByRecursion(grid,n,m,n-1,j));
+//            }
+            //by recursion+memoization
+            int[][] t = new int[n][m];
+            for(int i=0;i<n;i++)
+                Arrays.fill(t[i],-1);
+
+            for(int j=0;j<m;j++)
+                max=Math.max(max,maxPathSumInMatrixByRecursionWithMemoization(grid,n,m,n-1,j,t));
+
             return max;
+        }
+
+        private int maxPathSumInMatrixByRecursionWithMemoization(int[][] grid, int n, int m, int i, int j, int[][] t) {
+            if(j<0 || j>=m)
+                return Integer.MIN_VALUE;
+            if(i==0)
+                return grid[i][j];
+            if(t[i][j]!=-1)
+                return t[i][j];
+            int up=grid[i][j]+maxPathSumInMatrixByRecursionWithMemoization(grid, n, m, i-1, j, t);
+            int leftDigonal=grid[i][j]+maxPathSumInMatrixByRecursionWithMemoization(grid, n, m, i-1, j-1, t);
+            int rightDigonal=grid[i][j]+maxPathSumInMatrixByRecursionWithMemoization(grid, n, m, i-1, j+1, t);
+            return t[i][j]= Math.max(up,Math.max(leftDigonal,rightDigonal));
         }
 
         private int maxPathSumInMatrixByRecursion(int[][] grid, int n, int m, int i, int j) {
@@ -382,6 +404,28 @@ public class StriverDP {
             int leftDiagonal=grid[i][j]+maxPathSumInMatrixByRecursion(grid, n, m, i-1, j-1);
             int rightDiagonal=grid[i][j]+maxPathSumInMatrixByRecursion(grid, n, m, i-1, j+1);
             return Math.max(up,Math.max(leftDiagonal,rightDiagonal));
+        }
+
+        public int maxPathSumInMatrixWithTabulation(int[][] grid, int n, int m) {
+            int dp[][]= new int[n][m];
+            for(int j=0;j<m;j++)
+                dp[0][j]=grid[0][j];
+            for(int i=1;i<n;i++){
+                for(int j=0;j<m;j++){
+                    int up=grid[i][j]+dp[i-1][j];
+                    int ld=grid[i][j];
+                    if(j-1>=0) ld+=dp[i-1][j-1];else ld+=Integer.MIN_VALUE;
+                    int rd=grid[i][j];
+                    if(j+1<m) rd+=dp[i-1][j+1]; else rd+=Integer.MIN_VALUE;
+
+                    dp[i][j]=Math.max(up,Math.max(ld,rd));
+                }
+            }
+            int max=Integer.MIN_VALUE;
+            for(int j=0;j<m;j++){
+                max=Math.max(max,dp[n-1][j]);
+            }
+            return max;
         }
     }
     public static void main(String args[]){
@@ -477,7 +521,11 @@ public class StriverDP {
         int grid[][]={{1, 2, 10, 4},{100, 3, 2, 1},{1, 1, 20, 2},{1, 2, 2, 1}};
         int n=4;
         int m=4;
-        System.out.println(d.maxPathSumInMatrix(grid,n,m));
+//        System.out.println(d.maxPathSumInMatrix(grid,n,m)); // recursion and memoization
+        System.out.println(d.maxPathSumInMatrixWithTabulation(grid,n,m));
+
+
+
 
 
 
