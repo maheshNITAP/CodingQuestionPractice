@@ -427,6 +427,67 @@ public class StriverDP {
             }
             return max;
         }
+
+        public int maxChocolatesCollectedByAliceAndBob(int[][] grid, int n, int m) {
+            //initially bob at(0,0) and Alice at (0,m-1)
+//            so i=0 and j1=0,j2=m-1;
+
+            //recursive
+//            return maxChocolatesCollectedByAliceAndBobRecursive(grid,n,m,0,0,m-1);//i,j1,j2
+
+            //recursive+memoization
+            int dp[][][] = new int[n][m][m];
+            for(int i=0;i<n;i++){
+                for(int j=0;j<m;j++){
+                    Arrays.fill(dp[i][j],-1);
+                }
+            }
+            return maxChocolatesCollectedByAliceAndBobRecursiveWithMemoization(grid,n,m,dp,0,0,m-1);
+        }
+
+        private int maxChocolatesCollectedByAliceAndBobRecursiveWithMemoization(int[][] grid, int n, int m, int[][][] dp, int i, int j1, int j2) {
+            if(j1<0 ||j1>= m || j2<0 || j2>=m)
+                return Integer.MIN_VALUE;
+            if(i==n-1){
+                if(j1==j2)
+                    return grid[i][j1];
+                else return grid[i][j1]+grid[i][j2];
+            }
+            if(dp[i][j1][j2]!=-1)
+                return dp[i][j1][j2];
+            int max=Integer.MIN_VALUE;
+            for(int dj1=-1;dj1<=1;dj1++){
+                for(int dj2=-1;dj2<=1;dj2++){
+                    int val=0;
+                    if(j1==j2) val=grid[i][j2];
+                    else val=grid[i][j1]+grid[i][j2];
+                    max=Math.max(max,val+maxChocolatesCollectedByAliceAndBobRecursiveWithMemoization(grid,n,m,dp,i+1,j1+dj1,j2+dj2));
+                }
+            }
+            return dp[i][j1][j2]=max;
+        }
+
+        private int maxChocolatesCollectedByAliceAndBobRecursive(int[][] grid, int n, int m, int i, int j1, int j2) {
+            if(j1<0 || j1>=m || j2<0 || j2>=m)
+                return Integer.MIN_VALUE;
+            if(i==n-1){
+                if(j1==j2)//if both are on sa,e cell
+                    return grid[i][j1];
+                else return grid[i][j1]+grid[i][j2];
+            }
+            int max=Integer.MIN_VALUE;
+            for(int dj1=-1; dj1<=1;dj1++){
+                for(int dj2=-1;dj2<=1;dj2++){
+                    int value=0;
+                    if(j1==j2)
+                        value=grid[i][j1];
+                    else value=grid[i][j1]+grid[i][j2];
+                    value+=maxChocolatesCollectedByAliceAndBobRecursive(grid,n,m,i+1,j1+dj1,j2+dj2);
+                    max=Math.max(max,value);
+                }
+            }
+            return max;
+        }
     }
     public static void main(String args[]){
 
@@ -518,11 +579,19 @@ public class StriverDP {
 
 
         //maximum path sum in the matrix where path can start from any cell of first row and end at any cell of last row
-        int grid[][]={{1, 2, 10, 4},{100, 3, 2, 1},{1, 1, 20, 2},{1, 2, 2, 1}};
-        int n=4;
-        int m=4;
+//        int grid[][]={{1, 2, 10, 4},{100, 3, 2, 1},{1, 1, 20, 2},{1, 2, 2, 1}};
+//        int n=4;
+//        int m=4;
 //        System.out.println(d.maxPathSumInMatrix(grid,n,m)); // recursion and memoization
-        System.out.println(d.maxPathSumInMatrixWithTabulation(grid,n,m));
+//        System.out.println(d.maxPathSumInMatrixWithTabulation(grid,n,m));
+
+
+        //Question -13--Ninja And His friends
+        int grid[][]={{2,3,1,2},{3,4,2,2},{5,6,3,5}};
+        int n=3;
+        int m=4;
+        System.out.println(d.maxChocolatesCollectedByAliceAndBob(grid,n,m));
+
 
 
 
