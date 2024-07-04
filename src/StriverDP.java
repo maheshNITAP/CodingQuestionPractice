@@ -521,13 +521,23 @@ public class StriverDP {
                 dp[0][j]=true;
             for(int i=1;i<n+1;i++){
                 for(int j=1;j<sum+1;j++){
-                    if(arr[i-1]<=j){
-                        dp[i][j]=dp[i][j-arr[i-1]] || dp[i-1][j];
-                    }else
-                        dp[i][j]=dp[i-1][j];
+                    if(arr[i-1]<=j)
+                        dp[i][j]=dp[i-1][j-arr[i-1]] || dp[i-1][j];
+                    else
+                        dp[i][j]= dp[i-1][j];
                 }
             }
-            return dp[n][sum];
+                return dp[n][sum];
+        }
+
+        public boolean partitionEqualSubsetSum(int[] arr, int n) {
+            int sum =0;
+            for(int i=0;i<n;i++)
+                sum+=arr[i];
+            if(sum%2==0)
+                return subsetSumWithTabulation(arr,sum/2,n);
+            else
+                return false;
         }
     }
     public static void main(String args[]){
@@ -637,21 +647,25 @@ public class StriverDP {
         //Subsequences/Subset
 
         //Subset Sum Equals to Target
-        int arr[]={1,2,3,4};
-        int k=6;
+//        int arr[]={1,2,3,4};
+//        int k=6;
 
         //recursive
 //        System.out.println(d.subsetSum(arr,arr.length,k));
 
         //recursive+Memoization
-        int [][]dp = new int[k+1][arr.length+1];
-        for(int i=0;i<k+1;i++)
-            Arrays.fill(dp[i],-1);
+//        int [][]dp = new int[k+1][arr.length+1];
+//        for(int i=0;i<k+1;i++)
+//            Arrays.fill(dp[i],-1);
 //        System.out.println(d.subsetSumWithMemoization(arr,k,dp,arr.length));
 
         //Subset Sum Equals to Target+tabulation
 //        System.out.println(d.subsetSumWithTabulation(arr,k,arr.length));
 
+
+        //Partition Equal Subset Sum
+        int arr[]={2,3,3,3,4,5};
+        System.out.println(d.partitionEqualSubsetSum(arr,arr.length));
 
 
 
