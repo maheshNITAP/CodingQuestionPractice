@@ -488,6 +488,47 @@ public class StriverDP {
             }
             return max;
         }
+
+        public boolean subsetSum(int[] arr, int ind, int sum) {
+            if(sum==0) return true;
+            if(ind ==0) return false;
+            boolean notTake = subsetSum(arr,ind-1,sum);
+            boolean take= false;
+            if(arr[ind-1]<=sum)
+                take= subsetSum(arr,ind-1,sum-arr[ind-1]);
+            return take || notTake;
+        }
+
+        public boolean subsetSumWithMemoization(int[] arr, int sum, int[][] dp, int ind) {
+            if(sum==0) return true;
+            if(ind==0)return false;
+            if(dp[sum][ind]!=-1)
+                return dp[sum][ind]==1 ? true:false;
+            boolean notTake= subsetSumWithMemoization(arr,sum,dp,ind-1);
+            boolean take = false;
+            if(arr[ind-1]<=sum)
+                take =subsetSumWithMemoization(arr,sum-arr[ind-1],dp,ind-1);
+
+            dp[sum][ind]=notTake ||take ?1:0;
+            return notTake||take;
+        }
+
+        public boolean subsetSumWithTabulation(int[] arr, int sum, int n) {
+            boolean dp[][]= new boolean[n+1][sum+1];
+            for(int i=0;i<n;i++)
+                dp[i][0]=false;
+            for(int j=0;j<sum+1;j++)
+                dp[0][j]=true;
+            for(int i=1;i<n+1;i++){
+                for(int j=1;j<sum+1;j++){
+                    if(arr[i-1]<=j){
+                        dp[i][j]=dp[i][j-arr[i-1]] || dp[i-1][j];
+                    }else
+                        dp[i][j]=dp[i-1][j];
+                }
+            }
+            return dp[n][sum];
+        }
     }
     public static void main(String args[]){
 
@@ -505,7 +546,7 @@ public class StriverDP {
 //        System.out.println(d.frogJumpByTabulation(height,n));
 
         //frog jump with K distance
-        int k=3;
+//        int k=3;
 //        System.out.println(d.frogJumpWithKDistance(height,n,k));
 //        int dp[]= new int[n+1];
 //        Arrays.fill(dp,-1);
@@ -587,10 +628,29 @@ public class StriverDP {
 
 
         //Question -13--Ninja And His friends
-        int grid[][]={{2,3,1,2},{3,4,2,2},{5,6,3,5}};
-        int n=3;
-        int m=4;
-        System.out.println(d.maxChocolatesCollectedByAliceAndBob(grid,n,m));
+//        int grid[][]={{2,3,1,2},{3,4,2,2},{5,6,3,5}};
+//        int n=3;
+//        int m=4;
+//        System.out.println(d.maxChocolatesCollectedByAliceAndBob(grid,n,m));
+
+
+        //Subsequences/Subset
+
+        //Subset Sum Equals to Target
+        int arr[]={1,2,3,4};
+        int k=6;
+
+        //recursive
+//        System.out.println(d.subsetSum(arr,arr.length,k));
+
+        //recursive+Memoization
+        int [][]dp = new int[k+1][arr.length+1];
+        for(int i=0;i<k+1;i++)
+            Arrays.fill(dp[i],-1);
+//        System.out.println(d.subsetSumWithMemoization(arr,k,dp,arr.length));
+
+        //Subset Sum Equals to Target+tabulation
+//        System.out.println(d.subsetSumWithTabulation(arr,k,arr.length));
 
 
 
