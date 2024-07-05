@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Arrays;
 
 public class StriverDP {
@@ -515,10 +516,10 @@ public class StriverDP {
 
         public boolean subsetSumWithTabulation(int[] arr, int sum, int n) {
             boolean dp[][]= new boolean[n+1][sum+1];
-            for(int i=0;i<n;i++)
-                dp[i][0]=false;
             for(int j=0;j<sum+1;j++)
-                dp[0][j]=true;
+                dp[0][j]=false;
+            for(int i=0;i<n;i++)
+                dp[i][0]=true;
             for(int i=1;i<n+1;i++){
                 for(int j=1;j<sum+1;j++){
                     if(arr[i-1]<=j)
@@ -538,6 +539,36 @@ public class StriverDP {
                 return subsetSumWithTabulation(arr,sum/2,n);
             else
                 return false;
+        }
+
+        public int minimumSubSetSumDiff(int[] arr, int n) {
+            int maxSum=0;
+            for(int i=0;i<n;i++)
+                maxSum+=arr[i];
+            boolean dp[][]= new boolean[n+1][maxSum+1];
+            for(int j=0;j<maxSum+1;j++)
+                dp[0][j]=false;
+            for(int i=0;i<n+1;i++)
+                dp[i][0]=true;
+            for(int i=1;i<n+1;i++){
+                for(int j=0;j<maxSum+1;j++){
+                    if(arr[i-1]<=j)
+                        dp[i][j]=dp[i-1][j-arr[i-1]] || dp[i-1][j];
+                    else
+                        dp[i][j]=dp[i-1][j];
+                }
+            }
+            ArrayList<Integer> list= new ArrayList<>();
+            int min=Integer.MAX_VALUE;
+            for(int j=0;j<maxSum+1/2;j++){
+                if(dp[n-1][j])
+                    list.add(j);
+            }
+            for(int x:list){
+                int s2=maxSum-x;
+                min=Math.min(min,Math.abs(x-s2));
+            }
+            return min;
         }
     }
     public static void main(String args[]){
@@ -664,8 +695,13 @@ public class StriverDP {
 
 
         //Partition Equal Subset Sum
-        int arr[]={2,3,3,3,4,5};
-        System.out.println(d.partitionEqualSubsetSum(arr,arr.length));
+//        int arr[]={2,3,3,3,4,5};
+//        System.out.println(d.partitionEqualSubsetSum(arr,arr.length));
+
+        //Partition a set into two subset such that the difference of subsetSums is minimum
+        int arr[]={2,2,5,4};
+        System.out.println(d.minimumSubSetSumDiff(arr,arr.length));
+
 
 
 
