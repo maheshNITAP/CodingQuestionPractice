@@ -570,6 +570,37 @@ public class StriverDP {
             }
             return min;
         }
+
+        public int countSubsetsWithSumk(int[] arr, int sum, int n) {
+            if(sum==0)
+                return 1;
+            if(n==0)
+                return 0;
+            if(arr[n-1]<=sum)
+                return countSubsetsWithSumk(arr,sum-arr[n-1],n-1) + countSubsetsWithSumk(arr,sum,n-1);
+            else
+                return countSubsetsWithSumk(arr,sum,n-1);
+        }
+
+        public int countSubsetsWithSumKTabulation(int[] arr, int sum, int n) {
+            int dp[][]= new int[n+1][sum+1];
+            for(int j=0;j<sum+1;j++)
+                dp[0][j]=0;
+            for(int i=0;i<n+1;i++)
+                dp[i][0]=1;
+            for(int i=1;i<n+1;i++){
+                for(int j=1;j<sum+1;j++){
+                    if(arr[i-1]<=j)
+                        dp[i][j]=dp[i-1][j-arr[i-1]]+dp[i-1][j];
+                    else
+                        dp[i][j]=dp[i-1][j];
+                }
+            }
+            return dp[n][sum];
+
+        }
+
+
     }
     public static void main(String args[]){
 
@@ -699,8 +730,23 @@ public class StriverDP {
 //        System.out.println(d.partitionEqualSubsetSum(arr,arr.length));
 
         //Partition a set into two subset such that the difference of subsetSums is minimum
-        int arr[]={2,2,5,4};
-        System.out.println(d.minimumSubSetSumDiff(arr,arr.length));
+//        int arr[]={2,2,5,4};
+//        System.out.println(d.minimumSubSetSumDiff(arr,arr.length));
+
+        //count subsets with sum k
+//         int arr[]= {1,2,2,3};
+//         int sum=3;
+//        System.out.println(d.countSubsetsWithSumk(arr,sum,arr.length));
+//        System.out.println(d.countSubsetsWithSumKTabulation(arr,sum,arr.length));
+
+        //count Partitions/subsets with given diff
+
+        int arr[]={5,2,6,4};
+        int diff=3;
+        System.out.println(d.countSubsetsWithGivenDiff(arr,diff,arr.length));
+
+
+
 
 
 
