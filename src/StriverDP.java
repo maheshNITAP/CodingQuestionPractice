@@ -600,7 +600,17 @@ public class StriverDP {
 
         }
 
+        public int countSubsetsWithGivenDiff(int[] arr, int diff, int n) {
+            int totalSum=0;
+            for(int i=0;i<n;i++)
+                totalSum+=arr[i];
+            int sum=(totalSum+diff)/2;
+            //by recursion
+//            return countSubsetsWithSumk(arr,sum,n);
+            //by tabulation
+            return countSubsetsWithSumKTabulation(arr,sum,n);
 
+        }
     }
     public static void main(String args[]){
 
@@ -741,8 +751,10 @@ public class StriverDP {
 
         //count Partitions/subsets with given diff
 
-        int arr[]={5,2,6,4};
-        int diff=3;
+//        int arr[]={5,2,6,4};
+//        int diff=3;  //OP-1
+        int arr[]={1, 1, 1, 1};
+        int diff=0;
         System.out.println(d.countSubsetsWithGivenDiff(arr,diff,arr.length));
 
 
