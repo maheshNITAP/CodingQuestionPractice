@@ -611,6 +611,52 @@ public class StriverDP {
             return countSubsetsWithSumKTabulation(arr,sum,n);
 
         }
+
+        public int knapsackRecursive(int[] wt, int[] val, int ind, int W) {
+            if(ind==0){
+                if(wt[ind]<=W)return val[ind];
+                return 0;
+            }
+            int notTake=0+knapsackRecursive(wt,val,ind-1,W);
+            int take=Integer.MIN_VALUE;
+            if(wt[ind]<=W)
+                take=val[ind]+knapsackRecursive(wt,val,ind-1,W-wt[ind]);
+            return Math.max(notTake,take);
+        }
+
+
+        //Passing n as n-1, so we
+        public int knapsackRecursiveWithMemoization(int[] wt, int[] val, int ind, int W, int[][] dp) {
+            if(ind==0){
+                if(wt[ind]<=W) return val[ind];
+                return 0;
+            }
+            if(dp[ind][W]!=-1)
+                return dp[ind][W];
+            int notTake=knapsackRecursiveWithMemoization(wt,val,ind-1,W,dp);
+            int take=Integer.MIN_VALUE;
+            if(wt[ind]<=W)
+                take=val[ind]+knapsackRecursiveWithMemoization(wt, val, ind-1, W-wt[ind], dp);
+            return dp[ind][W]=Math.max(take,notTake);
+
+        }
+
+        public int knapsackTabulation(int[] wt, int[] val, int maxWeight, int n) {
+            int dp[][]= new int[n][maxWeight+1];
+            for(int i=wt[0];i<=maxWeight;i++)
+                dp[0][i]=val[0];
+
+            for(int ind=1;ind<n;ind++){
+                for(int W=0;W<=maxWeight;W++){
+                    int notTake=dp[ind-1][W];
+                    int take=Integer.MIN_VALUE;
+                    if(wt[ind]<=W)
+                        take=val[ind]+dp[ind-1][W-wt[ind]];
+                    dp[ind][W]=Math.max(take,notTake);
+                }
+            }
+            return dp[n-1][maxWeight];
+        }
     }
     public static void main(String args[]){
 
@@ -753,9 +799,28 @@ public class StriverDP {
 
 //        int arr[]={5,2,6,4};
 //        int diff=3;  //OP-1
-        int arr[]={1, 1, 1, 1};
-        int diff=0;
-        System.out.println(d.countSubsetsWithGivenDiff(arr,diff,arr.length));
+//        int arr[]={1, 1, 1, 1};
+//        int diff=0;
+//        System.out.println(d.countSubsetsWithGivenDiff(arr,diff,arr.length));
+
+
+        //  0/1 knapsack
+        int wt[]={3,2,5};
+        int val[]={30,40,60};
+        int W=6;
+
+//        System.out.println(d.knapsackRecursive(wt,val,wt.length-1,W));
+
+        //0/1 Knapsack Memoization
+        int n=wt.length;
+        int dp[][]= new int[n+1][W+1];
+        for(int i=0;i<n+1;i++)
+            Arrays.fill(dp[i],-1);
+//        System.out.println(d.knapsackRecursiveWithMemoization(wt,val,n-1,W,dp));
+
+        //Knapsack tabulation
+        System.out.println(d.knapsackTabulation(wt,val,W,n));
+
 
 
 
