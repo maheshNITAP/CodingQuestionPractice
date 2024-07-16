@@ -657,6 +657,54 @@ public class StriverDP {
             }
             return dp[n-1][maxWeight];
         }
+
+        public int minimumCoinsRecursive(int[] coins, int ind, int target) {
+            if(ind==0){
+                if(target%coins[ind]==0) return target/coins[ind];
+                else return (int) 1e9;
+            }
+            int notTake= 0+minimumCoinsRecursive(coins,ind-1,target);//0 coins included
+            int take= (int) 1e9;
+            if(coins[ind]<=target)
+                take=1+minimumCoinsRecursive(coins,ind,target-coins[ind]);
+            return Math.min(take,notTake);
+        }
+
+        public int minimumCoinsRecursiveWithMemoization(int[] coins, int ind, int target, int[][] dp) {
+            if(ind==0){
+                if(target%coins[ind]==0) return target/coins[ind];
+                else return (int) 1e9;
+            }
+            if(dp[ind][target]!=-1)
+                return dp[ind][target];
+            int notTake= minimumCoinsRecursiveWithMemoization(coins,ind-1,target,dp);
+            int take= (int) 1e9;
+            if(coins[ind]<=target)
+                take=1+minimumCoinsRecursiveWithMemoization(coins,ind,target-coins[ind],dp);
+
+            return dp[ind][target]=Math.min(take,notTake);
+        }
+
+        public int minimumCoinsTabulation(int[] coins, int n, int target) {
+            int dp[][]= new int[n][target+1];
+            for(int T=0;T<=target;T++){
+                if(T%coins[0]==0)
+                    dp[0][T]=T/coins[0];
+                else
+                    dp[0][T]= (int) 1e9;
+            }
+            for(int ind=1;ind<n;ind++){
+                for(int T=0;T<=target;T++){
+                    int notTake=dp[ind-1][T];
+                    int take= (int) 1e9;
+                    if(coins[ind]<=T)
+                        take=1+dp[ind][T-coins[ind]];
+
+                    dp[ind][T]=Math.min(take,notTake);
+                }
+            }
+            return dp[n-1][target];
+        }
     }
     public static void main(String args[]){
 
@@ -805,21 +853,37 @@ public class StriverDP {
 
 
         //  0/1 knapsack
-        int wt[]={3,2,5};
-        int val[]={30,40,60};
-        int W=6;
+//        int wt[]={3,2,5};
+//        int val[]={30,40,60};
+//        int W=6;
 
 //        System.out.println(d.knapsackRecursive(wt,val,wt.length-1,W));
 
         //0/1 Knapsack Memoization
-        int n=wt.length;
-        int dp[][]= new int[n+1][W+1];
-        for(int i=0;i<n+1;i++)
-            Arrays.fill(dp[i],-1);
+//        int n=wt.length;
+//        int dp[][]= new int[n+1][W+1];
+//        for(int i=0;i<n+1;i++)
+//            Arrays.fill(dp[i],-1);
 //        System.out.println(d.knapsackRecursiveWithMemoization(wt,val,n-1,W,dp));
 
         //Knapsack tabulation
-        System.out.println(d.knapsackTabulation(wt,val,W,n));
+//        System.out.println(d.knapsackTabulation(wt,val,W,n));
+
+        //Minimum Coins
+        int coins[]={1,2,3};
+        int n=coins.length;
+        int target=7;
+        //recursive
+//        System.out.println(d.minimumCoinsRecursive(coins,n-1,target));
+
+        //recursive+Memoization
+//        int dp[][]= new int[n][target+1];
+//        for(int i=0;i<n;i++)
+//            Arrays.fill(dp[i],-1);
+//        System.out.println(d.minimumCoinsRecursiveWithMemoization(coins,n-1,target,dp));
+
+        //tabulation
+        System.out.println(d.minimumCoinsTabulation(coins,n,target));
 
 
 
