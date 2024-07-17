@@ -705,6 +705,34 @@ public class StriverDP {
             }
             return dp[n-1][target];
         }
+
+        public int targetSum(int[] arr, int sum, int n) {
+            int diff=sum;
+            return countNumberOfSubsetSumWithGivenDiff(arr,diff,n);
+        }
+
+        private int countNumberOfSubsetSumWithGivenDiff(int[] arr, int diff, int n) {
+            int sum=0;
+            for(int i=0;i<=n;i++)
+                sum+=arr[i];
+
+            sum=(diff+sum)/2;
+           return  countOfSubsetSumWithGivenSumForThisMethod(arr,sum,n);
+        }
+
+        private int countOfSubsetSumWithGivenSumForThisMethod(int[] arr, int target, int ind) {
+            if(target==0)
+                return 1;
+            if(ind==0){
+                if(arr[ind]==target) return 1;
+                else return 0;
+            }
+            int notTake=countOfSubsetSumWithGivenSumForThisMethod(arr,target,ind-1);
+            int take=0;
+            if(arr[ind]<=target)
+                take=countOfSubsetSumWithGivenSumForThisMethod(arr,target-arr[ind],ind-1);
+            return take+notTake;
+        }
     }
     public static void main(String args[]){
 
@@ -870,9 +898,9 @@ public class StriverDP {
 //        System.out.println(d.knapsackTabulation(wt,val,W,n));
 
         //Minimum Coins
-        int coins[]={1,2,3};
-        int n=coins.length;
-        int target=7;
+//        int coins[]={1,2,3};
+//        int n=coins.length;
+//        int target=7;
         //recursive
 //        System.out.println(d.minimumCoinsRecursive(coins,n-1,target));
 
@@ -883,7 +911,13 @@ public class StriverDP {
 //        System.out.println(d.minimumCoinsRecursiveWithMemoization(coins,n-1,target,dp));
 
         //tabulation
-        System.out.println(d.minimumCoinsTabulation(coins,n,target));
+//        System.out.println(d.minimumCoinsTabulation(coins,n,target));
+
+        // target sum
+        int arr[]={1,1,2,3};
+        int sum=1;
+        int n=arr.length;
+        System.out.println(d.targetSum(arr,sum,n-1));
 
 
 
