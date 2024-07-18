@@ -1,4 +1,3 @@
-import java.lang.annotation.Target;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -818,6 +817,54 @@ public class StriverDP {
             return dp[n-1][weight];
 
         }
+
+        public int rodCuttingProblemRecursive(int ind, int N, int[] price) {  //n=current size, N=total size required
+            if(ind==0){//we have 0 based indexing sp at o we have lenght 1
+                return N*price[0]; // index ==0 but we want size of 1
+            }
+            int notTake=0+rodCuttingProblemRecursive(ind-1,N,price);
+            int take=Integer.MIN_VALUE;
+            int rodLength=ind+1;
+            if(rodLength<=N)
+                take=price[ind]+rodCuttingProblemRecursive(ind,N-rodLength,price);
+            return Math.max(take,notTake);
+
+
+        }
+
+        public int rodCuttingProblemMemoization(int ind, int N, int[] price, int[][] dp) {
+            if(ind==0){
+                return N*price[0];
+            }
+            if(dp[ind][N]!=-1)
+                return dp[ind][N];
+            int notTake=0+rodCuttingProblemMemoization(ind-1,N,price,dp);
+            int take=Integer.MIN_VALUE;
+            int rodLength=ind+1;
+            if(rodLength<=N)
+                take=price[ind]+rodCuttingProblemMemoization(ind,N-rodLength,price,dp);
+
+            return dp[ind][N]=Math.max(take,notTake);
+
+        }
+
+        public int rodCuttingProblemTabulation(int n, int totalLength, int[] price) {
+            int dp[][]= new int[n][totalLength+1];
+            for(int N=0;N<=totalLength;N++)
+                dp[0][N]=N*price[0];
+
+            for(int ind=1;ind<n;ind++){
+                for(int N=0;N<=totalLength;N++){
+                    int notTake=0+dp[ind-1][N];
+                    int take=Integer.MIN_VALUE;
+                    int rodlength=ind+1;
+                    if(rodlength<=N)
+                        take=price[ind]+dp[ind][N-rodlength];
+                    dp[ind][N]=Math.max(take,notTake);
+                }
+            }
+            return dp[n-1][totalLength];
+        }
     }
     public static void main(String args[]){
 
@@ -1020,10 +1067,10 @@ public class StriverDP {
 
         //Unbounded Knapsack------Infinite supply
 
-        int wt[]={2,4,6};
-        int val[]={5,11,13};
-        int W=10;
-        int n=wt.length;
+//        int wt[]={2,4,6};
+//        int val[]={5,11,13};
+//        int W=10;
+//        int n=wt.length;
 
         //recursive
 //        System.out.println(d.unboundedKnapsack(n-1,W,wt,val));
@@ -1034,7 +1081,24 @@ public class StriverDP {
 //            Arrays.fill(dp[i],-1);
 //        System.out.println(d.unboundedKnapsackWithMemoization(n-1,W,wt,val,dp));
 
-        System.out.println(d.unboundedKnapsackTabulation(n,W,wt,val));
+//        System.out.println(d.unboundedKnapsackTabulation(n,W,wt,val));
+
+        //rod cutting problem
+        int price[]={2,5,7,8,10};
+        int N=5;
+        int n=price.length;
+
+//        int price[]={3, 5, 8, 9, 10, 17, 17, 20};
+//        int N=8;
+//        int n=price.length;
+//        System.out.println(d.rodCuttingProblemRecursive(n-1,N,price));
+
+//        int dp[][]= new int[n][N+1];
+//        for(int i=0;i<n;i++)
+//            Arrays.fill(dp[i],-1);
+//        System.out.println(d.rodCuttingProblemMemoization(n-1,N,price,dp));
+
+        System.out.println(d.rodCuttingProblemTabulation(n,N,price));
 
 
 
