@@ -774,6 +774,50 @@ public class StriverDP {
             }
             return dp[n-1][target];
         }
+
+        public int unboundedKnapsack( int ind, int W,int[] wt, int[] val) {
+            if(ind==0)
+                return (W/wt[0])*val[0];
+            int notTake=0+unboundedKnapsack(ind-1,W,wt,val);
+            int take=Integer.MIN_VALUE;
+            if(wt[ind]<=W)
+                take=val[ind]+unboundedKnapsack(ind,W-wt[ind],wt,val);
+            return Math.max(take,notTake);
+
+        }
+
+        public int unboundedKnapsackWithMemoization(int ind, int W, int[] wt, int[] val, int[][] dp) {
+            if(ind==0)
+                return (W/wt[0])*val[0];
+            if(dp[ind][W]!=-1)
+                return dp[ind][W];
+            int notTake= 0+unboundedKnapsackWithMemoization(ind-1,W,wt,val,dp);
+            int take=Integer.MIN_VALUE;
+            if(wt[ind]<=W)
+                take=val[ind]+unboundedKnapsackWithMemoization(ind,W-wt[ind],wt,val,dp);
+
+            return dp[ind][W]=Math.max(take,notTake);
+
+        }
+
+        public int unboundedKnapsackTabulation(int n, int weight, int[] wt, int[] val) {
+            int dp[][]= new int[n][weight+1];
+            for(int W=0;W<=weight;W++)
+                dp[0][W]=((int) (W/wt[0]))*val[0]; // for index 0 base case
+
+            for(int ind=1;ind<n;ind++){
+                for(int W=0;W<=weight;W++){
+                    int notTake=dp[ind-1][W];
+                    int take=Integer.MIN_VALUE;
+                    if(wt[ind]<=W)
+                        take=val[ind]+dp[ind][W-wt[ind]];
+
+                    dp[ind][W]=Math.max(take,notTake);
+                }
+            }
+            return dp[n-1][weight];
+
+        }
     }
     public static void main(String args[]){
 
@@ -962,16 +1006,36 @@ public class StriverDP {
 
 
         //coin change 2----Infinite supply problem
-        int arr[]={1,2,3};
-        int target=4;
-        int n=arr.length;
+//        int arr[]={1,2,3};
+//        int target=4;
+//        int n=arr.length;
 //        System.out.println(d.numberOfWaysToTakeCoin(arr,n-1,target));
-        int dp[][]= new int[n][target+1];
-        for(int i=0;i<n;i++)
-            Arrays.fill(dp[i],-1);
+//        int dp[][]= new int[n][target+1];
+//        for(int i=0;i<n;i++)
+//            Arrays.fill(dp[i],-1);
 //        System.out.println(d.numberOfWaysToTakeCoinWithMemoization(arr,n-1,target,dp));
 
-        System.out.println(d.numberOfWaysToTakeCoinWithTabulation(arr,n,target));
+//        System.out.println(d.numberOfWaysToTakeCoinWithTabulation(arr,n,target));
+
+
+        //Unbounded Knapsack------Infinite supply
+
+        int wt[]={2,4,6};
+        int val[]={5,11,13};
+        int W=10;
+        int n=wt.length;
+
+        //recursive
+//        System.out.println(d.unboundedKnapsack(n-1,W,wt,val));
+
+        //recursive+memoization
+//        int dp[][]= new int[n][W+1];
+//        for(int i=0;i<n;i++)
+//            Arrays.fill(dp[i],-1);
+//        System.out.println(d.unboundedKnapsackWithMemoization(n-1,W,wt,val,dp));
+
+        System.out.println(d.unboundedKnapsackTabulation(n,W,wt,val));
+
 
 
 
