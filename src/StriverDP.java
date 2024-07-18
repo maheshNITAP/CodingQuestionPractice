@@ -1,3 +1,4 @@
+import java.lang.annotation.Target;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -733,6 +734,46 @@ public class StriverDP {
                 take=countOfSubsetSumWithGivenSumForThisMethod(arr,target-arr[ind],ind-1);
             return take+notTake;
         }
+
+        public int numberOfWaysToTakeCoin(int[] arr, int ind, int target) {
+            if(ind==0)
+                return target%arr[ind]==0 ? 1:0;
+            int notTake=numberOfWaysToTakeCoin(arr,ind-1,target);
+            int take=0;
+            if(arr[ind]<=target)
+                take=numberOfWaysToTakeCoin(arr,ind,target-arr[ind]);
+            return take+notTake;
+
+        }
+
+        public int numberOfWaysToTakeCoinWithMemoization(int[] arr, int ind, int T, int[][] dp) {
+            if(ind==0)
+                return T%arr[0]==0? 1:0;
+            if(dp[ind][T]!=-1)
+                return dp[ind][T];
+            int notTake=numberOfWaysToTakeCoinWithMemoization(arr,ind-1,T,dp);
+            int take=0;
+            if(arr[ind]<=T)
+                take=numberOfWaysToTakeCoinWithMemoization(arr,ind,T-arr[ind],dp);
+            return dp[ind][T]=take+notTake;
+        }
+
+        public int numberOfWaysToTakeCoinWithTabulation(int[] arr, int n, int target) {
+            int dp[][]= new int[n][target+1];
+            for(int T=0;T<=target;T++)
+                dp[0][T]= (T%arr[0]==0)?1:0;
+
+            for(int ind=1;ind<n;ind++){
+                for(int T=0;T<=target;T++){
+                    int notTake=dp[ind-1][T];
+                    int take=0;
+                    if(arr[ind]<=T)
+                        take=dp[ind][T-arr[ind]];
+                    dp[ind][T]= take + notTake;
+                }
+            }
+            return dp[n-1][target];
+        }
     }
     public static void main(String args[]){
 
@@ -897,7 +938,7 @@ public class StriverDP {
         //Knapsack tabulation
 //        System.out.println(d.knapsackTabulation(wt,val,W,n));
 
-        //Minimum Coins
+        //Minimum Coins--Infinite supply problem
 //        int coins[]={1,2,3};
 //        int n=coins.length;
 //        int target=7;
@@ -914,10 +955,23 @@ public class StriverDP {
 //        System.out.println(d.minimumCoinsTabulation(coins,n,target));
 
         // target sum
-        int arr[]={1,1,2,3};
-        int sum=1;
+//        int arr[]={1,1,2,3};
+//        int sum=1;
+//        int n=arr.length;
+//        System.out.println(d.targetSum(arr,sum,n-1));
+
+
+        //coin change 2----Infinite supply problem
+        int arr[]={1,2,3};
+        int target=4;
         int n=arr.length;
-        System.out.println(d.targetSum(arr,sum,n-1));
+//        System.out.println(d.numberOfWaysToTakeCoin(arr,n-1,target));
+        int dp[][]= new int[n][target+1];
+        for(int i=0;i<n;i++)
+            Arrays.fill(dp[i],-1);
+//        System.out.println(d.numberOfWaysToTakeCoinWithMemoization(arr,n-1,target,dp));
+
+        System.out.println(d.numberOfWaysToTakeCoinWithTabulation(arr,n,target));
 
 
 
