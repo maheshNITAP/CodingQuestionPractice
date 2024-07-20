@@ -969,6 +969,12 @@ public class StriverDP {
             }
             return dp[n][n];
         }
+
+        public int minNumberOfInsertionToMakeAStringPalindrome(String x) {
+            StringBuilder y= new StringBuilder(x).reverse();
+            int n=x.length();
+            return n-lcsTabulation(n,n,x,y.toString());
+        }
     }
     public static void main(String args[]){
 
@@ -1234,6 +1240,10 @@ public class StriverDP {
 
         // Min number of insertion to make a string palindrome == Min number od deletion to make a string palindrome
         //both problem are same
+
+        String x="aebcbda";
+
+        System.out.println(d.minNumberOfInsertionToMakeAStringPalindrome(x));
 
 
 
