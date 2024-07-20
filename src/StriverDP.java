@@ -865,6 +865,42 @@ public class StriverDP {
             }
             return dp[n-1][totalLength];
         }
+
+        public int lcsRecursive(int ind1, int ind2, String x, String y) {
+            if(ind1<0 || ind2<0)
+                return 0;
+            if(x.charAt(ind1)==y.charAt(ind2))
+                return 1+lcsRecursive(ind1-1,ind2-1,x,y);
+            return Math.max(lcsRecursive(ind1-1,ind2,x,y),lcsRecursive(ind1,ind2-1,x,y));
+        }
+
+        public int lcsRecursiveMemoization(int ind1, int ind2, String x, String y, int[][] dp) {
+            if(ind1<0 || ind2<0)
+                return 0;
+            if(dp[ind1][ind2]!=-1)
+                return dp[ind1][ind2];
+            if(x.charAt(ind1)==y.charAt(ind2))
+                return dp[ind1][ind2]= 1+lcsRecursiveMemoization(ind1-1,ind2-1,x,y,dp);
+            return dp[ind1][ind2]=Math.max(lcsRecursiveMemoization(ind1-1,ind2,x,y,dp),lcsRecursiveMemoization(ind1,ind2-1,x,y,dp));
+
+        }
+
+        public int lcsTabulation(int n, int m, String x, String y) {
+            int dp[][]= new int[n+1][m+1];// +1 because we are using 1 based indexing
+            for(int ind1=0;ind1<n+1;ind1++)
+                dp[ind1][0]=0;
+            for(int ind2=0;ind2<m+1;ind2++)
+                dp[0][ind2]=0;
+            for(int ind1=1;ind1<n+1;ind1++){
+                for(int ind2=1;ind2<m+1;ind2++){
+                    if(x.charAt(ind1-1)==y.charAt(ind2-1))
+                        dp[ind1][ind2]=1+dp[ind1-1][ind2-1];
+                    else
+                        dp[ind1][ind2]=Math.max(dp[ind1-1][ind2],dp[ind1][ind2-1]);
+                }
+            }
+            return dp[n][m];
+        }
     }
     public static void main(String args[]){
 
@@ -1084,9 +1120,9 @@ public class StriverDP {
 //        System.out.println(d.unboundedKnapsackTabulation(n,W,wt,val));
 
         //rod cutting problem
-        int price[]={2,5,7,8,10};
-        int N=5;
-        int n=price.length;
+//        int price[]={2,5,7,8,10};
+//        int N=5;
+//        int n=price.length;
 
 //        int price[]={3, 5, 8, 9, 10, 17, 17, 20};
 //        int N=8;
@@ -1098,7 +1134,32 @@ public class StriverDP {
 //            Arrays.fill(dp[i],-1);
 //        System.out.println(d.rodCuttingProblemMemoization(n-1,N,price,dp));
 
-        System.out.println(d.rodCuttingProblemTabulation(n,N,price));
+//        System.out.println(d.rodCuttingProblemTabulation(n,N,price));
+
+
+        //Longest Common Subsequence
+
+        String x="abcdeaf";
+        String y="acbcf";
+        int n=x.length();
+        int m=y.length();
+//        System.out.println(d.lcsRecursive(n-1,m-1,x,y));
+
+        int dp[][]=new int[n][m];
+        for(int i=0;i<n;i++)
+            Arrays.fill(dp[i],-1);
+//        System.out.println(d.lcsRecursiveMemoization(n-1,m-1,x,y,dp));
+
+//        System.out.println(d.lcsTabulation(n,m,x,y));
+
+
+        
+
+
+
+
+
+
 
 
 
