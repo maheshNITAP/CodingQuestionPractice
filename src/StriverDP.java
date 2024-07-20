@@ -975,6 +975,15 @@ public class StriverDP {
             int n=x.length();
             return n-lcsTabulation(n,n,x,y.toString());
         }
+
+        public void minNumberOfInsertionAndDelectionToConvertS1ToS2(String x, String y, int n, int m) {
+            int lcs=lcsTabulation(n,m,x,y);
+            int deletion=n-lcs;
+            int insertion=m-lcs;
+            System.out.println("number of deletion : "+ deletion);
+            System.out.println("number of Insertion : "+ insertion);
+
+        }
     }
     public static void main(String args[]){
 
@@ -1241,9 +1250,17 @@ public class StriverDP {
         // Min number of insertion to make a string palindrome == Min number od deletion to make a string palindrome
         //both problem are same
 
-        String x="aebcbda";
+//        String x="aebcbda";
+//
+//        System.out.println(d.minNumberOfInsertionToMakeAStringPalindrome(x));
 
-        System.out.println(d.minNumberOfInsertionToMakeAStringPalindrome(x));
+
+        //min number of insertion and deletion to convert string s1 to s2
+
+        String x="heap";
+        String y="pea";
+
+       d.minNumberOfInsertionAndDelectionToConvertS1ToS2(x,y,x.length(),y.length());
 
 
 
