@@ -933,6 +933,42 @@ public class StriverDP {
             }
             return ans.reverse().toString();
         }
+
+        public int longestCommonSubstringLength(int n, int m, String x, String y) {
+            int dp[][]= new int[n+1][m+1];
+            int maxLength=0;
+            for(int i=0;i<n+1;i++)
+                dp[i][0]=0;
+            for(int j=0;j<m+1;j++)
+                dp[0][j]=0;
+            for(int i=1;i<n+1;i++){
+                for(int j=1;j<m+1;j++){
+                    if(x.charAt(i-1)==y.charAt(j-1)){
+                        dp[i][j]=1+dp[i-1][j-1];
+                        maxLength=Math.max(maxLength,dp[i][j]);
+                    }else
+                        dp[i][j]=0;  // it's not continuous here so we are making it 0
+                }
+            }
+            return maxLength;
+        }
+
+        public int longestPalindromicSubsequence(String x, String y, int n) {
+            int dp[][]= new int[n+1][n+1];
+            for(int i=0;i<n+1;i++){
+                dp[i][0]=0;
+                dp[0][i]=0;//both row and column size are same so we can use
+            }
+            for(int i=1;i<n+1;i++){
+                for(int j=1;j<n+1;j++){
+                    if(x.charAt(i-1)==y.charAt(j-1))
+                        dp[i][j]=1+dp[i-1][j-1];
+                    else
+                        dp[i][j]=Math.max(dp[i-1][j],dp[i][j-1]);
+                }
+            }
+            return dp[n][n];
+        }
     }
     public static void main(String args[]){
 
@@ -1171,21 +1207,36 @@ public class StriverDP {
 
         //Longest Common Subsequence
 
-        String x="abcdeaf";
-        String y="acbcf";
-        int n=x.length();
-        int m=y.length();
+//        String x="abcdeaf";
+//        String y="acbcf";
+//        int n=x.length();
+//        int m=y.length();
 //        System.out.println(d.lcsRecursive(n-1,m-1,x,y));
 
-        int dp[][]=new int[n][m];
-        for(int i=0;i<n;i++)
-            Arrays.fill(dp[i],-1);
+//        int dp[][]=new int[n][m];
+//        for(int i=0;i<n;i++)
+//            Arrays.fill(dp[i],-1);
 //        System.out.println(d.lcsRecursiveMemoization(n-1,m-1,x,y,dp));
 
 //        System.out.println(d.lcsTabulation(n,m,x,y));
 
         //print longest common subsequence
-        System.out.println(d.printLCS(n,m,x,y));
+//        System.out.println(d.printLCS(n,m,x,y));
+
+        //length of longest common substring
+//        System.out.println(d.longestCommonSubstringLength(n,m,x,y));
+
+        //longest Palindromic subsequence
+//        String x="bbbab";
+//        StringBuilder y= new StringBuilder(x).reverse();
+//        int n=x.length();
+//        System.out.println(d.longestPalindromicSubsequence(x,y.toString(),n));
+
+        // Min number of insertion to make a string palindrome == Min number od deletion to make a string palindrome
+        //both problem are same
+
+
+
 
 
 
