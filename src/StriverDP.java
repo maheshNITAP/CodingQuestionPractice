@@ -1052,6 +1052,50 @@ public class StriverDP {
             s.reverse();
             return s.toString();
         }
+
+        public int distinctSubsequences(String x, String y, int i, int j) {//i---n & j==m  here j is substring
+            if(j<0)
+                return 1;
+            if(i<0)
+                return 0;
+            if(x.charAt(i)==y.charAt(j))
+                return distinctSubsequences(x,y,i-1,j-1)+distinctSubsequences(x,y,i-1,j);
+            else
+                return distinctSubsequences(x,y,i-1,j);
+        }
+
+        public int distinctSubsequencesWithMemoization(String x, String y, int i, int j, int[][] dp) {
+            if(j<0)
+                return 1;
+            if(i<0)
+                return 0;
+            if(dp[i][j]!=-1)
+                return dp[i][j];
+            if(x.charAt(i)==y.charAt(j))
+                return dp[i][j] = distinctSubsequencesWithMemoization(x,y,i-1,j-1,dp)+distinctSubsequencesWithMemoization(x,y,i-1,j,dp);
+            else
+                return dp[i][j] = distinctSubsequencesWithMemoization(x,y,i-1,j,dp);
+        }
+
+        public int distinctSubsequencesTabulation(String x, String y, int n, int m) {
+            int dp[][]= new int[n+1][m+1];
+
+            for(int j=0;j<m+1;j++)
+                dp[0][j]=0;
+            for(int i=0;i<n+1;i++)
+                dp[i][0]=1;
+
+            for(int i=1;i<n+1;i++){
+                for(int j=1;j<m+1;j++){
+                    if(x.charAt(i-1)==y.charAt(j-1))
+                        dp[i][j]=dp[i-1][j-1]+dp[i-1][j];
+                    else
+                        dp[i][j]=dp[i-1][j];
+                }
+            }
+            return dp[n][m];
+
+        }
     }
     public static void main(String args[]){
 
@@ -1332,17 +1376,39 @@ public class StriverDP {
 
 
         //shortest Common super-sequence length
-        String x="brute";
-        String y="groot";
-        int n=x.length();
-        int m=y.length();
+//        String x="brute";
+//        String y="groot";
+//        int n=x.length();
+//        int m=y.length();
 
 //        System.out.println(d.shortestCommonSuperSequence(x,y));
 
 
         //print shortest Common super-sequence
 
-        System.out.println(d.printShortestCommonSuperSequence(x,y,n,m));
+//        System.out.println(d.printShortestCommonSuperSequence(x,y,n,m));
+
+
+        //Distinct Subsequences ---Pattern Matching
+
+        String x="brootgroot";
+        String y="brt";
+        int n=x.length();
+        int m=y.length();
+
+        //0 based indexing
+//        System.out.println(d.distinctSubsequences(x,y,n-1,m-1));
+
+        //Memoization
+        int dp[][]= new int[n][m];
+        for(int i=0;i<n;i++)
+            Arrays.fill(dp[i],-1);
+//        System.out.println(d.distinctSubsequencesWithMemoization(x,y,n-1,m-1,dp));
+
+
+        //tabulation---1 based indexing
+        System.out.println(d.distinctSubsequencesTabulation(x,y,n,m));
+
 
 
 
