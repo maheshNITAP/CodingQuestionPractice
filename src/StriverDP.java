@@ -976,7 +976,7 @@ public class StriverDP {
             return n-lcsTabulation(n,n,x,y.toString());
         }
 
-        public void minNumberOfInsertionAndDelectionToConvertS1ToS2(String x, String y, int n, int m) {
+        public void minNumberOfInsertionAndDeletionToConvertS1ToS2(String x, String y, int n, int m) {
             int lcs=lcsTabulation(n,m,x,y);
             int deletion=n-lcs;
             int insertion=m-lcs;
@@ -1260,7 +1260,9 @@ public class StriverDP {
         String x="heap";
         String y="pea";
 
-       d.minNumberOfInsertionAndDelectionToConvertS1ToS2(x,y,x.length(),y.length());
+       d.minNumberOfInsertionAndDeletionToConvertS1ToS2(x,y,x.length(),y.length());
+
+
 
 
 
