@@ -994,7 +994,7 @@ public class StriverDP {
 
         private int lcsTabulationForThisMethod(String x, String y, int n, int m) {
             int dp[][]= new int[n+1][m+1];
-            for(int i=0;i<n;i++)
+            for(int i=0;i<n+1;i++)
                 dp[i][0]=0;
             for(int j=0;j<m+1;j++)
                 dp[0][j]=0;
@@ -1007,6 +1007,50 @@ public class StriverDP {
                 }
             }
             return dp[n][m];
+        }
+        public String printShortestCommonSuperSequence(String x, String y, int n, int m) {
+            int dp[][]= new int[n+1][m+1];
+
+            //tabulation for lcs
+            for(int i=0;i<n+1;i++)
+                dp[i][0]=0;
+            for(int j=0;j<m+1;j++)
+                dp[0][j]=0;
+
+            for(int i=1;i<n+1;i++){
+                for(int j=1;j<m+1;j++){
+                    if(x.charAt(i-1)==y.charAt(j-1))
+                        dp[i][j]=1+dp[i-1][j-1];
+                    else
+                        dp[i][j]=Math.max(dp[i-1][j],dp[i][j-1]);
+                }
+            }
+            StringBuilder s= new StringBuilder();
+            int i=n;
+            int j=m;
+            while(i>0 && j>0){
+                if(x.charAt(i-1)==y.charAt(j-1)){
+                    s.append(x.charAt(i-1));
+                    --i;
+                    --j;
+                } else if (dp[i][j-1]>dp[i-1][j]) {
+                    s.append(y.charAt(j-1));
+                    --j;
+                }else {
+                    s.append(x.charAt(i-1));
+                    --i;
+                }
+            }
+            while(i>0){
+                s.append(x.charAt(i-1));
+                --i;
+            }
+            while (j>0){
+                s.append(y.charAt(j-1));
+                --j;
+            }
+            s.reverse();
+            return s.toString();
         }
     }
     public static void main(String args[]){
@@ -1293,7 +1337,14 @@ public class StriverDP {
         int n=x.length();
         int m=y.length();
 
-        System.out.println(d.shortestCommonSuperSequence(x,y));
+//        System.out.println(d.shortestCommonSuperSequence(x,y));
+
+
+        //print shortest Common super-sequence
+
+        System.out.println(d.printShortestCommonSuperSequence(x,y,n,m));
+
+
 
 
 
