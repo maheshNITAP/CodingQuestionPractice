@@ -984,6 +984,30 @@ public class StriverDP {
             System.out.println("number of Insertion : "+ insertion);
 
         }
+
+        public int shortestCommonSuperSequence(String x, String y) {
+            int n=x.length();
+            int m=y.length();
+            int lcs=lcsTabulationForThisMethod(x,y,n,m);
+            return n+m-lcs;
+        }
+
+        private int lcsTabulationForThisMethod(String x, String y, int n, int m) {
+            int dp[][]= new int[n+1][m+1];
+            for(int i=0;i<n;i++)
+                dp[i][0]=0;
+            for(int j=0;j<m+1;j++)
+                dp[0][j]=0;
+            for(int i=1;i<n+1;i++){
+                for(int j=1;j<m+1;j++){
+                    if(x.charAt(i-1)==y.charAt(j-1))
+                        dp[i][j]=1+dp[i-1][j-1];
+                    else
+                        dp[i][j]=Math.max(dp[i-1][j],dp[i][j-1]);
+                }
+            }
+            return dp[n][m];
+        }
     }
     public static void main(String args[]){
 
@@ -1257,10 +1281,22 @@ public class StriverDP {
 
         //min number of insertion and deletion to convert string s1 to s2
 
-        String x="heap";
-        String y="pea";
+//        String x="heap";
+//        String y="pea";
+//
+//       d.minNumberOfInsertionAndDeletionToConvertS1ToS2(x,y,x.length(),y.length());
 
-       d.minNumberOfInsertionAndDeletionToConvertS1ToS2(x,y,x.length(),y.length());
+
+        //shortest Common super-sequence length
+        String x="brute";
+        String y="groot";
+        int n=x.length();
+        int m=y.length();
+
+        System.out.println(d.shortestCommonSuperSequence(x,y));
+
+
+
 
 
 
