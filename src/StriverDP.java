@@ -1096,6 +1096,53 @@ public class StriverDP {
             return dp[n][m];
 
         }
+
+        public int editDistanceRecursive(int i, int j, String x, String y) {
+            if(i<0)
+                return j+1;
+            if(j<0)
+                return i+1;
+            if(x.charAt(i)==y.charAt(j))
+                return 0+ editDistanceRecursive(i-1,j-1,x,y);
+            else {
+                return Math.min(
+                        1+editDistanceRecursive(i,j-1,x,y),
+                        Math.min
+                                (1+editDistanceRecursive(i-1,j,x,y),
+                                        1+editDistanceRecursive(i-1,j-1,x,y)));
+            }
+        }
+
+        public int editDistanceMemoization(int i, int j, String x, String y, int[][] dp) {
+            if(i<0)
+                return j+1;
+            if(j<0)
+                return i+1;
+            if(dp[i][j]!=-1)
+                return dp[i][j];
+            if(x.charAt(i)==y.charAt(j))
+                return dp[i][j]=editDistanceMemoization(i-1,j-1,x,y,dp);
+            return dp[i][j]=Math.min(1+editDistanceMemoization(i,j-1,x,y,dp),Math.min(1+editDistanceMemoization(i-1,j,x,y,dp),1+editDistanceMemoization(i-1,j-1,x,y,dp)));
+        }
+
+        public int editDistanceTabulation(String x, String y, int n, int m) {
+            int dp[][]= new int[n+1][m+1];
+
+            for(int i=0;i<n+1;i++)
+                dp[i][0]=i;
+            for(int j=0;j<m+1;j++)
+                dp[0][j]=j;
+
+            for(int i=1;i<n+1;i++){
+                for(int j=1;j<m+1;j++){
+                    if(x.charAt(i-1)==y.charAt(j-1))
+                        dp[i][j]=0+dp[i-1][j-1];
+                    else
+                        dp[i][j]=1+Math.min(dp[i][j-1],Math.min(dp[i-1][j],dp[i-1][j-1]));
+                }
+            }
+            return dp[n][m];
+        }
     }
     public static void main(String args[]){
 
@@ -1391,23 +1438,44 @@ public class StriverDP {
 
         //Distinct Subsequences ---Pattern Matching
 
-        String x="brootgroot";
-        String y="brt";
-        int n=x.length();
-        int m=y.length();
+//        String x="brootgroot";
+//        String y="brt";
+//        int n=x.length();
+//        int m=y.length();
 
         //0 based indexing
 //        System.out.println(d.distinctSubsequences(x,y,n-1,m-1));
 
         //Memoization
-        int dp[][]= new int[n][m];
-        for(int i=0;i<n;i++)
-            Arrays.fill(dp[i],-1);
+//        int dp[][]= new int[n][m];
+//        for(int i=0;i<n;i++)
+//            Arrays.fill(dp[i],-1);
 //        System.out.println(d.distinctSubsequencesWithMemoization(x,y,n-1,m-1,dp));
 
 
         //tabulation---1 based indexing
-        System.out.println(d.distinctSubsequencesTabulation(x,y,n,m));
+//        System.out.println(d.distinctSubsequencesTabulation(x,y,n,m));
+
+
+
+        //Edit Distance
+        String x="horse";
+        String y="ros";
+        int n=x.length();
+        int m=y.length();
+
+        //0 based indexing
+//        System.out.println(d.editDistanceRecursive(n-1,m-1,x,y));
+
+        int dp[][]= new int[n+1][m+1];
+        for(int i=0;i<n;i++)
+            Arrays.fill(dp[i],-1);
+
+//        System.out.println(d.editDistanceMemoization(n-1,m-1,x,y,dp));
+
+
+        //1 bases indexing
+        System.out.println(d.editDistanceTabulation(x,y,n,m));
 
 
 
