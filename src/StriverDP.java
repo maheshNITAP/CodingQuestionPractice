@@ -1143,6 +1143,71 @@ public class StriverDP {
             }
             return dp[n][m];
         }
+
+        public boolean wildCardMatching(int i, int j, String x, String y) {
+            if(i<0 && j<0) return true;
+            if(i<0 && j>=0) return false;
+            if(j<0 && i>=0){
+                for(int t=0;t<=i;t++){
+                    if(x.charAt(t)!='*')
+                        return false;
+                }
+                return true;
+            }
+            if(x.charAt(i)==y.charAt(j) || x.charAt(i)=='?')
+                return wildCardMatching(i-1,j-1,x,y);
+            if(x.charAt(i)=='*')
+                return wildCardMatching(i-1,j,x,y) || wildCardMatching(i,j-1,x,y);
+
+            return false;// if both characters are not matcing
+        }
+
+        public boolean wildCardMatchingMemoization(int i, int j, String x, String y, boolean[][] dp) {
+            if(i<0 && j<0) return true;
+            if(i<0 && j>=0 ) return  false;
+            if(j<0 && i>=0){
+                for(int t=0;t<=i;t++){
+                    if(x.charAt(t)!='*')
+                        return false;
+                }
+                return true;
+            }
+            if(dp[i][j])
+                return true;
+            if(x.charAt(i)==y.charAt(j) || x.charAt(i)=='?')
+                 return dp[i][j]=wildCardMatchingMemoization(i-1,j-1,x,y,dp);
+            if(x.charAt(i)=='*')
+                return dp[i][j]=(wildCardMatchingMemoization(i-1,j,x,y,dp) || wildCardMatchingMemoization(i,j-1,x,y,dp));
+            return dp[i][j]=false;
+        }
+
+        public boolean wildCardMatchingTabulation(String x, String y, int n, int m) {
+            boolean dp[][]= new boolean[n+1][m+1];
+            dp[0][0]=true;
+            for(int j=1;j<=m;j++)
+                dp[0][j]=false;
+            for(int i=1;i<=n;i++){
+                boolean flag=true;
+                for(int ii=1;ii<=i;ii++){
+                    if(x.charAt(i-1)!='*'){
+                        flag=false;
+                        break;
+                    }
+                    dp[i][0]=flag;
+                }
+            }
+            for(int i=1;i<n+1;i++){
+                for(int j=1;j<m+1;j++){
+                    if(x.charAt(i-1)==y.charAt(j-1) || x.charAt(i-1)=='?')
+                        dp[i][j]=dp[i-1][j-1];
+                    else if(x.charAt(i-1)=='*')
+                        dp[i][j]=(dp[i-1][j] || dp[i][j-1]);
+                    else
+                        dp[i][j]=false;
+                }
+            }
+            return dp[n][m];
+        }
     }
     public static void main(String args[]){
 
@@ -1459,24 +1524,41 @@ public class StriverDP {
 
 
         //Edit Distance
-        String x="horse";
-        String y="ros";
-        int n=x.length();
-        int m=y.length();
+//        String x="horse";
+//        String y="ros";
+//        int n=x.length();
+//        int m=y.length();
 
         //0 based indexing
 //        System.out.println(d.editDistanceRecursive(n-1,m-1,x,y));
 
-        int dp[][]= new int[n+1][m+1];
-        for(int i=0;i<n;i++)
-            Arrays.fill(dp[i],-1);
+//        int dp[][]= new int[n+1][m+1];
+//        for(int i=0;i<n;i++)
+//            Arrays.fill(dp[i],-1);
 
 //        System.out.println(d.editDistanceMemoization(n-1,m-1,x,y,dp));
 
 
         //1 bases indexing
-        System.out.println(d.editDistanceTabulation(x,y,n,m));
+//        System.out.println(d.editDistanceTabulation(x,y,n,m));
 
+
+        //WildCard Matcing
+//        String x="ab*cd";
+//        String y= "abdefcd";// true
+        String x="ab?d";
+        String y= "abce";//false
+
+        int n=x.length();
+        int m=y.length();
+
+        //0 based indexing
+//        System.out.println(d.wildCardMatching(n-1,m-1,x,y));
+
+//        boolean dp[][]= new boolean[n][m];
+//        System.out.println(d.wildCardMatchingMemoization(n-1,m-1,x,y,dp));
+
+        System.out.println(d.wildCardMatchingTabulation(x,y,n,m));
 
 
 
