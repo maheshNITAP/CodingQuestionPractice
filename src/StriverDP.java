@@ -1208,6 +1208,60 @@ public class StriverDP {
             }
             return dp[n][m];
         }
+
+        public int bestTimeToBuyAndSellStock(int[] arr) {
+            int mini=arr[0];
+            int profit=0;
+            int cost=0;//if we sell and buy at same day than cost will be zero;
+            for(int i=1;i<arr.length;i++){
+                cost = arr[i]-mini;
+                profit=Math.max(profit,cost);
+                mini=Math.min(mini,arr[i]);
+            }
+            return profit;
+        }
+
+
+
+        public int maximumProfitByBuyingAndSellingStocks(int ind, int buy, int[] price) {
+            if(ind==price.length)
+                return 0;
+            if(buy==1){
+                return Math.max(-price[ind]+maximumProfitByBuyingAndSellingStocks(ind+1,0,price),
+                        0+maximumProfitByBuyingAndSellingStocks(ind+1,1,price));
+            }else {
+                return Math.max(price[ind]+maximumProfitByBuyingAndSellingStocks(ind+1,1,price),
+                        0+maximumProfitByBuyingAndSellingStocks(ind+1,0,price));
+            }
+        }
+
+        public int maximumProfitByBSByMemoization(int ind, int buy, int[] price, int n, int[][] dp) {
+            if(ind==n)
+                return 0;
+            if(dp[ind][buy]!=-1)
+                return dp[ind][buy];
+            if(buy==1){
+                return dp[ind][buy]=Math.max(-price[ind]+maximumProfitByBSByMemoization(ind+1,0,price, n, dp),
+                        0+maximumProfitByBSByMemoization(ind+1,1,price, n, dp));
+            }else
+                return dp[ind][buy]=Math.max(price[ind]+maximumProfitByBSByMemoization(ind+1,1,price, n, dp),
+                        maximumProfitByBSByMemoization(ind+1,0,price, n, dp));
+        }
+
+        public int maximumProfitByBSByTabulation(int[] price, int n) {
+            int dp[][]= new int[n+1][2];
+
+            dp[n][0]=dp[n][1]=0;
+            for(int ind=n-1;ind>=0;ind--){
+                for(int buy=0;buy<=1;buy++){
+                    if(buy==1)
+                        dp[ind][buy]=Math.max(-price[ind]+dp[ind+1][0],0+dp[ind+1][1]);
+                    else
+                        dp[ind][buy]=Math.max(+price[ind]+dp[ind+1][1],dp[ind+1][0]);
+                }
+            }
+            return dp[0][1];
+        }
     }
     public static void main(String args[]){
 
@@ -1546,11 +1600,11 @@ public class StriverDP {
         //WildCard Matcing
 //        String x="ab*cd";
 //        String y= "abdefcd";// true
-        String x="ab?d";
-        String y= "abce";//false
-
-        int n=x.length();
-        int m=y.length();
+//        String x="ab?d";
+//        String y= "abce";//false
+//
+//        int n=x.length();
+//        int m=y.length();
 
         //0 based indexing
 //        System.out.println(d.wildCardMatching(n-1,m-1,x,y));
@@ -1558,7 +1612,38 @@ public class StriverDP {
 //        boolean dp[][]= new boolean[n][m];
 //        System.out.println(d.wildCardMatchingMemoization(n-1,m-1,x,y,dp));
 
-        System.out.println(d.wildCardMatchingTabulation(x,y,n,m));
+        //starting from i
+//        System.out.println(d.wildCardMatchingTabulation(x,y,n,m));
+
+
+
+        //DP ON STOCKS
+        //Best time to buy and sell stocks---Only one transaction
+
+//        int arr[]={7,1,5,3,6,4};
+//        System.out.println(d.bestTimeToBuyAndSellStock(arr));
+
+
+        //Best time to buy and sell stocks -2---many transaction but you can hold only one at a time
+        //--find maximum profit by buying and selling stocks
+//        maximumProfitByBuyingAndSellingStocks
+        int price[]={7,1,5,3,6,4};
+        int n= price.length;;
+//        System.out.println(d.maximumProfitByBuyingAndSellingStocks(0,1,price));//--initially we provide buy as 1 so we can buy
+
+
+          int dp[][]= new int[n][2];
+          for(int i=0;i<n;i++)
+              Arrays.fill(dp[i],-1);
+
+//        maximum profit by buying and selling stocks
+//        System.out.println(d.maximumProfitByBSByMemoization(0,1,price,n,dp));
+
+        System.out.println(d.maximumProfitByBSByTabulation(price,n));
+
+
+
+
 
 
 
