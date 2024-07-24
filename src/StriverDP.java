@@ -1319,6 +1319,49 @@ public class StriverDP {
             }
             return dp[0][1][2];
         }
+
+        public int maxProfitByKTransaction(int ind, int transNum, int k, int n, int[] price) {
+            if(ind==n || transNum==2*k)
+                return 0;
+            if(transNum%2==0){
+                return Math.max(-price[ind]+maxProfitByKTransaction(ind+1,transNum+1,k,n,price),
+                        maxProfitByKTransaction(ind+1,transNum,k,n,price));
+            }else {
+                return Math.max(price[ind]+maxProfitByKTransaction(ind+1,transNum+1,k,n,price),
+                        maxProfitByKTransaction(ind+1,transNum,k,n,price));
+            }
+        }
+
+        public int maxProfitByKTransactionMemoiz(int ind, int transNum, int k, int n, int[] price, int[][] dp) {
+            if(ind==n || transNum==2*k)
+                return 0;
+            if(dp[ind][transNum]!=-1)
+                return dp[ind][transNum];
+            if(transNum%2==0){
+                return dp[ind][transNum]=Math.max(-price[ind]+maxProfitByKTransactionMemoiz(ind+1,transNum+1,k,n,price,dp),
+                        maxProfitByKTransactionMemoiz(ind+1,transNum,k,n,price,dp));
+            }else {
+                return  dp[ind][transNum]=Math.max(price[ind]+maxProfitByKTransactionMemoiz(ind+1,transNum+1,k,n,price,dp),
+                        maxProfitByKTransactionMemoiz(ind+1,transNum,k,n,price,dp));
+            }
+        }
+
+        public int maxProfitByKTransactionTabulation(int[] price, int k, int n) {
+            int dp[][]= new int[n+1][2*k+1];
+
+            //Base case-- no need to write base case because we will initialize by 0 where ind==n or transNo==2k
+
+            for(int ind=n-1;ind>=0;ind--){
+                for(int transNo=(2*k)-1;transNo>=0;transNo--){
+                    if(transNo%2==0){
+                        dp[ind][transNo]=Math.max(-price[ind]+dp[ind+1][transNo+1],dp[ind+1][transNo]);
+                    }else {
+                        dp[ind][transNo]=Math.max(price[ind]+dp[ind+1][transNo+1],dp[ind+1][transNo]);
+                    }
+                }
+            }
+            return dp[0][0];
+        }
     }
     public static void main(String args[]){
 
@@ -1701,11 +1744,11 @@ public class StriverDP {
 
         //Best time to buy and sell stocks -3
         //maximum profit in two transections
-        int price[]={3,3,5,0,3,1,4};
-        int cap=2;//number of transactions we can do
-        int n= price.length;
-        int buy=1;
-        int ind=0;
+//        int price[]={3,3,5,0,3,1,4};
+//        int cap=2;//number of transactions we can do
+//        int n= price.length;
+//        int buy=1;
+//        int ind=0;
 
 //        recursive---only 3 changing parameter--ind,buy,cap
 //        System.out.println(d.maxProfitInTwoTransections(ind,buy,cap,price,n));
@@ -1718,7 +1761,25 @@ public class StriverDP {
 
 //        System.out.println(d.maxProfitInTwoTransactionsMemoiz(ind,buy,cap,n,price,dp));
 
-        System.out.println(d.maxProfitInTwoTransactionsTabulation(cap,n,price));
+//        System.out.println(d.maxProfitInTwoTransactionsTabulation(cap,n,price));
+
+        //buy and sell stock-4th-//at most k transaction you can do---Solved by approach 2
+        int price[]={8,5,1,3,10};
+        int k=2;//cap === k
+        int transNum=0;//if we are using transNum then no need to use buy
+        int ind=0;
+        int n=price.length;
+//        System.out.println(d.maxProfitByKTransaction(ind,transNum,k,n,price));//O/p=9
+
+        int dp[][]= new int[n][2*k];
+        for(int i=0;i<n;i++)
+            Arrays.fill(dp[i],-1);
+//        System.out.println(d.maxProfitByKTransactionMemoiz(ind,transNum,k,n,price,dp));
+
+        System.out.println(d.maxProfitByKTransactionTabulation(price,k,n));
+
+
+
 
 
 
