@@ -1262,6 +1262,63 @@ public class StriverDP {
             }
             return dp[0][1];
         }
+
+        public int maxProfitInTwoTransections(int ind, int buy, int cap, int[] price, int n) {
+            if(cap==0) return 0;//already completed all transaction
+            if(ind==n) return 0;
+            if(buy==1){
+                return Math.max(-price[ind]+maxProfitInTwoTransections(ind+1,0,cap,price, n),
+                        0+maxProfitInTwoTransections(ind+1,1,cap,price, n));
+            }else {
+                return Math.max(price[ind]+maxProfitInTwoTransections(ind+1,1,cap-1,price, n),
+                        maxProfitInTwoTransections(ind+1,0,cap,price, n));
+            }
+        }
+
+        public int maxProfitInTwoTransactionsMemoiz(int ind, int buy, int cap, int n, int[] price, int[][][] dp) {
+            if(cap==0)
+                return 0;
+            if(ind==n)
+                return 0;
+            if(dp[ind][buy][cap]!=-1)
+                return dp[ind][buy][cap];
+            if(buy==1){
+                return dp[ind][buy][cap]=Math.max(-price[ind]+maxProfitInTwoTransactionsMemoiz(ind+1,0,cap,n,price,dp),
+                        maxProfitInTwoTransactionsMemoiz(ind+1,1,cap,n,price,dp));
+            }else {
+                return dp[ind][buy][cap]=Math.max(price[ind]+maxProfitInTwoTransactionsMemoiz(ind+1,1,cap-1,n,price,dp),
+                        maxProfitInTwoTransactionsMemoiz(ind+1,0,cap,n,price,dp));
+
+            }
+        }
+
+        public int maxProfitInTwoTransactionsTabulation(int cap, int n, int[] price) {
+            int dp[][][]= new int[n+1][2][cap+1];
+
+            // no need to write base case it's already assigned as 0 by default
+//            for(int ind=0;ind<n+1;ind++){
+//                for(int buy=0;buy<2;buy++ ){
+//                    dp[ind][buy][0]=0;
+//                }
+//            }
+//            for(int buy=0;buy<2;buy++){
+//                for(cap=0;cap<3;cap++){
+//                    dp[n][buy][cap]=0;
+//                }
+//            }
+            for(int ind=n-1;ind>=0;--ind){
+                for(int buy=0;buy<2;buy++){
+                    for(cap=1;cap<=2;cap++){//we can directly start computing from 0, kyuki we for cap ==0 we have ans as 0 only
+                        if(buy==1){
+                            dp[ind][buy][cap]=Math.max(-price[ind]+dp[ind+1][0][cap],dp[ind+1][1][cap]);
+                        }else {
+                            dp[ind][buy][cap]=Math.max(price[ind]+dp[ind+1][1][cap-1],dp[ind+1][0][cap]);
+                        }
+                    }
+                }
+            }
+            return dp[0][1][2];
+        }
     }
     public static void main(String args[]){
 
@@ -1627,19 +1684,44 @@ public class StriverDP {
         //Best time to buy and sell stocks -2---many transaction but you can hold only one at a time
         //--find maximum profit by buying and selling stocks
 //        maximumProfitByBuyingAndSellingStocks
-        int price[]={7,1,5,3,6,4};
-        int n= price.length;;
+//        int price[]={7,1,5,3,6,4};
+//        int n= price.length;;
 //        System.out.println(d.maximumProfitByBuyingAndSellingStocks(0,1,price));//--initially we provide buy as 1 so we can buy
 
 
-          int dp[][]= new int[n][2];
-          for(int i=0;i<n;i++)
-              Arrays.fill(dp[i],-1);
+//          int dp[][]= new int[n][2];
+//          for(int i=0;i<n;i++)
+//              Arrays.fill(dp[i],-1);
 
 //        maximum profit by buying and selling stocks
 //        System.out.println(d.maximumProfitByBSByMemoization(0,1,price,n,dp));
 
-        System.out.println(d.maximumProfitByBSByTabulation(price,n));
+//        System.out.println(d.maximumProfitByBSByTabulation(price,n));
+
+
+        //Best time to buy and sell stocks -3
+        //maximum profit in two transections
+        int price[]={3,3,5,0,3,1,4};
+        int cap=2;//number of transactions we can do
+        int n= price.length;
+        int buy=1;
+        int ind=0;
+
+//        recursive---only 3 changing parameter--ind,buy,cap
+//        System.out.println(d.maxProfitInTwoTransections(ind,buy,cap,price,n));
+
+//        int dp[][][]= new int[n][2][3];
+//        for(int i=0;i<n;i++){
+//            for(int j=0;j<2;j++)
+//                Arrays.fill(dp[i][j],-1);
+//        }
+
+//        System.out.println(d.maxProfitInTwoTransactionsMemoiz(ind,buy,cap,n,price,dp));
+
+        System.out.println(d.maxProfitInTwoTransactionsTabulation(cap,n,price));
+
+
+
 
 
 
