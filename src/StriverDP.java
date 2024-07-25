@@ -1399,6 +1399,45 @@ public class StriverDP {
             return dp[0][1];
 
         }
+
+        public int maxProfitByBuyAndSellWithTransactionFee(int ind, int buy, int n, int fee, int[] price) {
+            if(ind==n)return 0;
+            if(buy==1){
+                return Math.max(-price[ind]+maxProfitByBuyAndSellWithTransactionFee(ind+1,0,n,fee,price),
+                        maxProfitByBuyAndSellWithTransactionFee(ind+1,1,n,fee,price));
+            }else {
+                return Math.max(price[ind]-fee+maxProfitByBuyAndSellWithTransactionFee(ind+1,1,n,fee,price),
+                        maxProfitByBuyAndSellWithTransactionFee(ind+1,0,n,fee,price));
+            }
+        }
+
+        public int maxProfitByBuyAndSellWithTransactionFeeMemoization(int ind, int buy, int n, int fee, int[] price, int[][] dp) {
+            if(ind==n) return 0;
+            if(dp[ind][buy]!=-1)
+                return dp[ind][buy];
+            if(buy==1){
+                return dp[ind][buy]=Math.max(-price[ind]+maxProfitByBuyAndSellWithTransactionFeeMemoization(ind+1,0,n,fee,price,dp),
+                        maxProfitByBuyAndSellWithTransactionFeeMemoization(ind+1,1,n,fee,price,dp));
+            }else {
+                return dp[ind][buy]=Math.max(price[ind]-fee+maxProfitByBuyAndSellWithTransactionFeeMemoization(ind+1,1,n,fee,price,dp),
+                        maxProfitByBuyAndSellWithTransactionFeeMemoization(ind+1,0,n,fee,price,dp));
+            }
+        }
+
+        public int maxProfitByBuyAndSellWithTransactionFeeTabulation(int[] price, int n, int fee) {
+            int dp[][]= new int[n+1][2];
+            dp[n][0]=dp[n][1]=0;
+            for(int ind=n-1;ind>=0;ind--){
+                for(int buy=0;buy<=1;buy++){
+                    if(buy==1){
+                        dp[ind][buy]=Math.max(-price[ind]+dp[ind+1][0],dp[ind+1][1]);
+                    }else {
+                        dp[ind][buy]=Math.max(price[ind]-fee+dp[ind+1][1],dp[ind+1][0]);
+                    }
+                }
+            }
+            return dp[0][1];
+        }
     }
     public static void main(String args[]){
 
@@ -1817,18 +1856,37 @@ public class StriverDP {
 
 
         //buy and sell stocks with cool-down----we can buy multiple stocks
-        int price[]={4, 9, 0, 4, 10};
-        int n=price.length;
-        int buy=1;
-        int ind=0; //O/P:-11
+//        int price[]={4, 9, 0, 4, 10};
+//        int n=price.length;
+//        int buy=1;
+//        int ind=0; //O/P:-11
 //        System.out.println(d.maxProfitByCoolDown(ind,buy,n,price));
 
+//        int dp[][]= new int[n][2];
+//        for(int i=0;i<n;i++)
+//            Arrays.fill(dp[i],-1);
+//        System.out.println(d.maxProfitByCoolDownMemoiz(ind,buy,n,price,dp));
+
+//        System.out.println(d.maxProfitByCoolDownTabulation(price,n));
+
+        //buy and sell stocks with transaction fee---you can buy unlimited time
+
+        int price[]={1,3,2,8,4,9};
+        int n=price.length;
+        int fee=2;
+        int ind=0;
+        int buy=1;
+//        System.out.println(d.maxProfitByBuyAndSellWithTransactionFee(ind,buy,n,fee,price));
         int dp[][]= new int[n][2];
         for(int i=0;i<n;i++)
             Arrays.fill(dp[i],-1);
-//        System.out.println(d.maxProfitByCoolDownMemoiz(ind,buy,n,price,dp));
 
-        System.out.println(d.maxProfitByCoolDownTabulation(price,n));
+//        System.out.println(d.maxProfitByBuyAndSellWithTransactionFeeMemoization(ind,buy,n,fee,price,dp));
+
+        System.out.println(d.maxProfitByBuyAndSellWithTransactionFeeTabulation(price,n,fee));
+
+
+
 
 
 
