@@ -1460,6 +1460,21 @@ public class StriverDP {
             }
             return dp[ind][prevInd+1]=len;
         }
+
+        public int longestIncreasingSubsequenceTabulation(int[] arr, int n) {
+            int dp[][]= new int[n+1][n+1];
+
+            for(int ind=n-1;ind>=0;ind--){
+                for(int prevInd=ind-1;prevInd>=-1;prevInd--){
+                    int len=dp[ind+1][prevInd+1];
+                    if(prevInd==-1 || arr[ind]>arr[prevInd]){
+                        len=Math.max(len,1+dp[ind+1][ind+1]);
+                    }
+                    dp[ind][prevInd+1]=len;
+                }
+            }
+            return dp[0][-1+1];
+        }
     }
     public static void main(String args[]){
 
@@ -1915,11 +1930,13 @@ public class StriverDP {
         int prevInd=-1;
 //        System.out.println(d.longestIncreasingSubsequence(ind,prevInd,n,arr));
 
-        int dp[][]= new int[n][n+1];
-        for(int i=0;i<n;i++)
-            Arrays.fill(dp[i],-1);
+//        int dp[][]= new int[n][n+1];
+//        for(int i=0;i<n;i++)
+//            Arrays.fill(dp[i],-1);
 
-        System.out.println(d.longestIncreasingSubsequenceMemoiz(ind,prevInd,n,arr,dp));
+//        System.out.println(d.longestIncreasingSubsequenceMemoiz(ind,prevInd,n,arr,dp));
+
+        System.out.println(d.longestIncreasingSubsequenceTabulation(arr,n));
 
 
 
