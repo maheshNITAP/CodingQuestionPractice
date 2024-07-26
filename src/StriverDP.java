@@ -1438,6 +1438,28 @@ public class StriverDP {
             }
             return dp[0][1];
         }
+
+        public int longestIncreasingSubsequence(int ind, int prevInd, int n, int[] arr) {
+            if(ind==n)
+                return 0;
+            int notTakeLen=0+longestIncreasingSubsequence(ind+1,prevInd,n,arr);
+            int takeLength=0;
+            if(prevInd==-1 || arr[ind]>arr[prevInd]){
+                takeLength=1+longestIncreasingSubsequence(ind+1,ind,n,arr);
+            }
+            return Math.max(notTakeLen,takeLength);
+        }
+
+        public int longestIncreasingSubsequenceMemoiz(int ind, int prevInd, int n, int[] arr, int[][] dp) {
+            if(ind==n) return 0;
+            if(dp[ind][prevInd+1]!=-1)
+                return dp[ind][prevInd+1];
+            int len= 0+longestIncreasingSubsequenceMemoiz(ind+1,prevInd,n,arr,dp);
+            if(prevInd==-1 || arr[ind]>arr[prevInd]){
+                len=Math.max(len,1+longestIncreasingSubsequenceMemoiz(ind+1,ind,n,arr,dp));
+            }
+            return dp[ind][prevInd+1]=len;
+        }
     }
     public static void main(String args[]){
 
@@ -1871,19 +1893,33 @@ public class StriverDP {
 
         //buy and sell stocks with transaction fee---you can buy unlimited time
 
-        int price[]={1,3,2,8,4,9};
-        int n=price.length;
-        int fee=2;
-        int ind=0;
-        int buy=1;
+//        int price[]={1,3,2,8,4,9};
+//        int n=price.length;
+//        int fee=2;
+//        int ind=0;
+//        int buy=1;
 //        System.out.println(d.maxProfitByBuyAndSellWithTransactionFee(ind,buy,n,fee,price));
-        int dp[][]= new int[n][2];
-        for(int i=0;i<n;i++)
-            Arrays.fill(dp[i],-1);
+//        int dp[][]= new int[n][2];
+//        for(int i=0;i<n;i++)
+//            Arrays.fill(dp[i],-1);
 
 //        System.out.println(d.maxProfitByBuyAndSellWithTransactionFeeMemoization(ind,buy,n,fee,price,dp));
 
-        System.out.println(d.maxProfitByBuyAndSellWithTransactionFeeTabulation(price,n,fee));
+//        System.out.println(d.maxProfitByBuyAndSellWithTransactionFeeTabulation(price,n,fee));
+
+
+        //longest Increasing Subsequence
+        int arr[] = {10,9,2,5,3,7,101,18};
+        int n=arr.length;
+        int ind=0;
+        int prevInd=-1;
+//        System.out.println(d.longestIncreasingSubsequence(ind,prevInd,n,arr));
+
+        int dp[][]= new int[n][n+1];
+        for(int i=0;i<n;i++)
+            Arrays.fill(dp[i],-1);
+
+        System.out.println(d.longestIncreasingSubsequenceMemoiz(ind,prevInd,n,arr,dp));
 
 
 
