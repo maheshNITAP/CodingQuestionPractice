@@ -1,5 +1,8 @@
-import java.util.ArrayList;
-import java.util.Arrays;
+import sun.security.util.ArrayUtil;
+
+import java.util.*;
+
+import static jdk.nashorn.internal.objects.NativeArray.reverse;
 
 public class StriverDP {
     static class DP{
@@ -1475,6 +1478,50 @@ public class StriverDP {
             }
             return dp[0][-1+1];
         }
+
+        public int LISubsequence(int[] arr, int n) {
+            int maxi=1;
+            int dp[]= new int[n];
+            Arrays.fill(dp,1);
+            for(int curr=0;curr<n;curr++){
+                for(int prev=0;prev<curr;prev++){
+                    if(arr[curr]<arr[prev]){
+                        dp[curr]=Math.max(dp[curr],dp[prev]+1);
+                    }
+                }
+                maxi=Math.max(maxi,dp[curr]);
+            }
+            return maxi;
+        }
+
+        public List<Integer> printLISequence(int[] arr, int n) {
+            int dp[]= new int[n];
+            Arrays.fill(dp,1);
+            int hash[]= new int[n];
+            int maxi=1;
+            int lastIndex=-0;
+            for(int i=0;i<n;i++){
+                hash[i]=i;
+                for(int prev=0;prev<i;prev++){
+                    if(arr[i]>arr[prev] && dp[prev]+1>dp[i]){
+                        dp[i]=dp[prev]+1;
+                        hash[i]=prev;
+                    }
+                }
+                if(dp[i]>maxi){
+                    maxi=dp[i];
+                    lastIndex=i;
+                }
+            }
+            List<Integer> lis= new ArrayList<>();
+            lis.add(arr[lastIndex]);
+            while (lastIndex!=hash[lastIndex]){
+                lastIndex=hash[lastIndex];
+                lis.add(arr[lastIndex]);
+            }
+            Collections.reverse(lis);
+            return lis;
+        }
     }
     public static void main(String args[]){
 
@@ -1924,10 +1971,10 @@ public class StriverDP {
 
 
         //longest Increasing Subsequence
-        int arr[] = {10,9,2,5,3,7,101,18};
-        int n=arr.length;
-        int ind=0;
-        int prevInd=-1;
+//        int arr[] = {10,9,2,5,3,7,101,18};
+//        int n=arr.length;
+//        int ind=0;
+//        int prevInd=-1;
 //        System.out.println(d.longestIncreasingSubsequence(ind,prevInd,n,arr));
 
 //        int dp[][]= new int[n][n+1];
@@ -1936,7 +1983,18 @@ public class StriverDP {
 
 //        System.out.println(d.longestIncreasingSubsequenceMemoiz(ind,prevInd,n,arr,dp));
 
-        System.out.println(d.longestIncreasingSubsequenceTabulation(arr,n));
+//        System.out.println(d.longestIncreasingSubsequenceTabulation(arr,n));
+
+        //longest Increasing Subsequence--Approach-2
+
+        int arr[]={5,4,11,1,16,8};
+        int n= arr.length;
+//        System.out.println(d.LISubsequence(arr,n));
+
+        //print longest increasing sequence
+
+        System.out.println(d.printLISequence(arr,n));
+
 
 
 
