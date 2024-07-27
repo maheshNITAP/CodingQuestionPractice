@@ -1567,6 +1567,40 @@ public class StriverDP {
             Collections.reverse(res);
             return res;
         }
+
+        public int longestStringChain(String[] arr, int n) {
+            int dp[]= new int[n];
+            Arrays.fill(dp,1);
+            int maxi=1;
+            Arrays.sort(arr,(s1,s2)->Integer.compare(s1.length(),s2.length()));
+
+            for(int curr=0;curr<n;curr++){
+                for(int prev=0;prev<curr;prev++){
+                    if(compareCurrAndPreviousString(arr[curr],arr[prev]) && dp[curr]<dp[prev]+1){
+                        dp[curr]=dp[prev]+1;
+                    }
+                }
+                if(maxi<dp[curr]){
+                    maxi=dp[curr];
+                }
+            }
+            return maxi;
+        }
+
+        private boolean compareCurrAndPreviousString(String s1, String s2) {
+            if(s1.length() != s2.length()+1) return false;
+            int first=0;
+            int second=0;
+            while(first<s1.length()){
+                if(second<s2.length() && s1.charAt(first)==s2.charAt(second)){
+                    first++;
+                    second++;
+                }else {
+                    first++;
+                }
+            }
+            return first==s1.length() && second==s2.length();
+        }
     }
     public static void main(String args[]){
 
@@ -2048,10 +2082,16 @@ public class StriverDP {
 
         //Longest Divisible Subset
 
-        int arr[]={1,16,7,8,4};
-        int n=arr.length;
-        System.out.println(d.longestDivisibleSubset(arr,n));
+//        int arr[]={1,16,7,8,4};
+//        int n=arr.length;
+//        System.out.println(d.longestDivisibleSubset(arr,n));
 
+
+//      longest String chain---
+//        String [] arr= {"a", "b", "ba", "bca", "bda", "bdca"};
+        String arr[]= {"xbc", "pcxbcf", "xb", "cxbc", "pcxbc"};
+        int n=arr.length;
+        System.out.println(d.longestStringChain(arr,n));
 
 
 
