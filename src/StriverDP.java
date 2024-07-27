@@ -1,8 +1,4 @@
-import sun.security.util.ArrayUtil;
-
 import java.util.*;
-
-import static jdk.nashorn.internal.objects.NativeArray.reverse;
 
 public class StriverDP {
     static class DP{
@@ -1541,6 +1537,36 @@ public class StriverDP {
             }
             return len;
         }
+
+        public ArrayList<Integer> longestDivisibleSubset(int[] arr, int n) {
+            Arrays.sort(arr);
+            int dp[]= new int[n];
+            int hash[]= new int[n];
+            int maxi=1;
+            int lastIndex=0;
+
+            for(int curr=0;curr<n;curr++){
+                hash[curr]=curr;
+                for(int prev=0;prev<curr;prev++){
+                    if(arr[curr]%arr[prev]==0 && dp[prev]+1>dp[curr]){
+                        dp[curr]=dp[prev]+1;
+                        hash[curr]=prev;
+                    }
+                }
+                if(dp[curr]>maxi){
+                    maxi=dp[curr];
+                    lastIndex=curr;
+                }
+            }
+            ArrayList<Integer> res= new ArrayList<>();
+            res.add(arr[lastIndex]);
+            while (lastIndex!= hash[lastIndex]){
+                lastIndex=hash[lastIndex];
+                res.add(arr[lastIndex]);
+            }
+            Collections.reverse(res);
+            return res;
+        }
     }
     public static void main(String args[]){
 
@@ -2016,9 +2042,15 @@ public class StriverDP {
 
         //LIS using Binary Search
 
-        int arr[]={1,7,8,4,5,6,-1,9};
-        int n= arr.length;
-        System.out.println(d.LISUsingBinarySearch(arr,n));
+//        int arr[]={1,7,8,4,5,6,-1,9};
+//        int n= arr.length;
+//        System.out.println(d.LISUsingBinarySearch(arr,n));
+
+        //Longest Divisible Subset
+
+        int arr[]={1,16,7,8,4};
+        int n=arr.length;
+        System.out.println(d.longestDivisibleSubset(arr,n));
 
 
 
