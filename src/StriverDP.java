@@ -1522,6 +1522,25 @@ public class StriverDP {
             Collections.reverse(lis);
             return lis;
         }
+
+        public int LISUsingBinarySearch(int[] arr, int n) {
+            ArrayList<Integer> temp= new ArrayList<>();
+            temp.add(arr[0]);
+            int len=1;
+            for(int i=1;i<n;i++){
+                if(arr[i]>temp.get(temp.size()-1)){
+                    temp.add(arr[i]);
+                    len++;
+                }else {
+                    int ind= Collections.binarySearch(temp,arr[i]);
+                    if(ind<0){
+                        ind=-ind-1;
+                    }
+                    temp.set(ind,arr[i]);
+                }
+            }
+            return len;
+        }
     }
     public static void main(String args[]){
 
@@ -1987,13 +2006,19 @@ public class StriverDP {
 
         //longest Increasing Subsequence--Approach-2
 
-        int arr[]={5,4,11,1,16,8};
-        int n= arr.length;
+//        int arr[]={5,4,11,1,16,8};
+//        int n= arr.length;
 //        System.out.println(d.LISubsequence(arr,n));
 
         //print longest increasing sequence
 
-        System.out.println(d.printLISequence(arr,n));
+//        System.out.println(d.printLISequence(arr,n));
+
+        //LIS using Binary Search
+
+        int arr[]={1,7,8,4,5,6,-1,9};
+        int n= arr.length;
+        System.out.println(d.LISUsingBinarySearch(arr,n));
 
 
 
