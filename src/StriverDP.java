@@ -1601,6 +1601,38 @@ public class StriverDP {
             }
             return first==s1.length() && second==s2.length();
         }
+
+        public int longestBitonicSubsequence(int[] arr, int n) {
+            int dp1[]= new int[n];
+            int dp2[]= new int[n];
+            //LIS from starting on array
+            for(int curr=0;curr<n;curr++){
+                dp1[curr]=1;
+                for(int prev=0;prev<curr;prev++){
+                    if(arr[curr]>arr[prev] && dp1[curr]<dp1[prev]+1){
+                        dp1[curr]= dp1[prev]+1;
+                    }
+                }
+            }
+
+            //LIS from end of array
+            for(int curr=n-1;curr>=0;curr--){
+                dp2[curr]=1;
+                for(int prev=n-1;prev>curr;prev--){
+                    if(arr[curr]>arr[prev] && dp2[curr]<dp2[prev]+1){
+                        dp2[curr]=dp2[prev]+1;
+                    }
+                }
+            }
+            int maxi=1;
+            //calculate Max bitonic array length
+            for(int i=0;i<n;i++){
+                maxi=Math.max(maxi,(dp1[i]+dp2[i])-1);
+            }
+            return maxi;
+
+
+        }
     }
     public static void main(String args[]){
 
@@ -2089,9 +2121,16 @@ public class StriverDP {
 
 //      longest String chain---
 //        String [] arr= {"a", "b", "ba", "bca", "bda", "bdca"};
-        String arr[]= {"xbc", "pcxbcf", "xb", "cxbc", "pcxbc"};
+//        String arr[]= {"xbc", "pcxbcf", "xb", "cxbc", "pcxbc"};
+//        int n=arr.length;
+//        System.out.println(d.longestStringChain(arr,n));
+
+
+        //longest Bitonic Subsequence
+
+        int arr[]={1,11,2,10,4,5,2,1};
         int n=arr.length;
-        System.out.println(d.longestStringChain(arr,n));
+        System.out.println(d.longestBitonicSubsequence(arr,n));
 
 
 
