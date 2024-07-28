@@ -1660,6 +1660,61 @@ public class StriverDP {
             return numberOfLIS;
 
         }
+
+        public int matrixChainMultiplication(int[] arr, int n) {
+            int i=1;
+            int j=n-1;
+
+            //recursive
+//            return mcmRecursive(i,j,arr);
+
+
+            //Memoization
+            int dp[][]= new int[n][n];
+            for(int l=0;l<n;l++)
+                Arrays.fill(dp[l],-1);
+
+            return mcmMemoization(i,j,arr,dp);
+        }
+
+        private int mcmMemoization(int i, int j, int[] arr, int[][] dp) {
+            if(i==j) return 0;
+            if(dp[i][j] !=-1)
+                return dp[i][j];
+            int minSteps=Integer.MAX_VALUE;
+            for(int k=i;k<=j-1;k++){
+                int steps=arr[i-1]*arr[k]*arr[j]+mcmMemoization(i,k,arr,dp)+mcmMemoization(k+1,j,arr,dp);
+                minSteps=Math.min(minSteps,steps);
+            }
+            return dp[i][j]=minSteps;
+        }
+
+        private int mcmRecursive(int i, int j, int[] arr) {
+            if(i==j) return 0;
+            int minSteps=Integer.MAX_VALUE;
+            for(int k=i;k<=j-1;k++){
+                int steps=arr[i-1]*arr[k]*arr[j]+mcmRecursive(i,k,arr)+mcmRecursive(k+1,j,arr);
+                minSteps=Math.min(minSteps,steps);
+            }
+            return minSteps;
+        }
+
+        public int mcmTabulation(int[] arr, int n) {
+            int dp[][]= new int[n][n];
+
+            //no need of base case because it's already initialize with 0;
+            for(int i=n-1;i>=1;i--){
+                for(int j=i+1;j<n;j++){
+                    int mini= (int) 1e9;
+                    for(int k=i;k<=j-1;k++){
+                        int steps=arr[i-1]*arr[k]*arr[j]+dp[i][k]+dp[k+1][j];
+                        mini=Math.min(mini,steps);
+                    }
+                    dp[i][j]=mini;
+                }
+            }
+            return dp[1][n-1];
+        }
     }
     public static void main(String args[]){
 
@@ -2162,9 +2217,22 @@ public class StriverDP {
 
         //number Of Longest Increasing Subsequence
 
-        int arr[]={1,3,5,4,7};
-        int n=arr.length;
-        System.out.println(d.numberOfLIS(arr,n));
+//        int arr[]={1,3,5,4,7};
+//        int n=arr.length;
+//        System.out.println(d.numberOfLIS(arr,n));
+
+
+        //Matrix chain multiplication
+//        int arr[]= {10, 15, 20, 25};//----O/P-8000
+        int arr[]= {10, 30, 5, 60};//---O/P-4500
+        int n= arr.length;
+
+//        System.out.println(d.matrixChainMultiplication(arr,n));
+
+        System.out.println(d.mcmTabulation(arr,n));
+
+
+
 
 
 
