@@ -1633,6 +1633,33 @@ public class StriverDP {
 
 
         }
+
+        public int numberOfLIS(int[] arr, int n) {
+            int dp[]= new int[n];
+            int count[]= new int[n];
+            int maxi=1;
+            for(int curr=0;curr<n;curr++){
+                dp[curr]=1;
+                count[curr]=1;
+                for(int prev=0;prev<curr;prev++){
+                    if(arr[curr]>arr[prev] && dp[curr]<1+dp[prev]){
+                        dp[curr]=1+dp[prev];
+                        count[curr]=count[prev];
+                    } else if (arr[curr]>arr[prev] && dp[curr] == 1+dp[prev]) {
+                        count[curr]+=count[prev];
+                    }
+                }
+                if(dp[curr]>maxi)
+                    maxi=dp[curr];
+            }
+            int numberOfLIS=0;
+            for(int i=0;i<n;i++){
+                if(dp[i]==maxi)
+                    numberOfLIS+=count[i];
+            }
+            return numberOfLIS;
+
+        }
     }
     public static void main(String args[]){
 
@@ -2128,9 +2155,16 @@ public class StriverDP {
 
         //longest Bitonic Subsequence
 
-        int arr[]={1,11,2,10,4,5,2,1};
+//        int arr[]={1,11,2,10,4,5,2,1};
+//        int n=arr.length;
+//        System.out.println(d.longestBitonicSubsequence(arr,n));
+
+
+        //number Of Longest Increasing Subsequence
+
+        int arr[]={1,3,5,4,7};
         int n=arr.length;
-        System.out.println(d.longestBitonicSubsequence(arr,n));
+        System.out.println(d.numberOfLIS(arr,n));
 
 
 
