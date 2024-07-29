@@ -1715,6 +1715,62 @@ public class StriverDP {
             }
             return dp[1][n-1];
         }
+
+        public int minCostToCutStick(ArrayList<Integer> cuts, int c, int n) {
+            cuts.add(0,0);
+            cuts.add(n);
+
+            //recursive
+//            return minCostToCutStickRec(1,c,cuts);
+
+            int dp[][] = new int[c+2][c+2];
+            for(int i=0;i<c+2;i++)
+                Arrays.fill(dp[i],-1);
+            return minCostToCutStickMemoiz(1,c,cuts,dp);
+
+        }
+
+        private int minCostToCutStickMemoiz(int i, int j, ArrayList<Integer> cuts, int[][] dp) {
+            if(i>j) return 0;
+            if(dp[i][j]!=-1)
+                return dp[i][j];
+            int minCost=Integer.MAX_VALUE;
+            for(int ind=i;ind<=j;ind++){
+                int cost=cuts.get(j+1)-cuts.get(i-1)+minCostToCutStickMemoiz(i,ind-1,cuts,dp)+minCostToCutStickMemoiz(ind+1,j,cuts,dp);
+                minCost=Math.min(minCost,cost);
+            }
+            return dp[i][j]=minCost;
+
+        }
+
+        private int minCostToCutStickRec(int i, int j, ArrayList<Integer> cuts) {
+            if(i>j) return 0;
+            int minCost=Integer.MAX_VALUE;
+            for(int ind=i;ind<=j;ind++){
+                int cost=cuts.get(j+1)-cuts.get(i-1)+minCostToCutStickRec(i,ind-1,cuts)+minCostToCutStickRec(ind+1,j,cuts);
+                minCost=Math.min(minCost,cost);
+            }
+            return minCost;
+        }
+
+        public int minCostToCutStickTabulation(int n, int c, ArrayList<Integer> cuts) {
+            cuts.add(0,0);
+            cuts.add(n);
+            int dp[][]= new int[c+2][c+2];
+
+            for(int i=c;i>=1;i--){
+                for(int j=1;j<=c;j++){
+                    if(i>j) continue;
+                    int minCost=Integer.MAX_VALUE;
+                    for(int ind=i;ind<=j;ind++){
+                        int cost=cuts.get(j+1)-cuts.get(i-1)+dp[i][ind-1]+dp[ind+1][j];
+                        minCost=Math.min(minCost,cost);
+                    }
+                    dp[i][j]=minCost;
+                }
+            }
+            return dp[1][c];
+        }
     }
     public static void main(String args[]){
 
@@ -2224,12 +2280,29 @@ public class StriverDP {
 
         //Matrix chain multiplication
 //        int arr[]= {10, 15, 20, 25};//----O/P-8000
-        int arr[]= {10, 30, 5, 60};//---O/P-4500
-        int n= arr.length;
+//        int arr[]= {10, 30, 5, 60};//---O/P-4500
+//        int n= arr.length;
 
 //        System.out.println(d.matrixChainMultiplication(arr,n));
 
-        System.out.println(d.mcmTabulation(arr,n));
+//        System.out.println(d.mcmTabulation(arr,n));
+
+        //Minimum Cost to cut the stick
+
+//        int cuts[]={1,3,4,5};//places where i can cut
+//       ArrayList<Integer> cuts= new ArrayList<Integer>(Arrays.asList(1,3,4,5));
+//        int n=7; //totla length of stick
+//        int c=cuts.size(); //length of cuts array----O/p-16
+
+        ArrayList<Integer> cuts= new ArrayList<Integer>(Arrays.asList(1,3,4));
+        int n=5; //totla length of stick
+        int c=cuts.size(); //length of cuts arrayO/p-10
+
+
+        //recursive and memoization
+//        System.out.println(d.minCostToCutStick(cuts,c,n));//
+
+        System.out.println(d.minCostToCutStickTabulation(n,c,cuts));
 
 
 
