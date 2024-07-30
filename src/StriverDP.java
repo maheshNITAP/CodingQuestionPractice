@@ -1771,6 +1771,63 @@ public class StriverDP {
             }
             return dp[1][c];
         }
+
+        public int brustBalloons(ArrayList<Integer> arr, int n) {
+            arr.add(0,1);
+            arr.add(1);
+
+//            recursive
+//            return brustBalloonsRecursive(1,n,arr);
+
+            int dp[][]= new int[n+1][n+1];
+            for(int i=0;i<n+1;i++)
+                Arrays.fill(dp[i],-1);
+
+            return brustBalloonsMemoization(1,n,arr,dp);
+        }
+
+        private int brustBalloonsMemoization(int i, int j, ArrayList<Integer> arr, int[][] dp) {
+            if(i>j) return 0;
+            if(dp[i][j] !=-1)
+                return dp[i][j];
+            int maxi=Integer.MIN_VALUE;
+            for(int ind=i;ind<=j;ind++){
+                int cost=arr.get(i-1)*arr.get(ind)*arr.get(j+1)+
+                        brustBalloonsMemoization(i,ind-1,arr,dp)+brustBalloonsMemoization(ind+1,j,arr,dp);
+                maxi=Math.max(maxi,cost);
+            }
+            return dp[i][j]=maxi;
+        }
+
+        private int brustBalloonsRecursive(int i, int j, ArrayList<Integer> arr) {
+            if(i>j) return 0;
+            int maxi=Integer.MIN_VALUE;
+            for(int ind=i;ind<=j;ind++){
+                int coins= arr.get(i-1) * arr.get(ind)*arr.get(j+1)+brustBalloonsRecursive(i,ind-1,arr)+brustBalloonsRecursive(ind+1,j,arr);
+                maxi=Math.max(maxi,coins);
+            }
+            return maxi;
+        }
+
+        public int brustBalloonsTabulation(ArrayList<Integer> arr, int n) {
+            arr.add(0,1);
+            arr.add(1);
+
+            int dp[][]= new int[n+2][n+2];
+
+            for(int i=n;i>=1;i--){
+                for(int j=1;j<=n;j++){
+                    if(i>j) continue;
+                    int max=Integer.MIN_VALUE;
+                    for(int ind=i;ind<=j;ind++){
+                        int coins=arr.get(i-1)*arr.get(ind)*arr.get(j+1)+dp[i][ind-1]+dp[ind+1][j];
+                        max=Math.max(coins,max);
+                    }
+                    dp[i][j]=max;
+                }
+            }
+            return dp[1][n];
+        }
     }
     public static void main(String args[]){
 
@@ -2294,15 +2351,25 @@ public class StriverDP {
 //        int n=7; //totla length of stick
 //        int c=cuts.size(); //length of cuts array----O/p-16
 
-        ArrayList<Integer> cuts= new ArrayList<Integer>(Arrays.asList(1,3,4));
-        int n=5; //totla length of stick
-        int c=cuts.size(); //length of cuts arrayO/p-10
+//        ArrayList<Integer> cuts= new ArrayList<Integer>(Arrays.asList(1,3,4));
+//        int n=5; //totla length of stick
+//        int c=cuts.size(); //length of cuts arrayO/p-10
 
 
         //recursive and memoization
 //        System.out.println(d.minCostToCutStick(cuts,c,n));//
 
-        System.out.println(d.minCostToCutStickTabulation(n,c,cuts));
+//        System.out.println(d.minCostToCutStickTabulation(n,c,cuts));
+
+        //Brust Balloons-------Revisit
+
+        ArrayList<Integer> arr= new ArrayList<>(Arrays.asList(3,1,5,8));
+        int n=arr.size();
+
+//        System.out.println(d.brustBalloons(arr,n));
+        System.out.println(d.brustBalloonsTabulation(arr,n));
+
+
 
 
 
