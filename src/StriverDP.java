@@ -1828,6 +1828,77 @@ public class StriverDP {
             }
             return dp[1][n];
         }
+
+        public int evaluateBooleanExpressionToTrue(int i, int j, String s, int isTrue) {
+            if(i>j) return 0;
+            if(i==j){
+                if(s.charAt(i)=='T')
+                    return isTrue==1? 1:0;
+                else
+                    return isTrue==0 ?1 :0;
+            }
+            int ans=0;
+            for(int ind=i+1;ind<=j-1;ind=ind+2){
+                int lt=evaluateBooleanExpressionToTrue(i,ind-1,s,1);
+                int lf=evaluateBooleanExpressionToTrue(i,ind-1,s,0);
+                int rt=evaluateBooleanExpressionToTrue(ind+1,j,s,1);
+                int rf=evaluateBooleanExpressionToTrue(ind+1,j,s,0);
+
+                if(s.charAt(ind)=='&'){
+                    if(isTrue==1)
+                        ans+=lt*rt;
+                    else
+                        ans+=lt*rf + lf*rt + lf*rf;
+                } else if (s.charAt(ind)=='|') {
+                    if(isTrue==1)
+                        ans+=lt*rt + lt*rf + lf*rt;
+                    else
+                        ans+=lf*rf;
+                } else if (s.charAt(ind)=='^') {
+                    if(isTrue==1)
+                        ans+=lt*rf + lf*rt;
+                    else
+                        ans+=lt*rt +lf*rf;
+                }
+            }
+            return ans;
+        }
+
+        public int evaluateBooleanExpressionToTrueMemoization(int i, int j, String s, int isTrue, int[][][] dp) {
+            if(i>j) return 0;
+            if(i==j){
+                if(s.charAt(i)=='T')
+                    return isTrue==1?1:0;
+                else
+                    return isTrue==0?1:0;
+            }
+            if(dp[i][j][isTrue]!=-1)
+                return dp[i][j][isTrue];
+            int ans=0;
+            for(int ind=i+1;ind<=j-1;ind=ind+1){
+                int lt=evaluateBooleanExpressionToTrueMemoization(i,ind-1,s,1,dp);
+                int lf=evaluateBooleanExpressionToTrueMemoization(i,ind-1,s,0,dp);
+                int rt=evaluateBooleanExpressionToTrueMemoization(ind+1,j,s,1,dp);
+                int rf=evaluateBooleanExpressionToTrueMemoization(ind+1,j,s,0,dp);
+                if(s.charAt(ind)=='&'){
+                    if(isTrue==1)
+                        ans+=lt*rt;
+                    else
+                        ans+=lt*rf + lf*rt + lf*rf;
+                } else if (s.charAt(ind)=='|') {
+                    if(isTrue==1)
+                        ans+= lt*rf + lf*rt + lt*rt;
+                    else
+                        ans+=lf*rf;
+                } else if (s.charAt(ind)=='^') {
+                    if(isTrue==1)
+                        ans+=lt*rt + lf*rt;
+                    else
+                        ans+=lt*rt + lf*rf;
+                }
+            }
+            return dp[i][j][isTrue]=ans;
+        }
     }
     public static void main(String args[]){
 
@@ -2363,11 +2434,29 @@ public class StriverDP {
 
         //Brust Balloons-------Revisit
 
-        ArrayList<Integer> arr= new ArrayList<>(Arrays.asList(3,1,5,8));
-        int n=arr.size();
+//        ArrayList<Integer> arr= new ArrayList<>(Arrays.asList(3,1,5,8));
+//        int n=arr.size();
 
 //        System.out.println(d.brustBalloons(arr,n));
-        System.out.println(d.brustBalloonsTabulation(arr,n));
+//        System.out.println(d.brustBalloonsTabulation(arr,n));
+
+
+        //Evaluate Boolean Expression To true
+        String s="F|T^F";
+        int i=0;
+        int j=s.length()-1;
+        int isTrue=1;
+
+        int n=s.length();
+
+//        System.out.println(d.evaluateBooleanExpressionToTrue(i,j,s,isTrue));
+
+        int dp[][][]= new int[n][n][2];
+        for(int k=0;k<n;k++){
+            for(int l=0;l<n;l++)
+                Arrays.fill(dp[i][j],-1);
+        }
+        System.out.println(d.evaluateBooleanExpressionToTrueMemoization(i,j,s,isTrue,dp));
 
 
 
