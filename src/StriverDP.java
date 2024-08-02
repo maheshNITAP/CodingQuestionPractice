@@ -1899,6 +1899,73 @@ public class StriverDP {
             }
             return dp[i][j][isTrue]=ans;
         }
+
+
+        private int minPalindromePartitionRecursive(int i, String s, int n) {
+            if(i==n) return 0;
+            int minCost=Integer.MAX_VALUE;
+            for(int j=i;j<n;j++){
+                if(isPalindrome(i,j,s)){
+                    int cost= 1+minPalindromePartitionRecursive(j+1,s,n);
+                    minCost=Math.min(cost,minCost);
+                }
+            }
+            return minCost;
+        }
+
+        private boolean isPalindrome(int i, int j, String s) {
+            while(i<j){
+                if(s.charAt(i)!=s.charAt(j)) return false;
+                i++;
+                j--;
+            }
+            return true;
+        }
+
+        public int minPalindromePartition(String s, int n) {
+//            int i=0;
+
+            //Recursive
+            //return  minPalindromePartitionRecursive(i,s,n)-1; // returning ans-1 because we are doing partition at end also that we not needed so -1 from ans
+
+            //Memoization
+//            int dp[]= new int[n];
+//            Arrays.fill(dp,-1);
+//            return minPalindromePartitionMemoization(i,s,n,dp)-1;
+
+            //Tabulation
+            int dp[]= new int[n+1];
+
+            dp[n]=0;
+
+            for(int i=n-1;i>=0;i--){
+                int minCost=Integer.MAX_VALUE;
+                for(int j=i;j<n;j++){
+                    if(isPalindrome(i,j,s)){
+                        int cost=1+dp[j+1];
+                        minCost=Math.min(cost,minCost);
+                    }
+                }
+                dp[i]=minCost;
+            }
+            return dp[0]-1;
+
+
+        }
+
+        private int minPalindromePartitionMemoization(int i, String s, int n, int[] dp) {
+            if(i==n) return 0;
+            if(dp[i] !=-1)
+                return dp[i];
+            int minCost=Integer.MAX_VALUE;
+            for(int j=i;j<n;j++){
+                if(isPalindrome(i,j,s)){
+                    int cost=1+minPalindromePartitionMemoization(j+1,s,n,dp);
+                    minCost=Math.min(cost,minCost);
+                }
+            }
+            return dp[i]=minCost;
+        }
     }
     public static void main(String args[]){
 
@@ -2442,21 +2509,27 @@ public class StriverDP {
 
 
         //Evaluate Boolean Expression To true
-        String s="F|T^F";
-        int i=0;
-        int j=s.length()-1;
-        int isTrue=1;
-
-        int n=s.length();
+//        String s="F|T^F";
+//        int i=0;
+//        int j=s.length()-1;
+//        int isTrue=1;
+//
+//        int n=s.length();
 
 //        System.out.println(d.evaluateBooleanExpressionToTrue(i,j,s,isTrue));
 
-        int dp[][][]= new int[n][n][2];
-        for(int k=0;k<n;k++){
-            for(int l=0;l<n;l++)
-                Arrays.fill(dp[i][j],-1);
-        }
-        System.out.println(d.evaluateBooleanExpressionToTrueMemoization(i,j,s,isTrue,dp));
+//        int dp[][][]= new int[n][n][2];
+//        for(int k=0;k<n;k++){
+//            for(int l=0;l<n;l++)
+//                Arrays.fill(dp[i][j],-1);
+//        }
+//        System.out.println(d.evaluateBooleanExpressionToTrueMemoization(i,j,s,isTrue,dp));
+
+        //Palindrome Partitioning -2-----front partition
+
+        String s="bababcbadcede";
+        int n=s.length();
+        System.out.println(d.minPalindromePartition(s,n));
 
 
 
