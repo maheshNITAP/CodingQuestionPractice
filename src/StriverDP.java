@@ -1966,6 +1966,75 @@ public class StriverDP {
             }
             return dp[i]=minCost;
         }
+
+        public int partitionArrayForMaximumSum(int[] arr, int k, int n) {
+            int ind=0;
+
+            //Recursive
+//            return partitionArrayForMaximumSumRecursive(ind,k,n,arr);
+
+            //Memoization
+            int dp[]= new int[n];
+            Arrays.fill(dp,-1);
+
+//            return  partitionArrayForMaximumSumMemoization(ind,k,n,arr,dp);
+
+            return partitionArrayForMaximumSumTabulation(arr,n,k);
+        }
+
+        private int partitionArrayForMaximumSumTabulation(int[] arr, int n, int k) {
+            int dp[]= new int[n+1];
+
+            //Base case---no need already initialize with 0
+
+            for(int ind=n-1;ind>=0;ind--){
+                int len=0;
+                int maxi=Integer.MIN_VALUE;
+                int maxAns=Integer.MIN_VALUE;
+                for(int j=ind;j<Math.min(n,ind+k);j++){
+                    len++;
+                    maxi=Math.max(arr[j],maxi);
+                    int sum=(len*maxi)+dp[j+1];
+                    maxAns=Math.max(maxAns,sum);
+                }
+                dp[ind]=maxAns;
+            }
+
+            return dp[0];
+        }
+
+        private int partitionArrayForMaximumSumMemoization(int ind, int k, int n, int[] arr, int[] dp) {
+            if(ind==n) return 0;
+
+            int maxAns=Integer.MIN_VALUE;
+            int len=0;
+            int maxi=Integer.MIN_VALUE;
+            if(dp[ind]!=-1)
+                return dp[ind];
+
+            for(int j=ind;j<Math.min(n,ind+k);j++){
+                len++;
+                maxi=Math.max(maxi,arr[j]);
+                int sum=(len*maxi)+partitionArrayForMaximumSumMemoization(j+1,k,n,arr,dp);
+                maxAns=Math.max(sum,maxAns);
+            }
+            return dp[ind]=maxAns;
+        }
+
+        private int partitionArrayForMaximumSumRecursive(int ind, int k, int n, int[] arr) {
+            if(ind==n) return 0;
+
+            int maxAns=Integer.MIN_VALUE;
+            int len=0;
+            int maxi=Integer.MIN_VALUE;
+            for(int j=ind;j<Math.min(n,ind+k);j++){
+                len++;
+                maxi=Math.max(maxi,arr[j]);
+                int sum=(len*maxi)+partitionArrayForMaximumSumRecursive(j+1,k,n,arr);
+                maxAns=Math.max(sum,maxAns);
+            }
+            return maxAns;
+        }
     }
     public static void main(String args[]){
 
@@ -2527,9 +2596,19 @@ public class StriverDP {
 
         //Palindrome Partitioning -2-----front partition
 
-        String s="bababcbadcede";
-        int n=s.length();
-        System.out.println(d.minPalindromePartition(s,n));
+//        String s="bababcbadcede";
+//        int n=s.length();
+//        System.out.println(d.minPalindromePartition(s,n));
+
+
+        //Partition Array for Maximum sum---front partition
+
+        int arr[]= {1,15,7,9,2,5,10};
+        int k=3;
+        int n=arr.length;
+
+        System.out.println(d.partitionArrayForMaximumSum(arr,k,n));
+
 
 
 
