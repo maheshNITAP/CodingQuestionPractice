@@ -1,3 +1,5 @@
+import javafx.util.Pair;
+
 import java.util.*;
 
 public class StriverDP {
@@ -2035,6 +2037,86 @@ public class StriverDP {
             }
             return maxAns;
         }
+
+        public int MaxAreaOfRectAngleInBinaryMatrix(int[][] arr) {
+            int n=arr.length;
+            int m=arr[0].length;
+            int maxArea;
+            ArrayList<Integer> v= new ArrayList<>();
+            for(int j=0;j<m;j++)
+                v.add(arr[0][j]);
+            
+            maxArea = maxAreaOfHistogram(v,m);
+            for(int i=1;i<n;i++){
+                for(int j=0;j<m;j++){
+                    if(arr[i][j]==0)
+                        v.set(j,0);
+                    else 
+                        v.set(j,v.get(j)+arr[i][j]);
+                }
+                maxArea=Math.max(maxArea,maxAreaOfHistogram(v,m));
+            }
+            return maxArea;
+            
+        }
+
+        private int maxAreaOfHistogram(ArrayList<Integer> v, int m) {
+            ArrayList<Integer> NSL = new ArrayList<>();
+            ArrayList<Integer> NSR = new ArrayList<>();
+
+            //Next Smaller to Left
+            indexOfNextSmallerToLeft(v,m,NSL);
+
+            //Next Smaller To right
+            indexOfNextSmallerToRight(v,m,NSR);
+            int maxArea=0;
+            for(int i=0;i<m;i++){
+                maxArea=Math.max(maxArea,((NSR.get(i)-NSL.get(i))-1)*v.get(i));
+            }
+            return maxArea;
+
+        }
+
+        private void indexOfNextSmallerToRight(ArrayList<Integer> v, int m, ArrayList<Integer> nsr) {
+            Stack<Pair<Integer,Integer>> st= new Stack<>();
+            for(int j=m-1;j>=0;j--){
+                if(st.size()==0)
+                    nsr.add(m);
+                else if (st.size()>0 && st.peek().getValue() < v.get(j))
+                    nsr.add(st.peek().getKey());
+                else if(st.size()>0 && st.peek().getValue() >= v.get(j)){
+                    while(st.size()>0 && st.peek().getValue() >= v.get(j)){
+                        st.pop();
+                    }
+                    if(st.size()==0)
+                        nsr.add(m);
+                    else
+                        nsr.add(st.peek().getKey());
+                }
+                st.push(new Pair<>(j,v.get(j)));
+            }
+            Collections.reverse(nsr);
+        }
+
+        private void indexOfNextSmallerToLeft(ArrayList<Integer> v, int m, ArrayList<Integer> nsl) {
+            Stack<Pair<Integer,Integer>> s= new Stack<>();
+            for(int i=0;i<m;i++){
+                if(s.empty()){
+                    nsl.add(-1);
+                } else if (!s.isEmpty() && s.peek().getValue() < v.get(i)) {
+                    nsl.add(s.peek().getKey());
+                } else if (!s.isEmpty() && s.peek().getValue() >= v.get(i)) {
+                    while(!s.isEmpty() && s.peek().getValue() >= v.get(i))
+                        s.pop();
+                    if(s.isEmpty())
+                        nsl.add(-1);
+                    else
+                        nsl.add(s.peek().getKey());
+
+                }
+                s.push(new Pair<>(i,v.get(i)));
+            }
+        }
     }
     public static void main(String args[]){
 
@@ -2603,11 +2685,18 @@ public class StriverDP {
 
         //Partition Array for Maximum sum---front partition
 
-        int arr[]= {1,15,7,9,2,5,10};
-        int k=3;
-        int n=arr.length;
-
-        System.out.println(d.partitionArrayForMaximumSum(arr,k,n));
+//        int arr[]= {1,15,7,9,2,5,10};
+//        int k=3;
+//        int n=arr.length;
+//
+//        System.out.println(d.partitionArrayForMaximumSum(arr,k,n));
+        
+        
+        //Maximum Area Of Histogram
+        int arr[][]={{1,0,1,0,0},{1,0,1,1,1},{1,1,1,1,1},{1,0,0,1,0}};
+        System.out.println(d.MaxAreaOfRectAngleInBinaryMatrix(arr));
+        
+        
 
 
 
