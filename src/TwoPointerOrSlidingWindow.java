@@ -1,3 +1,6 @@
+import java.util.HashMap;
+import java.util.Map;
+
 public class TwoPointerOrSlidingWindow {
     static class SW {
 
@@ -56,6 +59,23 @@ public class TwoPointerOrSlidingWindow {
             }
                return maxSum;
         }
+
+        public int longestSubStringWithoutRepeatingChar(String s) {
+            Map<Character,Integer> map= new HashMap<>();//char index
+            int l=0;
+            int r=0;
+            int maxLen=0;
+            int n=s.length();
+            while (r<n){
+                if(map.containsKey(s.charAt(r)))
+                    l= Math.max(map.get(s.charAt(r))+1, l);
+
+                map.put(s.charAt(r),r);
+                maxLen=Math.max(maxLen,r-l+1);
+                r++;
+            }
+            return maxLen;
+        }
     }
     public static void main(String args[]){
         SW sw= new SW();
@@ -72,9 +92,13 @@ public class TwoPointerOrSlidingWindow {
 //        System.out.println(sw.longestSubArray(arr,k));
 
         //Maximum Points You can obtain from cards
-        int arr[]={6,2,3,4,7,2,1,7,1};
-        int k=4;
-        System.out.println(sw.maxPointsFromCards(arr,k));
+//        int arr[]={6,2,3,4,7,2,1,7,1};
+//        int k=4;
+//        System.out.println(sw.maxPointsFromCards(arr,k));
+
+        //Longest Substring without repeating characters
+        String s="cadbzabcd";
+        System.out.println(sw.longestSubStringWithoutRepeatingChar(s));
 
     }
 }
