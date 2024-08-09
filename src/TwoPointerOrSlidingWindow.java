@@ -76,6 +76,48 @@ public class TwoPointerOrSlidingWindow {
             }
             return maxLen;
         }
+
+//        with two pointer
+        public int maxConsecutiveOnes(int[] arr, int k) {
+            int l=0;
+            int r=0;
+            int maxLen=0;
+            int zeros=0;
+            while(r<arr.length){
+                if(arr[r]==0)
+                    zeros++;
+                while(zeros>k){
+                    if(arr[l]==0)
+                        zeros--;
+                    l++;
+                }
+                if(zeros<=k)
+                    maxLen=Math.max(maxLen,r-l+1);
+                r++;
+            }
+            return maxLen;
+        }
+
+        public int maxConsecutiveOnesWithFixedSlidingWindow(int[] arr, int k) {
+            int l=0;
+            int r=0;
+            int maxLen=0;
+            int zeros=0;
+            while(r<arr.length){
+                if(arr[r]==0)
+                    zeros++;
+                if(zeros>k){
+                    if(arr[l]==0)
+                        zeros--;
+                    l++;
+                }
+                if(zeros<=k){
+                    maxLen=Math.max(maxLen,r-l+1);
+                }
+                r++;
+            }
+            return maxLen;
+        }
     }
     public static void main(String args[]){
         SW sw= new SW();
@@ -96,9 +138,23 @@ public class TwoPointerOrSlidingWindow {
 //        int k=4;
 //        System.out.println(sw.maxPointsFromCards(arr,k));
 
-        //Longest Substring without repeating characters
-        String s="cadbzabcd";
-        System.out.println(sw.longestSubStringWithoutRepeatingChar(s));
+//        //Longest Substring without repeating characters
+//        String s="cadbzabcd";
+//        System.out.println(sw.longestSubStringWithoutRepeatingChar(s));
+
+        //Maximum consecutive 1's with at most k zeros  Or if you can flip k zeros
+        int arr[]={1,1,1,0,0,0,1,1,1,1,0};
+        int k=2;//O/P-6
+
+//        int arr[]={0,0,1,1,0,0,1,1,1,0,1,1,0,0,0,1,1,1,1};
+//        int k=3; //O/P-10
+
+//        with two pointer TC-O(N+N)
+//        System.out.println(sw.maxConsecutiveOnes(arr,k));
+
+        System.out.println(sw.maxConsecutiveOnesWithFixedSlidingWindow(arr,k));
+
+
 
     }
 }
