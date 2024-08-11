@@ -1,7 +1,6 @@
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Map;
+import javafx.util.Pair;
+
+import java.util.*;
 
 public class TwoPointerOrSlidingWindow {
     static class SW {
@@ -181,6 +180,69 @@ public class TwoPointerOrSlidingWindow {
             }
             return maxLen;
         }
+
+        //brute force
+        public int longestSubStringWithKDistinctChar(String s, int k) {
+            int r=0,l=0,maxLen=0;
+            HashSet<Character> st = new HashSet<>();
+            for(int i=0;i<s.length();i++){
+                st.clear();
+                for(int j=i;j<s.length();j++){
+                    st.add(s.charAt(j));
+                    if(st.size()<=k)
+                        maxLen=Math.max(maxLen,j-i+1);
+                    else
+                        break;
+                }
+            }
+            return maxLen;
+
+        }
+
+        public int longestSubStringWithKDistinctCharTwoPointer(String s, int k) {
+            int r=0,l=0,maxLen=0;
+            HashMap<Character,Integer> map= new HashMap<>();
+            while(r<s.length()){
+                if(map.containsKey(s.charAt(r)))
+                    map.put(s.charAt(r),map.get(s.charAt(r))+1);
+                else
+                    map.put(s.charAt(r),1);
+                if(map.size()>k){
+                    while(map.size()>k){
+                        map.put(s.charAt(l),map.get(s.charAt(l))-1);
+                        if(map.get(s.charAt(l))==0)
+                            map.remove(s.charAt(l));
+                        l++;
+                    }
+                }
+                if(map.size()<=k)
+                    maxLen=Math.max(maxLen,r-l+1);
+                r++;
+            }
+            return maxLen;
+        }
+
+        public int longestSubStringWithKDistinctCharSlidingWindow(String s, int k) {
+            int r=0,l=0,maxLen=0;
+            HashMap<Character,Integer> map= new HashMap<>();
+            while(r<s.length()){
+                if(map.containsKey(s.charAt(r)))
+                    map.put(s.charAt(r),map.get(s.charAt(r))+1);
+                else
+                    map.put(s.charAt(r),1);
+                if(map.size()>k){
+                    map.put(s.charAt(l),map.get(s.charAt(l))-1);
+                    if(map.get(s.charAt(l))==0)
+                        map.remove(s.charAt(l));
+                    l++;
+                }
+                if(map.size()<=k){
+                    maxLen=Math.max(maxLen,r-l+1);
+                }
+                r++;
+            }
+            return maxLen;
+        }
     }
     public static void main(String args[]){
         SW sw= new SW();
@@ -220,8 +282,8 @@ public class TwoPointerOrSlidingWindow {
 
         // fruit into basket
 
-        int arr[]={3,3,3,1,2,1,1,2,3,3,4};
-        int k=2;//number of basket
+//        int arr[]={3,3,3,1,2,1,1,2,3,3,4};
+//        int k=2;//number of basket
 
         //brute force
 //        System.out.println(sw.maxLengthOfSubArrayWithAtMostKTypesOfNumbers(arr,k));
@@ -230,7 +292,21 @@ public class TwoPointerOrSlidingWindow {
 //        System.out.println(sw.maxLengthOfSubarrayWithAtmostKTypesOfNumbersTwoPointer(arr,k));
 
         //sliding window
-        System.out.println(sw.maxLengthOfSubarrayWithAtmostKTypesOfNumbersSlidingWindow(arr,k));
+//        System.out.println(sw.maxLengthOfSubarrayWithAtmostKTypesOfNumbersSlidingWindow(arr,k));
+
+        //Longest Substring with atmost k characters
+
+        String s="aaabbccd";
+        int k=2;
+
+        //brute force
+//        System.out.println(sw.longestSubStringWithKDistinctChar(s,k));
+
+        //two pointer
+//        System.out.println(sw.longestSubStringWithKDistinctCharTwoPointer(s,k));
+
+        //sliding window
+        System.out.println(sw.longestSubStringWithKDistinctCharSlidingWindow(s,k));
 
 
 
