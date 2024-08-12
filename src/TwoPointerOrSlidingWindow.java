@@ -243,6 +243,50 @@ public class TwoPointerOrSlidingWindow {
             }
             return maxLen;
         }
+
+        //brute force
+        public int NumberOfSubStringContainingAllThreeChar(String s) {
+            //brute force
+            int count=0;
+            for(int i=0;i<s.length();i++){
+                int hash[]= new int[3];
+                for(int j=i;j<s.length();j++){
+                    hash[s.charAt(j)-'a']=1;
+                    if(hash[0]+hash[1]+hash[2]==3)
+                        count+=1;
+                }
+            }
+            return count;
+        }
+
+        //Optimised brute force
+        public int NumberOfSubStringContainingAllThreeCharOptimisedBruteForce(String s) {
+            int count=0;
+            for(int i=0;i<s.length();i++){
+                int hash[]= new int[3];
+                for(int j=i;j<s.length();j++){
+                    hash[s.charAt(j)-'a']=1;
+                    if(hash[0]+hash[1]+hash[2]==3){
+                        count=count+(s.length()-j);
+                        break;
+                    }
+                }
+            }
+            return count;
+        }
+
+        public int NumberOfSubStringContainingAllThreeCharTwoPointer(String s) {
+            int count=0;
+            int []lastSeen= new int[3];
+            Arrays.fill(lastSeen,-1);
+            for(int i=0;i<s.length();i++){
+                lastSeen[s.charAt(i)-'a']=i;
+                if(lastSeen[0]!=-1 && lastSeen[1]!=-1 && lastSeen[2]!=-1){
+                    count+=1+Math.min(lastSeen[0],Math.min(lastSeen[1],lastSeen[2]));
+                }
+            }
+            return count;
+        }
     }
     public static void main(String args[]){
         SW sw= new SW();
@@ -296,8 +340,8 @@ public class TwoPointerOrSlidingWindow {
 
         //Longest Substring with atmost k characters
 
-        String s="aaabbccd";
-        int k=2;
+//        String s="aaabbccd";
+//        int k=2;
 
         //brute force
 //        System.out.println(sw.longestSubStringWithKDistinctChar(s,k));
@@ -306,7 +350,19 @@ public class TwoPointerOrSlidingWindow {
 //        System.out.println(sw.longestSubStringWithKDistinctCharTwoPointer(s,k));
 
         //sliding window
-        System.out.println(sw.longestSubStringWithKDistinctCharSlidingWindow(s,k));
+//        System.out.println(sw.longestSubStringWithKDistinctCharSlidingWindow(s,k));
+
+        //Number Of SubString Containing All three characters
+        String s= "bbacba";
+
+        //brute force
+//        System.out.println(sw.NumberOfSubStringContainingAllThreeChar(s));
+
+        //OptimisedBruteFore
+//        System.out.println(sw.NumberOfSubStringContainingAllThreeCharOptimisedBruteForce(s));
+
+        //two pointer
+        System.out.println(sw.NumberOfSubStringContainingAllThreeCharTwoPointer(s));
 
 
 
