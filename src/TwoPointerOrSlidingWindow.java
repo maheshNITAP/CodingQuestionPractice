@@ -287,6 +287,60 @@ public class TwoPointerOrSlidingWindow {
             }
             return count;
         }
+
+        //brute force
+        public int longestRepeatingCharacterReplacement(String s, int k) {
+            int maxFrq=0, maxLen=0;
+            for(int i=0;i<s.length();i++){
+                int hash[]= new int[26];
+                for(int j=i;j<s.length();j++){
+                    hash[s.charAt(j)-'A']++;
+                    maxFrq=Math.max(maxFrq,hash[s.charAt(j)-'A']);
+
+                    int otherVariables=(j-i+1)-maxFrq;
+                    if(otherVariables <=k)
+                        maxLen=Math.max(maxLen,j-i+1);
+                    else break;
+                }
+            }
+            return maxLen;
+        }
+
+        public int longestRepeatingCharacterReplacementTwoPointer(String s, int k) {
+            int l=0,r=0,maxFrq=0,maxLen=0;
+            int hash[] =  new int[26];
+            while(r<s.length()){
+                hash[s.charAt(r)-'A']++;
+                maxFrq= Math.max(maxFrq,hash[s.charAt(r)-'A']);
+                while ((r-l+1)-maxFrq>k){
+                    hash[s.charAt(l)-'A']--;
+//                    for(int i=0;i<26;i++)  we don't need to check max freq because we care about only length maximum than current if we don't use this check also then also it is fine
+//                        maxFrq=Math.max(maxFrq,hash[i]);
+                    l++;
+                }
+                if((r-l+1)-maxFrq<=k)
+                    maxLen=Math.max(maxLen,r-l+1);
+                r++;
+            }
+            return maxLen;
+        }
+
+        public int longestRepeatingCharacterReplacementSlidingWindow(String s, int k) {
+            int l=0,r=0,maxLen=0,maxFreq=0;
+            int hash[]= new int[26];
+            while(r<s.length()){
+                hash[s.charAt(r)-'A']++;
+                maxFreq=Math.max(maxFreq,hash[s.charAt(r)-'A']);
+                if((r-l+1)-maxFreq >k){
+                    hash[s.charAt(l)-'A']--;
+                    l++;
+                }
+                if((r-l+1)-maxFreq<=k)
+                    maxLen=Math.max(maxLen,r-l+1);
+                r++;
+            }
+            return maxLen;
+        }
     }
     public static void main(String args[]){
         SW sw= new SW();
@@ -353,7 +407,7 @@ public class TwoPointerOrSlidingWindow {
 //        System.out.println(sw.longestSubStringWithKDistinctCharSlidingWindow(s,k));
 
         //Number Of SubString Containing All three characters
-        String s= "bbacba";
+//        String s= "bbacba";
 
         //brute force
 //        System.out.println(sw.NumberOfSubStringContainingAllThreeChar(s));
@@ -362,7 +416,20 @@ public class TwoPointerOrSlidingWindow {
 //        System.out.println(sw.NumberOfSubStringContainingAllThreeCharOptimisedBruteForce(s));
 
         //two pointer
-        System.out.println(sw.NumberOfSubStringContainingAllThreeCharTwoPointer(s));
+//        System.out.println(sw.NumberOfSubStringContainingAllThreeCharTwoPointer(s));
+
+        //Longest Repeating Character Replacement
+        String s= "AABABBA";
+        int k=2;
+
+        //BruteForce
+//        System.out.println(sw.longestRepeatingCharacterReplacement(s,k));
+
+        //two pointer
+//        System.out.println(sw.longestRepeatingCharacterReplacementTwoPointer(s,k));
+
+        //sliding window
+        System.out.println(sw.longestRepeatingCharacterReplacementSlidingWindow(s,k));
 
 
 
