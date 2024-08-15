@@ -341,6 +341,68 @@ public class TwoPointerOrSlidingWindow {
             }
             return maxLen;
         }
+
+        public int subArraySumEqualsK(int[] arr, int k) {
+            int count=0;
+            int sum=0;
+            for(int i=0;i<arr.length;i++){
+                sum=0;
+                for(int j=i;j<arr.length;j++){
+                    sum+=arr[j];
+                    if(sum==k)
+                        count++;
+                }
+            }
+            return count;
+        }
+
+        public int subArraySumEqualsKPrefixSum(int[] arr, int k) {
+            HashMap<Integer,Integer> map= new HashMap<>();//<number,count>
+            map.put(0,1);
+            int preFixSum=0;
+            int count=0;
+            for(int i=0;i<arr.length;i++){
+                preFixSum+=arr[i];
+                int remove=preFixSum-k;
+                if(map.containsKey(remove))
+                    count+=map.get(remove);
+                if(map.containsKey(preFixSum))
+                    map.put(preFixSum,map.get(preFixSum)+1);
+                else
+                    map.put(preFixSum,1);
+            }
+            return count;
+        }
+
+        public int subArraySumEqualsKByTwoPointer(int[] arr, int k) {
+            if(k<0) return 0;
+            int l=0,r=0,count=0,sum=0;
+            while(r<arr.length){
+                sum+=arr[r];
+                while(sum>k){
+                    sum=sum-arr[l];
+                    l++;
+                }
+                count+=(r-l+1);//added all possible arrays less that k sum
+                r++;
+            }
+            return count;
+        }
+
+        public int subArraySumEqualtoKForBinaryNumbers(int[] arr, int k) {
+            if(k<0) return 0;
+            int l=0,r=0,count=0,sum=0;
+            while(r<arr.length){
+                sum+=arr[r];
+                while(sum>k){
+                    sum-=arr[l];
+                    l++;
+                }
+                count+=(r-l+1);
+                r++;
+            }
+            return count;
+        }
     }
     public static void main(String args[]){
         SW sw= new SW();
@@ -419,8 +481,8 @@ public class TwoPointerOrSlidingWindow {
 //        System.out.println(sw.NumberOfSubStringContainingAllThreeCharTwoPointer(s));
 
         //Longest Repeating Character Replacement
-        String s= "AABABBA";
-        int k=2;
+//        String s= "AABABBA";
+//        int k=2;
 
         //BruteForce
 //        System.out.println(sw.longestRepeatingCharacterReplacement(s,k));
@@ -429,7 +491,41 @@ public class TwoPointerOrSlidingWindow {
 //        System.out.println(sw.longestRepeatingCharacterReplacementTwoPointer(s,k));
 
         //sliding window
-        System.out.println(sw.longestRepeatingCharacterReplacementSlidingWindow(s,k));
+//        System.out.println(sw.longestRepeatingCharacterReplacementSlidingWindow(s,k));
+
+         //count subArray sum equals K
+//        int arr[]={1,2,3,-3,1,1,1,4,2,-3};
+//        int k=3;//O/p-8
+//        int arr[]={1,0,1,0,1};
+//        int k=2;//O/p:-4
+
+        //Brute force//for both working same
+//        System.out.println(sw.subArraySumEqualsK(arr,k));
+
+
+        //this is good
+        //Optimal solution with prefix sum
+//        System.out.println(sw.subArraySumEqualsKPrefixSum(arr,k));
+
+
+//        this is very good
+        ////Only for Binary subArray with sum k
+        //two pointer
+//        System.out.println(sw.subArraySumEqualsKByTwoPointer(arr,k)-sw.subArraySumEqualsKByTwoPointer(arr,k-1));
+
+        //count the number of nice subArray
+        int arr[]= {1,2,3,4,1};
+        int k=2;
+
+        //convert all odd into 1 ans all even into 0 than it will be same as  Binary subArray with sum ans k act as sum
+        for(int i=0;i<arr.length;i++){
+            if(arr[i]%2==0)
+                arr[i]=0;
+            else arr[i]=1;
+        }
+        // same as subArraySumEqualsKByTwoPointer() but writing for practice
+        System.out.println(sw.subArraySumEqualtoKForBinaryNumbers(arr,k)-sw.subArraySumEqualtoKForBinaryNumbers(arr,k-1));
+
 
 
 
