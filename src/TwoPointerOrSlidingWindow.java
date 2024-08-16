@@ -403,6 +403,46 @@ public class TwoPointerOrSlidingWindow {
             }
             return count;
         }
+
+        public int subArrayWithKDiffIntegers(int[] arr, int k) {
+            int count=0;
+            HashMap<Integer,Integer> map = new HashMap<>();
+            for(int i=0;i<arr.length;i++){
+                map.clear();
+                for(int j=i;j<arr.length;j++){
+                    if(map.containsKey(arr[j]))
+                        map.put(arr[j],map.get(arr[j])+1);
+                    else
+                        map.put(arr[j],1);
+
+                    if(map.size()==k)
+                        count++;
+                    else if(map.size()>k)
+                        break;
+                }
+            }
+            return count;
+        }
+
+        public int subArrayWithKDiffIntegersOptimalSolution(int[] arr, int k) {
+            int l=0,r=0,count=0;
+            HashMap<Integer,Integer> map= new HashMap<>();
+            while(r<arr.length){
+                if(map.containsKey(arr[r]))
+                    map.put(arr[r],map.get(arr[r])+1);
+                else
+                    map.put(arr[r],1);
+                while(map.size()>k){
+                    map.put(arr[l],map.get(arr[l])-1);
+                    if(map.get(arr[l])==0)
+                        map.remove(arr[l]);
+                    l++;
+                }
+                count=count+(r-l+1);//(r-l+1) all possible subArrays with new ele
+                r++;
+            }
+            return count;
+        }
     }
     public static void main(String args[]){
         SW sw= new SW();
@@ -514,17 +554,29 @@ public class TwoPointerOrSlidingWindow {
 //        System.out.println(sw.subArraySumEqualsKByTwoPointer(arr,k)-sw.subArraySumEqualsKByTwoPointer(arr,k-1));
 
         //count the number of nice subArray
-        int arr[]= {1,2,3,4,1};
-        int k=2;
+//        int arr[]= {1,2,3,4,1};
+//        int k=2;
 
         //convert all odd into 1 ans all even into 0 than it will be same as  Binary subArray with sum ans k act as sum
-        for(int i=0;i<arr.length;i++){
-            if(arr[i]%2==0)
-                arr[i]=0;
-            else arr[i]=1;
-        }
+//        for(int i=0;i<arr.length;i++){
+//            if(arr[i]%2==0)
+//                arr[i]=0;
+//            else arr[i]=1;
+//        }
         // same as subArraySumEqualsKByTwoPointer() but writing for practice
-        System.out.println(sw.subArraySumEqualtoKForBinaryNumbers(arr,k)-sw.subArraySumEqualtoKForBinaryNumbers(arr,k-1));
+//        System.out.println(sw.subArraySumEqualtoKForBinaryNumbers(arr,k)-sw.subArraySumEqualtoKForBinaryNumbers(arr,k-1));
+
+        //SubArray with k different integers
+
+        int arr[]={2,1,1,1,3,4,3,2};
+        int k=3;//O/P-9
+
+        //brute force
+//        System.out.println(sw.subArrayWithKDiffIntegers(arr,k));
+
+
+        //Optimal
+        System.out.println(sw.subArrayWithKDiffIntegersOptimalSolution(arr,k)-sw.subArrayWithKDiffIntegersOptimalSolution(arr,k-1));
 
 
 
