@@ -443,6 +443,56 @@ public class TwoPointerOrSlidingWindow {
             }
             return count;
         }
+
+        public String minWindowSubString(String s, String t) {
+            int SIndex=-1;
+            int minLen=Integer.MAX_VALUE;
+            int n=s.length();
+            int m=t.length();
+            for(int i=0;i<s.length();i++){
+                int hash[]= new int[256];
+                int count=0;
+                for(int j=0;j<t.length();j++)
+                    hash[t.charAt(j)]++;
+                for(int j=i;j<n;j++){
+                    if(hash[s.charAt(j)]>0) count++;
+                    hash[s.charAt(j)]--;
+                    if(count==m){
+                        if(j-i+1<minLen){
+                            minLen=j-i+1;
+                            SIndex=i;
+                            break;
+                        }
+                    }
+                }
+            }
+            return s.substring(SIndex,SIndex+minLen);
+        }
+
+        public String minWindowSubStringSlidingWindow(String s, String t) {
+            int r=0,l=0,count=0,minLen=Integer.MAX_VALUE, StartIndex=-1;
+            int hash[]= new int[256];
+            int n=s.length();
+            int m=t.length();
+            for(int i=0;i<m;i++)
+                hash[t.charAt(i)]++;
+            while(r<n){
+                if(hash[s.charAt(r)]>0) count++;
+                hash[s.charAt(r)]--;
+                while(count==m){
+                    if(r-l+1<minLen){
+                        minLen=r-l+1;
+                        StartIndex=l;
+
+                    }
+                    hash[s.charAt(l)]++;
+                    if(hash[s.charAt(l)]>0) count--;
+                    l++;
+                }
+                r++;
+            }
+            return s.substring(StartIndex,StartIndex+minLen);
+        }
     }
     public static void main(String args[]){
         SW sw= new SW();
@@ -576,7 +626,18 @@ public class TwoPointerOrSlidingWindow {
 
 
         //Optimal
-        System.out.println(sw.subArrayWithKDiffIntegersOptimalSolution(arr,k)-sw.subArrayWithKDiffIntegersOptimalSolution(arr,k-1));
+//        System.out.println(sw.subArrayWithKDiffIntegersOptimalSolution(arr,k)-sw.subArrayWithKDiffIntegersOptimalSolution(arr,k-1));
+
+
+        //minimum Window SbuString
+        String s= "ddaaabbca";
+        String t= "abc";
+
+        //brute force
+//        System.out.println(sw.minWindowSubString(s,t));
+
+        //Optimal sliding window
+        System.out.println(sw.minWindowSubStringSlidingWindow(s,t));
 
 
 
