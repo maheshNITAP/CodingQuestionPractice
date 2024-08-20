@@ -630,14 +630,15 @@ public class TwoPointerOrSlidingWindow {
 
 
         //minimum Window SbuString
-        String s= "ddaaabbca";
-        String t= "abc";
+//        String s= "ddaaabbca";
+//        String t= "abc";
 
         //brute force
 //        System.out.println(sw.minWindowSubString(s,t));
 
         //Optimal sliding window
-        System.out.println(sw.minWindowSubStringSlidingWindow(s,t));
+//        System.out.println(sw.minWindowSubStringSlidingWindow(s,t));
+
 
 
 
