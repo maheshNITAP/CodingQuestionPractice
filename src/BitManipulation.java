@@ -1,7 +1,6 @@
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import javafx.util.Pair;
+
+import java.util.*;
 
 public class BitManipulation {
     static class BitQuestions{
@@ -173,6 +172,37 @@ public class BitManipulation {
             }
             return once;
         }
+
+        public List<Integer> singleNumber3BruteForce(int[] arr) {
+            HashMap<Integer,Integer> map = new HashMap<>();
+            for(int i=0;i< arr.length;i++){
+                if(map.containsKey(arr[i]))
+                    map.put(arr[i],map.get(arr[i])+1);
+                else
+                    map.put(arr[i],1);
+            }
+            List<Integer> lis=new ArrayList<>();
+            for(Map.Entry<Integer,Integer> m: map.entrySet()){
+                if(m.getValue()==1)
+                    lis.add(m.getKey());
+            }
+            return lis;
+        }
+
+        public Pair SingleNumber3(int[] arr) {
+            long XORR=0;
+            for(int i=0;i<arr.length;i++)
+                XORR=XORR^arr[i];
+            long rightMostSetBit=(XORR^(XORR-1))&XORR;
+            int b1=0,b2=0;
+            for(int i=0;i<arr.length;i++){
+                if((arr[i]&rightMostSetBit)>0)
+                    b1=b1^arr[i];
+                else
+                    b2=b2^arr[i];
+            }
+            return new Pair<>(b1,b2);
+        }
     }
     public static void main(String args[]){
         BitQuestions bit = new BitQuestions();
@@ -235,7 +265,7 @@ public class BitManipulation {
 //        System.out.println(bit.singleNumber1(arr));
 
         //single number 2
-        int arr[]={2,2,1,2,1,1,4,3,4,4};
+//        int arr[]={2,2,1,2,1,1,4,3,4,4};
 
         //Brute force
 //        System.out.println(bit.singleNumber2BruteForce(arr));
@@ -244,7 +274,16 @@ public class BitManipulation {
 //        System.out.println(bit.singleNumber2(arr));
 
         //With bucket concept
-        System.out.println(bit.singleNumber2BucketConcept(arr));
+//        System.out.println(bit.singleNumber2BucketConcept(arr));
+
+
+        //Single Number-3
+        int arr[]={2,4,2,14,3,7,7,3};
+
+        //brute force with map DS
+//        System.out.println(bit.singleNumber3BruteForce(arr));
+        Pair<Integer,Integer> ans= bit.SingleNumber3(arr);
+        System.out.println(ans.getKey()+" "+ans.getValue());
 
 
 
