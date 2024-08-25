@@ -1,3 +1,8 @@
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
 public class BitManipulation {
     static class BitQuestions{
 
@@ -112,6 +117,62 @@ public class BitManipulation {
             }
             return count;
         }
+
+        public List<List<Integer>> powerSet(int[] arr) {
+            List<List<Integer>> ans = new ArrayList<>();
+            int n=arr.length;
+            int subSets=1<<n;
+            for(int num=0;num<=subSets-1;num++){
+                List<Integer> list= new ArrayList<>();
+                for(int i=0;i<=n-1;i++){
+                    if((num &(1<<i))!=0)
+                        list.add(arr[i]);
+                }
+                ans.add(list);
+            }
+            return ans;
+        }
+
+        public int singleNumber1(int[] arr) {
+            int XOR=0;
+            for(int i=0;i<arr.length;i++)
+                XOR=XOR^arr[i];
+            return XOR;
+        }
+
+        public int singleNumber2BruteForce(int[] arr) {
+            int ans=0;
+            for(int bitIndex=0;bitIndex<32;bitIndex++){
+                int count=0;
+                for(int i=0;i<arr.length;i++){
+                    if((arr[i] & (1<<bitIndex))!=0){
+                        count++;
+                    }
+                }
+                if(count%3==1){
+                    ans= ans | (1<<bitIndex);
+                }
+            }
+            return ans;
+        }
+
+        public int singleNumber2(int[] arr) {
+            Arrays.sort(arr);
+            for(int i=1;i<arr.length;i=i+3){
+                if(arr[i]!=arr[i-1])
+                    return arr[i-1];
+            }
+            return arr[arr.length-1];
+        }
+
+        public int singleNumber2BucketConcept(int[] arr) {
+            int once=0,twos=0;
+            for(int i=0;i<arr.length;i++){
+                once=(once^arr[i]) &(~twos);
+                twos=(twos^arr[i])&(~once);
+            }
+            return once;
+        }
     }
     public static void main(String args[]){
         BitQuestions bit = new BitQuestions();
@@ -161,9 +222,29 @@ public class BitManipulation {
 //        System.out.println(bit.countNumberOfSetBitInGivenNumberByBitOtherWay(n));
 
         //Minimum bit flips to convert to Number a to b
-        int a=10,b=7;
-        System.out.println(bit.minBitFlipsToConvertNumber(a,b));
+//        int a=10,b=7;
+//        System.out.println(bit.minBitFlipsToConvertNumber(a,b));
 
+        //Power Set by bit manipulation
+//        int arr[]={1,2,3};
+//        System.out.println(bit.powerSet(arr));
+
+
+        //single number
+//        int arr[]={4,1,2,1,2};
+//        System.out.println(bit.singleNumber1(arr));
+
+        //single number 2
+        int arr[]={2,2,1,2,1,1,4,3,4,4};
+
+        //Brute force
+//        System.out.println(bit.singleNumber2BruteForce(arr));
+
+        //Optimal
+//        System.out.println(bit.singleNumber2(arr));
+
+        //With bucket concept
+        System.out.println(bit.singleNumber2BucketConcept(arr));
 
 
 
