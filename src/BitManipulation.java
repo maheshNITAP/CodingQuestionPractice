@@ -203,6 +203,25 @@ public class BitManipulation {
             }
             return new Pair<>(b1,b2);
         }
+
+        //brute force
+        public int XOROfGivenRangeBruteForce(int n) {
+            int ans=0;
+            for(int i=1;i<=n;i++)
+                ans=ans^i;
+            return ans;
+        }
+
+        public int XOROfGivenRange(int n) {
+            if(n%4==1) return 1;
+            else if(n%4==2) return n+1;
+            else if(n%4==3) return 0;
+            return n;
+        }
+
+        public int XOROfGivenRangeBetweenLAndR(int l, int r) {
+            return XOROfGivenRange(l-1)-XOROfGivenRange(r);
+        }
     }
     public static void main(String args[]){
         BitQuestions bit = new BitQuestions();
@@ -239,7 +258,7 @@ public class BitManipulation {
 //        System.out.println(bit.removeTheLastSetBit(n));
 
         //check if the number is power of 2 or not
-        int n=13;
+//        int n=13;
 //        System.out.println(bit.checkIfNumberIsPowerOfTwo(n));
 
         //count number of set bits by normally
@@ -278,12 +297,24 @@ public class BitManipulation {
 
 
         //Single Number-3
-        int arr[]={2,4,2,14,3,7,7,3};
+//        int arr[]={2,4,2,14,3,7,7,3};
 
         //brute force with map DS
 //        System.out.println(bit.singleNumber3BruteForce(arr));
-        Pair<Integer,Integer> ans= bit.SingleNumber3(arr);
-        System.out.println(ans.getKey()+" "+ans.getValue());
+//        Pair<Integer,Integer> ans= bit.SingleNumber3(arr);
+//        System.out.println(ans.getKey()+" "+ans.getValue());
+
+ // XOR of given range from 1 to N
+        int n=5;
+
+//        System.out.println(bit.XOROfGivenRangeBruteForce(n));
+//        System.out.println(bit.XOROfGivenRange(n));
+
+        int l=4,r=7;
+        System.out.println(bit.XOROfGivenRangeBetweenLAndR(l,r));
+
+
+
 
 
 
