@@ -1,4 +1,4 @@
-import java.util.Arrays;
+import java.util.*;
 
 public class Arrayss {
     static class ArrayQuestions{
@@ -43,6 +43,29 @@ public class Arrayss {
             }
             return secLargest;
         }
+
+        public int[] removeDuplicate(int[] arr) {
+            Set<Integer> st= new HashSet<>();
+            for(int i=0;i<arr.length;i++)
+                st.add(arr[i]);
+            Iterator<Integer> it= st.iterator();
+            int index=0;
+            while(it.hasNext()){
+                arr[index++]=it.next();
+            }
+            return arr;
+        }
+
+        public int[] removeDuplicateOptimal(int[] arr) {
+            int i=0;
+            for(int j=1;j<arr.length;j++){
+                if(arr[i]!=arr[j]){
+                    arr[i+1]=arr[j];
+                    i++;
+                }
+            }
+            return arr;
+        }
     }
     public static void main(String args[]){
         ArrayQuestions array= new ArrayQuestions();
@@ -58,6 +81,18 @@ public class Arrayss {
 //        System.out.println(array.secondLargestElementInArrayOptimalApproach(arr));
 
         //remove duplicate in-place in sorted Array
+        int arr[]= {1,1,2,2,2,3,3};
+        //brute force
+//        int res[]=array.removeDuplicate(arr);
+
+        //optimal by two pointer
+        int res[]= array.removeDuplicateOptimal(arr);
+
+
+
+        for(int i:res){
+            System.out.print(i+" ");
+        }
 
 
 
