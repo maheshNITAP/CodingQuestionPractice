@@ -103,6 +103,13 @@ public class Arrayss {
             reverse(arr,d,arr.length-1);
             reverse(arr,0,arr.length-1);
         }
+
+        public void rightRotateAnArrayByDPlaces(int[] arr, int d) {
+            int n=arr.length;
+            reverse(arr,0,n-d-1);
+            reverse(arr,n-d,n-1);
+            reverse(arr,0,n-1);
+        }
     }
     public static void main(String args[]){
         ArrayQuestions array= new ArrayQuestions();
@@ -148,11 +155,17 @@ public class Arrayss {
 //        }
 
         //Optimal
-        array.leftRotateArrayByDPlaceOptimalApproach(arr,d);
+//        array.leftRotateArrayByDPlaceOptimalApproach(arr,d);
+//        for(int i:arr){
+//            System.out.print(i+" ");
+//        }
+//        System.out.println();
+
+        //right rotate the array by d places
+        array.rightRotateAnArrayByDPlaces(arr,d);
         for(int i:arr){
             System.out.print(i+" ");
         }
-
 
 
 
