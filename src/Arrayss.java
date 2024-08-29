@@ -66,6 +66,43 @@ public class Arrayss {
             }
             return arr;
         }
+
+        public void leftRotateArrayByOnePlace(int[] arr) {
+            int temp=arr[0];
+            for(int i=0;i<arr.length-1;i++)
+                arr[i]=arr[i+1];
+            arr[arr.length-1]=temp;
+        }
+
+        public void leftRotateArrayByDPlaceBruteForce(int[] arr, int d) {
+            int n=arr.length;
+            d=d%n;
+            int temp[]= new int[d];
+            for(int i=0;i<d;i++){
+                temp[i]=arr[i];
+            }
+            for(int i=d;i<n;i++){
+                arr[i-d]=arr[i];
+            }
+            for(int i=n-d;i<n;i++){
+                arr[i]=temp[i-(n-d)];
+            }
+        }
+        public void reverse(int[] arr, int i,int j){
+            while(i<j){
+                int t=arr[i];
+                arr[i]=arr[j];
+                arr[j]=t;
+                i++;
+                j--;
+            }
+        }
+
+        public void leftRotateArrayByDPlaceOptimalApproach(int[] arr, int d) {
+            reverse(arr,0,d-1);
+            reverse(arr,d,arr.length-1);
+            reverse(arr,0,arr.length-1);
+        }
     }
     public static void main(String args[]){
         ArrayQuestions array= new ArrayQuestions();
@@ -81,18 +118,43 @@ public class Arrayss {
 //        System.out.println(array.secondLargestElementInArrayOptimalApproach(arr));
 
         //remove duplicate in-place in sorted Array
-        int arr[]= {1,1,2,2,2,3,3};
+//        int arr[]= {1,1,2,2,2,3,3};
         //brute force
 //        int res[]=array.removeDuplicate(arr);
 
         //optimal by two pointer
-        int res[]= array.removeDuplicateOptimal(arr);
+//        int res[]= array.removeDuplicateOptimal(arr);
+//
+//        for(int i:res){
+//            System.out.print(i+" ");
+//        }
 
+        //Left Rotate the Array by 1 place
 
+//        int arr[]={1,2,3,4,5};
+//        array.leftRotateArrayByOnePlace(arr);
+//        for(int i:arr){
+//            System.out.print(i+" ");
+//        }
 
-        for(int i:res){
+        //left rotate the array by d places
+        int arr[]={1,2,3,4,5,6,7};
+        int d=3;
+
+        //Brute force
+//        array.leftRotateArrayByDPlaceBruteForce(arr,d);
+//        for(int i:arr){
+//            System.out.print(i+" ");
+//        }
+
+        //Optimal
+        array.leftRotateArrayByDPlaceOptimalApproach(arr,d);
+        for(int i:arr){
             System.out.print(i+" ");
         }
+
+
+
 
 
 
