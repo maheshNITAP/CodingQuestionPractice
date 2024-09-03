@@ -159,6 +159,18 @@ public class Arrayss {
 
             return XOR1^XOR2;
         }
+
+        public int maximumConsecutiveOnes(int[] arr) {
+            int count=0,max=0;
+            for(int i=0;i<arr.length;i++){
+                if(arr[i]==1){
+                    count++;
+                    max=Math.max(max,count);
+                }else
+                    count=0;
+            }
+            return max;
+        }
     }
     public static void main(String args[]){
         ArrayQuestions array= new ArrayQuestions();
@@ -218,8 +230,8 @@ public class Arrayss {
 
 
         //find the missing number from 1 to n
-        int arr[]={1,2,4,5};
-        int n=5;
+//        int arr[]={1,2,4,5};
+//        int n=5;
 
         //brute force
 //        System.out.println(array.findMissingNumberBruteForce(arr,n));
@@ -231,8 +243,12 @@ public class Arrayss {
 //        System.out.println(array.findMissingNumberOptimalBySumOfNaturalNumbers(arr,n));
         
         //Optimal--by XOR
-        System.out.println(array.findMissingNumberOptimalByXOR(arr,n));
+//        System.out.println(array.findMissingNumberOptimalByXOR(arr,n));
 
+        //Given a binary array nums, return the maximum number of consecutive 1's in the array.
+
+        int arr[]={11,0,1,1,1,0,1,1};
+        System.out.println(array.maximumConsecutiveOnes(arr));
 
 
 
