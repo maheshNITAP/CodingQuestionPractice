@@ -110,6 +110,55 @@ public class Arrayss {
             reverse(arr,n-d,n-1);
             reverse(arr,0,n-1);
         }
+
+        public int findMissingNumberBruteForce(int[] arr, int n) {
+            for(int i=1;i<=n;i++){
+                boolean flag=false;
+                for(int j=0;j<arr.length;j++){
+                    if(arr[j]==i)
+                        flag=true;
+                }
+                if(flag==false)
+                    return i;
+            }
+            return -1;
+        }
+
+        public int findMissingNumberBetter(int[] arr, int n) {
+            int maxi=0;
+            for(int i=0;i<arr.length;i++)
+                maxi=Math.max(arr[i],maxi);
+            int hash[]= new int[maxi+1];
+
+            for(int i=0;i<arr.length;i++){
+                hash[arr[i]]++;
+            }
+            for(int i=1;i<n;i++){
+                if(hash[i]==0)
+                    return i;
+            }
+            return -1;
+        }
+
+        public int findMissingNumberOptimalBySumOfNaturalNumbers(int[] arr, int n) {
+            int totalSum=n*(n+1)/2;
+            int givenSum=0;
+            for(int i=0;i<arr.length;i++)
+                givenSum+=arr[i];
+            return totalSum-givenSum;
+        }
+
+        public int findMissingNumberOptimalByXOR(int[] arr, int n) {
+            int XOR1=0,XOR2=0;
+            for(int i=0;i<arr.length;i++){
+                XOR2=XOR2^arr[i];
+
+                XOR1=XOR1^(i+1);
+            }
+            XOR1=XOR1^n;
+
+            return XOR1^XOR2;
+        }
     }
     public static void main(String args[]){
         ArrayQuestions array= new ArrayQuestions();
@@ -145,8 +194,8 @@ public class Arrayss {
 //        }
 
         //left rotate the array by d places
-        int arr[]={1,2,3,4,5,6,7};
-        int d=3;
+//        int arr[]={1,2,3,4,5,6,7};
+//        int d=3;
 
         //Brute force
 //        array.leftRotateArrayByDPlaceBruteForce(arr,d);
@@ -162,11 +211,27 @@ public class Arrayss {
 //        System.out.println();
 
         //right rotate the array by d places
-        array.rightRotateAnArrayByDPlaces(arr,d);
-        for(int i:arr){
-            System.out.print(i+" ");
-        }
+//        array.rightRotateAnArrayByDPlaces(arr,d);
+//        for(int i:arr){
+//            System.out.print(i+" ");
+//        }
 
+
+        //find the missing number from 1 to n
+        int arr[]={1,2,4,5};
+        int n=5;
+
+        //brute force
+//        System.out.println(array.findMissingNumberBruteForce(arr,n));
+
+        //better
+//        System.out.println(array.findMissingNumberBetter(arr,n));
+
+        //Optimal--but Integer Overflow can happen
+//        System.out.println(array.findMissingNumberOptimalBySumOfNaturalNumbers(arr,n));
+        
+        //Optimal--by XOR
+        System.out.println(array.findMissingNumberOptimalByXOR(arr,n));
 
 
 
