@@ -171,6 +171,45 @@ public class Arrayss {
             }
             return max;
         }
+
+        public int findNumberThatAppearsOnlyOnceBruteForce(int[] arr) {
+            int n=arr.length;
+            for(int i=0;i<n;i++){
+                int num=arr[i];
+                int count=0;
+                for(int j=0;j<n;j++){
+                    if(arr[j]==num)
+                        count++;
+                }
+                if(count==1)
+                    return num;
+            }
+            return -1;
+        }
+
+        public int findNumberThatAppearsOnlyOnceBetter(int[] arr) {
+            int n=arr.length;
+            int max=arr[0];
+            for(int i=0;i<n;i++)
+                max=Math.max(arr[i],max);
+
+            int hash[]= new int[max+1];
+            for(int i=0;i<n;i++){
+                hash[arr[i]]++;
+            }
+            for(int i=0;i<=max;i++){
+                if(hash[i]==1)
+                    return i;
+            }
+            return -1;
+        }
+
+        public int findNumberThatAppearsOnlyOnceOptimal(int[] arr) {
+            int XOR=0;
+            for(int i=0;i<arr.length;i++)
+                XOR=XOR^arr[i];
+            return XOR;
+        }
     }
     public static void main(String args[]){
         ArrayQuestions array= new ArrayQuestions();
@@ -247,8 +286,23 @@ public class Arrayss {
 
         //Given a binary array nums, return the maximum number of consecutive 1's in the array.
 
-        int arr[]={11,0,1,1,1,0,1,1};
-        System.out.println(array.maximumConsecutiveOnes(arr));
+//        int arr[]={11,0,1,1,1,0,1,1};
+//        System.out.println(array.maximumConsecutiveOnes(arr));
+
+        //find the number that appears only once and others are appearing twice
+        int arr[]={1,2,3,1,3,6,7,6,2};
+
+
+        //brute force
+//        System.out.println(array.findNumberThatAppearsOnlyOnceBruteForce(arr));
+
+        //better
+//        System.out.println(array.findNumberThatAppearsOnlyOnceBetter(arr));
+
+        //Optimal---XOR
+        System.out.println(array.findNumberThatAppearsOnlyOnceOptimal(arr));
+
+
 
 
 
