@@ -210,6 +210,54 @@ public class Arrayss {
                 XOR=XOR^arr[i];
             return XOR;
         }
+
+        public int longestSubArrayWithSumKBruteForce(int[] arr, int k) {
+            int maxLen=0;
+            for(int i=0;i<arr.length;i++){
+                int sum=0;
+                for(int j=i;j<arr.length;j++){
+                    sum+=arr[j];
+                    if(sum==k)
+                        maxLen=Math.max(maxLen,j-i+1);
+                    if(sum>k) break;
+                }
+            }
+            return maxLen;
+        }
+
+        public int longestSubArrayWithSumKBetter(int[] arr, int k) {
+            int maxLen=0;
+            int preSum=0;
+            HashMap<Integer,Integer> map= new HashMap<>();
+            for(int i=0;i<arr.length;i++){
+                preSum+=arr[i];
+                if(preSum==k)
+                    maxLen=Math.max(maxLen,i+1);
+                int rem=preSum-k;
+                if(map.containsKey(rem)){
+                    maxLen=Math.max(maxLen,i-map.get(rem));
+                }
+                if(!map.containsKey(preSum)){//this check when we have continuous zeros that time we should not sort our length
+                    map.put(preSum,i);
+                }
+            }
+            return maxLen;
+        }
+
+        public int longestSubArrayWithSumKOptimal(int[] arr, int k) {
+            int l=0,r=0,maxLen=0;
+            int sum=0,n=arr.length;
+            while(r<n){
+                sum+=arr[r];
+                while(sum>k){
+                    sum-=arr[l++];
+                }
+                if(sum==k)
+                    maxLen=Math.max(maxLen,r-l+1);
+                r++;
+            }
+            return maxLen;
+        }
     }
     public static void main(String args[]){
         ArrayQuestions array= new ArrayQuestions();
@@ -290,7 +338,7 @@ public class Arrayss {
 //        System.out.println(array.maximumConsecutiveOnes(arr));
 
         //find the number that appears only once and others are appearing twice
-        int arr[]={1,2,3,1,3,6,7,6,2};
+//        int arr[]={1,2,3,1,3,6,7,6,2};
 
 
         //brute force
@@ -300,7 +348,23 @@ public class Arrayss {
 //        System.out.println(array.findNumberThatAppearsOnlyOnceBetter(arr));
 
         //Optimal---XOR
-        System.out.println(array.findNumberThatAppearsOnlyOnceOptimal(arr));
+//        System.out.println(array.findNumberThatAppearsOnlyOnceOptimal(arr));
+
+
+        //longest subArray with sum K
+//        int arr[]={1,2,3,1,1,1,4,2,3};
+//        int k=3;
+
+        int arr[]={1,2,3,1,1,1,1,3,3};
+        int k=6;
+//        System.out.println(array.longestSubArrayWithSumKBruteForce(arr,k));
+
+        //Better for Only +ve Values and this is Only Optimal for -ve and +ve both valued array
+//        System.out.println(array.longestSubArrayWithSumKBetter(arr,k));
+
+        //Optimal Sol
+        System.out.println(array.longestSubArrayWithSumKOptimal(arr,k));
+
 
 
 
