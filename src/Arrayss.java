@@ -1,4 +1,5 @@
 import java.util.*;
+import java.util.stream.Stream;
 
 public class Arrayss {
     static class ArrayQuestions{
@@ -258,6 +259,58 @@ public class Arrayss {
             }
             return maxLen;
         }
+
+        public String twoSumBruteForce(int[] arr, int target) {
+            int n=arr.length;
+            for(int i=0;i<n;i++){
+                for(int j=0;j<n;j++){
+                    if(i!=j && arr[i]+arr[j]==target)
+                        return "YES";
+                }
+            }
+            return "NO";
+        }
+
+        public String twoSumBruteForceOptimal(int[] arr, int target) {
+            int n=arr.length;
+            for(int i=0;i<n;i++){
+                for(int j=i+1;j<n;j++){
+                    if(arr[i]+arr[j]==target)
+                        return "YES";
+                }
+            }
+            return "NO";
+        }
+
+        public String twoSumBetterSolution(int[] arr, int target) {
+            int n=arr.length;
+            HashMap<Integer,Integer> map= new HashMap<>();
+            for(int i=0;i<n;i++){
+                int currEle=arr[i];
+                int reqEle=target-currEle;
+                if(map.containsKey(reqEle)){
+                    return "YES";
+                }
+                map.put(arr[i],i);
+            }
+            return "NO";
+        }
+
+        public String twoSumOptimal(int[] arr, int target) {
+            int n=arr.length;
+            Arrays.sort(arr);
+            int i=0,j=n-1;
+            while(i<j){
+                int sum=arr[i]+arr[j];
+                if(sum==target){
+                    return "YES";
+                }else if(sum<target)
+                    i++;
+                else
+                    j--;
+            }
+            return "NO";
+        }
     }
     public static void main(String args[]){
         ArrayQuestions array= new ArrayQuestions();
@@ -355,15 +408,33 @@ public class Arrayss {
 //        int arr[]={1,2,3,1,1,1,4,2,3};
 //        int k=3;
 
-        int arr[]={1,2,3,1,1,1,1,3,3};
-        int k=6;
+//        int arr[]={1,2,3,1,1,1,1,3,3};
+//        int k=6;
 //        System.out.println(array.longestSubArrayWithSumKBruteForce(arr,k));
 
         //Better for Only +ve Values and this is Only Optimal for -ve and +ve both valued array
 //        System.out.println(array.longestSubArrayWithSumKBetter(arr,k));
 
-        //Optimal Sol
-        System.out.println(array.longestSubArrayWithSumKOptimal(arr,k));
+//        //Optimal Sol
+//        System.out.println(array.longestSubArrayWithSumKOptimal(arr,k));
+
+
+        //two sum return YES Or no if available or not--variant-1
+        int arr[]={2,6,5,8,11};
+        int target=14;
+
+        //bruteForce
+//        System.out.println(array.twoSumBruteForce(arr,target));
+
+        //bruteForce Optimal
+//        System.out.println(array.twoSumBruteForceOptimal(arr,target));
+
+        //Better Solution using hashing
+//        System.out.println(array.twoSumBetterSolution(arr,target));
+
+        //Optimal Solution
+        System.out.println(array.twoSumOptimal(arr,target));
+
 
 
 
