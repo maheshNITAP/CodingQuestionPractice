@@ -1,3 +1,6 @@
+import javafx.util.Pair;
+
+import java.net.Inet4Address;
 import java.util.*;
 import java.util.stream.Stream;
 
@@ -311,6 +314,43 @@ public class Arrayss {
             }
             return "NO";
         }
+
+        public Pair<Integer, Integer> twoSumBruteForce1(int[] arr, int target) {
+            int n=arr.length;
+            for(int i=0;i<n;i++){
+                for(int j=0;j<n;j++){
+                    if(i!=j && arr[i]+arr[j]==target)
+                        return new Pair<>(i,j);
+                }
+            }
+            return new Pair<>(-1,-1);
+
+        }
+
+        public Pair<Integer,Integer> twoSumBruteForceOptimal1(int[] arr, int target) {
+            int n=arr.length;
+            for(int i=0;i<n;i++){
+                for(int j=i+1;j<n;j++){
+                    if(arr[i]+arr[j]==target)
+                        return new Pair<>(i,j);
+                }
+            }
+            return new Pair<>(-1,-1);
+        }
+
+        public Pair<Integer,Integer> twoSumOptimal1(int[] arr, int target) {
+            int n=arr.length;
+            HashMap<Integer,Integer> map= new HashMap<>();
+            for(int i=0;i<n;i++){
+                int currEle=arr[i];
+                int reqEle=target-currEle;
+                if(map.containsKey(reqEle)){
+                    return new Pair<>(map.get(reqEle),i);
+                }
+                map.put(arr[i],i);
+            }
+            return new Pair<>(-1,-1);
+        }
     }
     public static void main(String args[]){
         ArrayQuestions array= new ArrayQuestions();
@@ -433,7 +473,20 @@ public class Arrayss {
 //        System.out.println(array.twoSumBetterSolution(arr,target));
 
         //Optimal Solution
-        System.out.println(array.twoSumOptimal(arr,target));
+//        System.out.println(array.twoSumOptimal(arr,target));
+
+
+
+//        //two sum return index where both ele persent --variant-2
+        //brute force
+//        System.out.println(array.twoSumBruteForce1(arr,target));
+
+        //brute force Optimal
+//        System.out.println(array.twoSumBruteForceOptimal1(arr,target));
+
+        //Optimal
+        System.out.println(array.twoSumOptimal1(arr,target));
+
 
 
 
