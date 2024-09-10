@@ -1,8 +1,9 @@
+import com.sun.xml.internal.bind.v2.schemagen.xmlschema.List;
+import javafx.beans.property.adapter.ReadOnlyJavaBeanBooleanProperty;
 import javafx.util.Pair;
 
-import java.net.Inet4Address;
 import java.util.*;
-import java.util.stream.Stream;
+
 
 public class Arrayss {
     static class ArrayQuestions{
@@ -351,9 +352,66 @@ public class Arrayss {
             }
             return new Pair<>(-1,-1);
         }
+
+        //brute force
+        public void sortAnArrayOf1sBruteForce(int[] arr) {
+            int n=arr.length;
+            for(int i=0;i<n;i++){
+                for(int j=0;j<n-i-1;j++){
+                    if(arr[j]>arr[j+1]){
+                        swap(arr,j,j+1);
+                    }
+                }
+            }
+
+
+        }
+
+        private void swap(int[] arr, int i, int j) {
+            int t=arr[i];
+            arr[i]=arr[j];
+            arr[j]=t;
+        }
+
+        public void sortAnArrayOf1sBetterSol(int[] arr) {
+            int  n=arr.length;
+            int count0=0,count1=0,count2=0;
+            for(int i=0;i<n;i++){
+                if(arr[i]==0) count0++;
+                else if(arr[i]==1) count1++;
+                else count2++;
+            }
+            for(int i=0;i<count0;i++)
+                arr[i]=0;
+            for(int i=count0;i<count0+count1;i++)
+                arr[i]=1;
+            for(int i=count0+count1;i<n;i++)
+                arr[i]=2;
+        }
+
+        public void sortAnArrayOf1sOptimalSolution(int[] arr) {
+            int n=arr.length;
+            int low=0,mid=0,high=n-1;
+            while(mid<=high){
+                if(arr[mid]==0){
+                    swap(arr,low,mid);
+                    low++;
+                    mid++;
+                }else if(arr[mid]==1)
+                    mid++;
+                else{
+                    swap(arr,mid,high);
+                    high--;
+                }
+            }
+        }
     }
     public static void main(String args[]){
         ArrayQuestions array= new ArrayQuestions();
+
+
+
+
 //        int arr[]= {1,2,4,7,7,5};
         //Second largest element
         //bruteForce
@@ -460,8 +518,8 @@ public class Arrayss {
 
 
         //two sum return YES Or no if available or not--variant-1
-        int arr[]={2,6,5,8,11};
-        int target=14;
+//        int arr[]={2,6,5,8,11};
+//        int target=14;
 
         //bruteForce
 //        System.out.println(array.twoSumBruteForce(arr,target));
@@ -485,7 +543,33 @@ public class Arrayss {
 //        System.out.println(array.twoSumBruteForceOptimal1(arr,target));
 
         //Optimal
-        System.out.println(array.twoSumOptimal1(arr,target));
+//        System.out.println(array.twoSumOptimal1(arr,target));
+
+
+        //Sort An Array of 0's, 1's and 2's
+        int arr[]={0,1,2,0,1,2,1,2,0,0,0,1};
+
+        //using any sorting algo
+//       array.sortAnArrayOf1sBruteForce(arr);
+//        for(int i:arr)
+//            System.out.print(i+" ");
+
+        //Better Solution
+//        array.sortAnArrayOf1sBetterSol(arr);
+//        for(int i:arr)
+//            System.out.print(i+" ");
+
+        //Optimal solution--using Dutch national flag Algorithm
+//        array.sortAnArrayOf1sOptimalSolution(arr);
+//        for(int i:arr)
+//            System.out.print(i+" ");
+
+
+
+
+
+
+
 
 
 
