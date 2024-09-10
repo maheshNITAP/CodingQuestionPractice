@@ -405,6 +405,56 @@ public class Arrayss {
                 }
             }
         }
+
+        public int majorityElement(int[] arr) {
+            int n=arr.length;
+            for(int i=0;i<n;i++){
+                int count=0;
+                for(int j=0;j<n;j++){
+                    if(arr[j]==arr[i])
+                        count++;
+                }
+                if(count>n/2)
+                    return arr[i];
+            }
+            return -1;
+        }
+
+        public int majorityElementBetterSol(int[] arr) {
+            int n=arr.length;
+            HashMap<Integer,Integer> map= new HashMap<>();
+            Arrays.stream(arr).forEach(e->map.put(e,map.getOrDefault(e,0)+1));
+//            map.entrySet().stream().filter(e->e.getValue()>n/2).forEach(e-> System.out.println(e.getKey()));
+            for(Map.Entry<Integer,Integer>e: map.entrySet()){
+                if(e.getValue()>n/2)
+                    return e.getKey();
+            }
+            return -1;
+        }
+
+        public int majorityElementOptimalSol(int[] arr) {
+            int n=arr.length;
+            int count=0;
+            int ele=0;
+            for(int i=0;i<n;i++){
+                if(count==0){
+                    ele=arr[i];
+                    count=1;
+                }else if(arr[i]==ele)
+                    count++;
+                else
+                    count--;
+            }
+            //this check is only needed if is didn't say that there is definitely one element occurs more than n/2 time
+            int counter=0;
+            for(int i=0;i<n;i++){
+                if(ele==arr[i])
+                    counter++;
+            }
+            if(counter>n/2)
+                return ele;
+            return -1;
+        }
     }
     public static void main(String args[]){
         ArrayQuestions array= new ArrayQuestions();
@@ -547,7 +597,7 @@ public class Arrayss {
 
 
         //Sort An Array of 0's, 1's and 2's
-        int arr[]={0,1,2,0,1,2,1,2,0,0,0,1};
+//        int arr[]={0,1,2,0,1,2,1,2,0,0,0,1};
 
         //using any sorting algo
 //       array.sortAnArrayOf1sBruteForce(arr);
@@ -563,6 +613,19 @@ public class Arrayss {
 //        array.sortAnArrayOf1sOptimalSolution(arr);
 //        for(int i:arr)
 //            System.out.print(i+" ");
+
+        //majority Element---majority element is the element which occurs more then n/2 time
+
+        int arr[]={7,7,5,7,5,1,5,7,5,5,7,7,5,5,5,5};
+
+        //brute force
+//        System.out.println(array.majorityElement(arr));
+
+        //Better Solution--using hashing
+//        System.out.println(array.majorityElementBetterSol(arr));
+
+        //Optimal Soln--using moose voting Algrithm
+        System.out.println(array.majorityElementOptimalSol(arr));
 
 
 
