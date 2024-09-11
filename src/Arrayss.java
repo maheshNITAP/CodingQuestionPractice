@@ -2,6 +2,7 @@ import com.sun.xml.internal.bind.v2.schemagen.xmlschema.List;
 import javafx.beans.property.adapter.ReadOnlyJavaBeanBooleanProperty;
 import javafx.util.Pair;
 
+import java.net.Inet4Address;
 import java.util.*;
 
 
@@ -455,6 +456,51 @@ public class Arrayss {
                 return ele;
             return -1;
         }
+
+        public int maximumSubArraySumBruteForce(int[] arr) {
+            int n=arr.length;
+            int maxi=Integer.MIN_VALUE;
+            for(int i=0;i<n;i++){
+                int sum=0;
+                for(int j=i;j<n;j++){
+                    sum+=arr[j];
+                    maxi=Math.max(maxi,sum);
+                }
+            }
+            return maxi;
+        }
+
+        public int maximumSubArraySumUsingKadansAlgo(int[] arr) {
+            int maxi=Integer.MIN_VALUE;
+            int sum=0;
+            for(int i=0;i<arr.length;i++){
+                sum+=arr[i];
+                if(sum>maxi)
+                    maxi=sum;
+                if(sum<0)
+                    sum=0;
+            }
+            return maxi;
+        }
+
+        public Pair<Integer, Integer> printMaximumSumSubArrayUsingKadane(int[] arr) {
+            int start=0;
+            int ansStart = 0,ansEnd = 0;
+            int sum=0,maxi= Integer.MIN_VALUE;
+            for(int i=0;i<arr.length;i++){
+                if(sum==0)
+                    start=i;
+                sum+=arr[i];
+                if(sum>maxi){
+                    maxi=sum;
+                    ansStart=start;
+                    ansEnd=i;
+                }
+                if(sum<0)
+                    sum=0;
+            }
+            return new Pair<>(ansStart,ansEnd);
+        }
     }
     public static void main(String args[]){
         ArrayQuestions array= new ArrayQuestions();
@@ -616,7 +662,7 @@ public class Arrayss {
 
         //majority Element---majority element is the element which occurs more then n/2 time
 
-        int arr[]={7,7,5,7,5,1,5,7,5,5,7,7,5,5,5,5};
+//        int arr[]={7,7,5,7,5,1,5,7,5,5,7,7,5,5,5,5};
 
         //brute force
 //        System.out.println(array.majorityElement(arr));
@@ -625,7 +671,24 @@ public class Arrayss {
 //        System.out.println(array.majorityElementBetterSol(arr));
 
         //Optimal Soln--using moose voting Algrithm
-        System.out.println(array.majorityElementOptimalSol(arr));
+//        System.out.println(array.majorityElementOptimalSol(arr));
+
+        //Maximum Subarray Sum---Kadane Algo
+        int arr[]={-2,-3,4,-1,-2,1,5,-3};
+
+        //brute force
+//        System.out.println(array.maximumSubArraySumBruteForce(arr));
+
+        //Optimal-using Kadan's algorithm
+//        System.out.println(array.maximumSubArraySumUsingKadansAlgo(arr));
+        
+        
+        //Follow Up Question On-Maximum SubArray Sum
+        //--Print Maximum SubArray Sum
+        Pair<Integer,Integer>p=array.printMaximumSumSubArrayUsingKadane(arr);
+        for(int i=p.getKey();i<=p.getValue();i++){
+            System.out.print(arr[i]+" ");
+        }
 
 
 
