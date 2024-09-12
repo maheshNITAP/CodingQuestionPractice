@@ -501,6 +501,66 @@ public class Arrayss {
             }
             return new Pair<>(ansStart,ansEnd);
         }
+
+        public int[] reArrangeArrayElementBruteForce(int[] arr) {
+            int n=arr.length;
+            ArrayList<Integer> pos= new ArrayList<>();
+            ArrayList<Integer> neg=new ArrayList<>();
+//            for(int i=0;i<arr.length;i++){
+//                if(arr[i]>0)
+//                    pos.add(arr[i]);
+//                else
+//                    neg.add(arr[i]);
+//            }
+            Arrays.stream(arr).forEach(e->(e>0?pos:neg).add(e));
+            for(int i=0;i<n/2;i++){
+                arr[2*i]=pos.get(i);
+                arr[(2*i)+1]=neg.get(i);
+            }
+            return arr;
+        }
+
+        public int[] reArrangeArrayElementOptima(int[] arr) {
+            int n=arr.length;
+            int ans[]= new int[n];
+            int posInd=0,negIndex=1;
+            for(int i=0;i<n;i++){
+                if(arr[i]>0){
+                    ans[posInd]=arr[i];
+                    posInd+=2;
+                }else{
+                    ans[negIndex]=arr[i];
+                    negIndex+=2;
+                }
+            }
+            return ans;
+        }
+
+        public int [] reArrangeArrayElementVariant2(int[] arr) {
+            int n=arr.length;
+            ArrayList<Integer> pos= new ArrayList<>(),neg= new ArrayList<>();
+            Arrays.stream(arr).forEach(e->(e>0?pos:neg).add(e));
+            if(pos.size()>neg.size()){
+                for(int i=0;i<neg.size();i++){
+                    arr[2*i]=pos.get(i);
+                    arr[(2*i)+1]=neg.get(i);
+                }
+                int index=neg.size()*2;
+                for(int i=neg.size();i<pos.size();i++){
+                    arr[index++]=pos.get(i);
+                }
+            }else{
+                for(int i=0;i<pos.size();i++){
+                    arr[2*i]=pos.get(i);
+                    arr[(2*i)+1]=neg.get(i);
+                }
+                int index=pos.size()*2;
+                for(int i=pos.size();i<neg.size();i++){
+                    arr[index++]=neg.get(i);
+                }
+            }
+            return arr;
+        }
     }
     public static void main(String args[]){
         ArrayQuestions array= new ArrayQuestions();
@@ -674,7 +734,7 @@ public class Arrayss {
 //        System.out.println(array.majorityElementOptimalSol(arr));
 
         //Maximum Subarray Sum---Kadane Algo
-        int arr[]={-2,-3,4,-1,-2,1,5,-3};
+//        int arr[]={-2,-3,4,-1,-2,1,5,-3};
 
         //brute force
 //        System.out.println(array.maximumSubArraySumBruteForce(arr));
@@ -685,10 +745,32 @@ public class Arrayss {
         
         //Follow Up Question On-Maximum SubArray Sum
         //--Print Maximum SubArray Sum
-        Pair<Integer,Integer>p=array.printMaximumSumSubArrayUsingKadane(arr);
-        for(int i=p.getKey();i<=p.getValue();i++){
-            System.out.print(arr[i]+" ");
-        }
+//        Pair<Integer,Integer>p=array.printMaximumSumSubArrayUsingKadane(arr);
+//        for(int i=p.getKey();i<=p.getValue();i++){
+//            System.out.print(arr[i]+" ");
+//        }
+
+
+        //ReArrange Array element By Sign +ve/_ve
+        //variation 1st--where equal # of +ve and -ve are there
+//        int arr[]={3,1,-2,-5,2,-4};
+
+        //brute force
+//        array.reArrangeArrayElementBruteForce(arr);
+//        Arrays.stream(arr).forEach(e-> System.out.print(e+" "));
+
+        //Optimal
+//        int ans[]=array.reArrangeArrayElementOptima(arr);
+//        Arrays.stream(ans).forEach(e-> System.out.print(e+" "));
+
+        //variant-2--# of +ve and negative are not equal
+
+        int arr[]={1,2,-4,-5,3,6};
+
+        array.reArrangeArrayElementVariant2(arr);
+        Arrays.stream(arr).forEach(e-> System.out.print(e+" "));
+
+
 
 
 
