@@ -561,6 +561,28 @@ public class Arrayss {
             }
             return arr;
         }
+
+        public void nextPermutationOptimal(int[] arr) {
+            int n=arr.length;
+            int index=-1;
+            for(int i=n-2;i>=0;i--){
+                if(arr[i]<arr[i+1]){
+                    index=i;
+                    break;
+                }
+            }
+            if(index==-1){
+                reverse(arr,0,n-1);//my Own function
+            }
+            for(int i=n-1;i>=0;i--){
+                if(arr[i]>arr[index]){
+                    swap(arr,i,index);
+                    break;
+                }
+            }
+            reverse(arr,index+1,n-1);
+
+        }
     }
     public static void main(String args[]){
         ArrayQuestions array= new ArrayQuestions();
@@ -765,9 +787,14 @@ public class Arrayss {
 
         //variant-2--# of +ve and negative are not equal
 
-        int arr[]={1,2,-4,-5,3,6};
+//        int arr[]={1,2,-4,-5,3,6};
+//
+//        array.reArrangeArrayElementVariant2(arr);
+//        Arrays.stream(arr).forEach(e-> System.out.print(e+" "));
 
-        array.reArrangeArrayElementVariant2(arr);
+        //next Permutation--Optimal
+        int arr[]={2,1,5,4,3,0,0};
+        array.nextPermutationOptimal(arr);
         Arrays.stream(arr).forEach(e-> System.out.print(e+" "));
 
 
