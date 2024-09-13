@@ -583,6 +583,37 @@ public class Arrayss {
             reverse(arr,index+1,n-1);
 
         }
+
+        public ArrayList<Integer> leadersInArrayBruteForce(int[] arr) {
+            ArrayList<Integer> ans= new ArrayList<>();
+            int n=arr.length;
+            for(int i=0;i<n;i++){
+                boolean isLeader=true;
+                for(int j=i+1;j<n;j++){
+                    if(arr[i]<arr[j]){
+                        isLeader=false;
+                        break;
+                    }
+                }
+                if(isLeader)
+                    ans.add(arr[i]);
+
+            }
+            return ans;
+        }
+
+        public ArrayList leadersInArrayOptimal(int[] arr) {
+            ArrayList<Integer> ans= new ArrayList<>();
+            int maxi=Integer.MIN_VALUE;
+            for(int i=arr.length-1;i>=0;i--){
+                if(arr[i]>maxi){
+                    ans.add(arr[i]);
+                    maxi=arr[i];
+                }
+            }
+            Collections.reverse(ans);//returning in array order only
+            return ans;
+        }
     }
     public static void main(String args[]){
         ArrayQuestions array= new ArrayQuestions();
@@ -793,10 +824,19 @@ public class Arrayss {
 //        Arrays.stream(arr).forEach(e-> System.out.print(e+" "));
 
         //next Permutation--Optimal
-        int arr[]={2,1,5,4,3,0,0};
-        array.nextPermutationOptimal(arr);
-        Arrays.stream(arr).forEach(e-> System.out.print(e+" "));
+//        int arr[]={2,1,5,4,3,0,0};
+//        array.nextPermutationOptimal(arr);
+//        Arrays.stream(arr).forEach(e-> System.out.print(e+" "));
 
+        //leaders in Array--everything on the right should be smaller
+
+        int arr[]={10,22,12,3,0,6};
+
+        //brute force
+//        System.out.println(array.leadersInArrayBruteForce(arr));
+
+//        Optimal
+        System.out.println(array.leadersInArrayOptimal(arr));
 
 
 
