@@ -614,6 +614,71 @@ public class Arrayss {
             Collections.reverse(ans);//returning in array order only
             return ans;
         }
+
+        public int longestConsecutiveSequenceBruteForce(int[] arr) {
+            int n=arr.length;
+            int longest=1;
+            for(int i=0;i<n;i++){
+                int x=arr[i];
+                int count=1;
+                while(linearSearch(arr,n,x+1)==true){
+                    count++;
+                    x=x+1;
+                }
+                longest = Math.max(longest,count);
+            }
+            return longest;
+        }
+
+        private boolean linearSearch(int[] arr, int n, int num) {
+            for(int i=0;i<n;i++){
+                if(num==arr[i])
+                    return true;
+            }
+            return false;
+        }
+
+        public int longestConsecutiveSequenceBetterSol(int[] arr) {
+            int n=arr.length;
+            Arrays.sort(arr);
+            int lastSmaller=Integer.MIN_VALUE;
+            int currCount=0;
+            int largest=0;
+            for(int i=0;i<n;i++){
+                if(lastSmaller+1==arr[i]){
+                    currCount+=1;
+                    lastSmaller=arr[i];
+                }else if(lastSmaller+1 != arr[i]){
+                    currCount=1;
+                    lastSmaller=arr[i];
+                }
+                largest=Math.max(largest,currCount);
+            }
+            return largest;
+        }
+
+        public int longestConsecutiveSequenceOptimalSol(int[] arr) {
+            int n=arr.length;
+            if(n==0) return 0;
+            int largest=1;
+            HashSet<Integer> st= new HashSet<>();
+            for(int i=0;i<n;i++)
+                st.add(arr[i]);
+
+            for(Integer it:st){
+                if(!st.contains(it-1)){
+                    int count=1;
+                    int x=it;
+                    while(st.contains(x+1)){
+                        count+=1;
+                        x=x+1;
+                    }
+                    largest=Math.max(largest,count);
+                }
+            }
+            return largest;
+
+        }
     }
     public static void main(String args[]){
         ArrayQuestions array= new ArrayQuestions();
@@ -830,13 +895,27 @@ public class Arrayss {
 
         //leaders in Array--everything on the right should be smaller
 
-        int arr[]={10,22,12,3,0,6};
+//        int arr[]={10,22,12,3,0,6};
 
         //brute force
 //        System.out.println(array.leadersInArrayBruteForce(arr));
 
 //        Optimal
-        System.out.println(array.leadersInArrayOptimal(arr));
+//        System.out.println(array.leadersInArrayOptimal(arr));
+
+
+        //Longest Consecutive Sequence
+
+        int arr[]={102,4,100,1,101,3,2,1,1,103,104};
+
+        //brute force
+//        System.out.println(array.longestConsecutiveSequenceBruteForce(arr));
+
+        //better Solution--using sorting---N logN+N
+//        System.out.println(array.longestConsecutiveSequenceBetterSol(arr));
+
+        //Optimal Solution
+        System.out.println(array.longestConsecutiveSequenceOptimalSol(arr));
 
 
 
