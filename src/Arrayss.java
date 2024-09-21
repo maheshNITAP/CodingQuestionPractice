@@ -730,6 +730,34 @@ public class Arrayss {
                 }
             }
         }
+
+        public int[][] rotateMatrixBy90DegreesBruteForce(int[][] arr) {
+            int n=arr.length,m=arr[0].length;
+            int ans[][]= new int[n][m];
+            for(int i=0;i<n;i++){
+                for(int j=0;j<m;j++){
+                    ans[j][n-1-i]=arr[i][j];
+                }
+            }
+            return ans;
+        }
+
+        public void rotateMatrixBy90DegreesOptimal(int[][] arr) {
+            int n=arr.length,m=arr[0].length;
+            for(int i=0;i<n;i++){
+                for(int j=i+1;j<m;j++)
+                    swapIn2DMatrix(arr,i,j);
+            }
+            for(int i=0;i<n;i++){
+                reverse(arr[i],0,m-1);
+            }
+        }
+
+        private void swapIn2DMatrix(int[][] arr, int i, int j) {
+            int t=arr[i][j];
+            arr[i][j]=arr[j][i];
+            arr[j][i]=t;
+        }
     }
     public static void main(String args[]){
         ArrayQuestions array= new ArrayQuestions();
@@ -970,7 +998,7 @@ public class Arrayss {
 
         //set matrix zeros--set all rows and column to zeros which consist 0 in it
 
-        int arr[][]={{1,1,1,1},{1,0,0,1},{1,1,0,1},{1,1,1,1}};
+//        int arr[][]={{1,1,1,1},{1,0,0,1},{1,1,0,1},{1,1,1,1}};
 
         //brute force
 //        array.setMatrixZeros(arr);
@@ -981,13 +1009,39 @@ public class Arrayss {
 //        });
 
         //Better Solution
-        array.setMatrixZerosBetterSol(arr);
-        Arrays.stream(arr).forEach(e-> {
+//        array.setMatrixZerosBetterSol(arr);
+//        Arrays.stream(arr).forEach(e-> {
+//            Arrays.stream(e).forEach(System.out::print);
+//            System.out.println(" ");
+//        });
+
+        //Optimal---it's there you can check notes
+
+
+        //rotate matrix/Image by 90 degrees
+        int arr[][]={
+                {1,2,3,4},
+                {5,6,7,8},
+                {9,10,11,12},
+                {13,14,15,16}
+        };
+
+        //brute force with extra space
+//        int[][] ans = array.rotateMatrixBy90DegreesBruteForce(arr);
+//
+//        Arrays.stream(ans).forEach(e-> {
+//            Arrays.stream(e).forEach(System.out::print);
+//            System.out.println(" ");
+//        });
+
+        //Optimal using transpose matrix
+        array.rotateMatrixBy90DegreesOptimal(arr);
+                Arrays.stream(arr).forEach(e-> {
             Arrays.stream(e).forEach(System.out::print);
             System.out.println(" ");
         });
 
-        //Optimal---it's there you can check notes
+
 
 
 
