@@ -4,11 +4,21 @@ public class Employee {
     private int eId;
     private String name;
     private String phone;
+    private int salary;
 
-    public Employee(int eId,String name, String phone){
+    public Employee(int eId,String name, String phone,int salary){
         this .eId=eId;
         this.name=name;
         this.phone=phone;
+        this.salary=salary;
+    }
+
+    public int getSalary() {
+        return salary;
+    }
+
+    public void setSalary(int salary) {
+        this.salary = salary;
     }
 
     public int geteId() {
