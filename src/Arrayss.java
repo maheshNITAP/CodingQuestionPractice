@@ -1,5 +1,6 @@
 import javafx.util.Pair;
 
+import javax.swing.*;
 import java.util.*;
 
 
@@ -776,19 +777,61 @@ public class Arrayss {
                 right--;
 
                 //left---- <--
-                if(top<=bottom){
+                if(top<=bottom){// in case of only one row is there
                     for(int i=right;i>=left;i--)
                         System.out.print(arr[bottom][i]+" ");
                     bottom--;
                 }
 
                 //top
-                if(bottom<=right){
+                if(bottom<=right){// in case of only one column is there
                     for(int i=bottom;i>=top;i--)
                         System.out.print(arr[i][left]+" ");
                     left++;
                 }
             }
+        }
+
+        public int elementAtGivenLocation(int row, int col) {
+            //using nCr
+            int res=1;
+            for(int i=0;i<col;i++){
+                res=res*(row-i);
+                res=res/(i+1);
+            }
+            return res;
+        }
+
+        public List<Integer> printNthRowOfPascalTriangle(int n) {
+            List<Integer> lis= new ArrayList<>();
+            int ans=1;
+            lis.add(ans);
+            for(int col=1;col<n;col++){
+                ans=ans*(n-col);
+                ans=ans/(col);
+                lis.add(ans);
+            }
+            return lis;
+        }
+
+        public List<List<Integer>> printWholePascalTriangle(int n) {
+            List<List<Integer>> ans= new ArrayList<>();
+            for(int row=1;row<=n;row++){
+                List<Integer> temp= new ArrayList<>();
+                for(int col=1;col<=row;col++){
+                    temp.add(elementAtGivenLocation(row-1,col-1));
+                }
+                ans.add(temp);
+            }
+            return ans;
+        }
+
+        public List<List<Integer>> printWholePascalTriangleOptimal(int n) {
+            List<List<Integer>> list= new ArrayList<>();
+            for(int row=1;row<=n;row++){
+                list.add(printNthRowOfPascalTriangle(row));
+            }
+            return list;
         }
     }
     public static void main(String args[]){
@@ -1075,16 +1118,46 @@ public class Arrayss {
 
 
         //Spiral traversal of a matrix
-        int arr[][]={
-                {1,2,3,4,5,6},
-                {20,21,22,23,24,7},
-                {19,32,33,34,25,8},
-                {18,31,36,35,26,9},
-                {17,30,29,28,27,10},
-                {16,15,14,13,12,11}};
+//        int arr[][]={
+//                {1,2,3,4,5,6},
+//                {20,21,22,23,24,7},
+//                {19,32,33,34,25,8},
+//                {18,31,36,35,26,9},
+//                {17,30,29,28,27,10},
+//                {16,15,14,13,12,11}};
+//
+//        array.spiralTraversalOfMatrix(arr);
 
-        array.spiralTraversalOfMatrix(arr);
+        //pascal triangle
 
+//        type-1
+
+//        you are given row and column ,print the element persent at palce row and col
+
+        int row=5,col=3;
+
+//        System.out.println(array.elementAtGivenLocation(row-1,col-1));//1 based indexing so row-1,col-1
+
+
+        //print nth row of pascal triangle
+        int n=6;
+
+//        System.out.println(array.printNthRowOfPascalTriangle(n));
+
+        //print whole pascal triangle
+
+        //brute force
+//        List<List<Integer>> ans= array.printWholePascalTriangle(n);
+//
+//        for(List<Integer> e:ans){
+//            System.out.println(e);
+//        }
+
+        //Optimal
+
+        List<List<Integer>> ans= array.printWholePascalTriangleOptimal(n);
+        for (List<Integer> e:ans)
+            System.out.println(e);
 
 
 
