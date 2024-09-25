@@ -898,6 +898,79 @@ public class Arrayss {
 
             return list;
         }
+
+        public List<List<Integer>> threeSumByBruteForce(int[] arr) {
+            Set<ArrayList<Integer>> st= new HashSet<>();
+            int n=arr.length;
+            for(int i=0;i<n;i++){
+                for(int j=i+1;j<n;j++){
+                    for(int k=j+1;k<n;k++){
+                        if(arr[i]+arr[j]+arr[k]==0){
+                            ArrayList<Integer> temp=new ArrayList<>(Arrays.asList(arr[i],arr[j],arr[k]));
+                            Collections.sort(temp);
+                            st.add(temp);
+                        }
+                    }
+                }
+            }
+            List<List<Integer>> ans= new ArrayList<>();
+            Iterator<ArrayList<Integer>> it=st.iterator();
+            while(it.hasNext()){
+                ans.add(it.next());
+            }
+            return ans;
+
+        }
+
+        public Set threeSumByBetterSoln(int[] arr) {
+            int n=arr.length;
+            Set<List<Integer>> st= new HashSet<>();
+            for(int i=0;i<n;i++){
+                HashSet<Integer> temp= new HashSet<>();
+                for(int j=i+1;j<n;j++){
+                    int third=-(arr[i]+arr[j]);
+                    if(temp.contains(third)){
+                        ArrayList<Integer> ans=new ArrayList<>(Arrays.asList(arr[i],arr[j],third));
+                        Collections.sort(ans);
+                        st.add(ans);
+                    }
+                    temp.add(arr[j]);
+                }
+            }
+            return st;
+
+        }
+
+        public List<List<Integer>> threeSumByOptimalSol(int[] arr) {
+            List<List<Integer>> ans= new ArrayList<>();
+            Set<Integer> st= new HashSet<>();
+            int n= arr.length;
+            Arrays.sort(arr);
+            for(int i=0;i<n;i++){
+                if(i>0 && arr[i]==arr[i-1]) continue;
+                int j=i+1;
+                int k=n-1;
+                while(j<k){
+                    int sum=arr[i]+arr[j]+arr[k];
+                    if(sum<0)
+                        j++;
+                    else if(sum>0)
+                        k--;
+                    else{
+                        ArrayList<Integer> temp= new ArrayList<>(Arrays.asList(arr[i],arr[j],arr[k]));
+                        ans.add(temp);
+                        j++;
+                        k--;
+                        //if continuous elements are same like ,1,1,
+
+                        while(j<k && arr[j]==arr[j-1]) j++;
+                        while(j<k && arr[k]==arr[k+1])k--;
+                    }
+                }
+            }
+            return ans;
+
+        }
     }
     public static void main(String args[]){
         ArrayQuestions array= new ArrayQuestions();
@@ -1237,10 +1310,32 @@ public class Arrayss {
         // Better Solution--using remember technique
 //        System.out.println(array.majorityElement2BetterSol(arr));
 
-        int arr[]={2,1,1,3,1,4,5,6};
+//        int arr[]={2,1,1,3,1,4,5,6};
 
         //Optimal--using using moose voting Algorithm with modification
-        System.out.println(array.majorityElement2OptimalSol(arr));
+//        System.out.println(array.majorityElement2OptimalSol(arr));
+
+
+        //3 SUM---find out the triplets where sum is zero
+
+        int arr[]={-1,0,1,2,-1,-4};
+
+        //brute force
+//        List<List<Integer>> ans=array.threeSumByBruteForce(arr);
+//        for(List<Integer> lis:ans){
+//            System.out.println(lis);
+//        }
+
+
+        //Better Soln--usingHashTable
+
+//        Set ans= array.threeSumByBetterSoln(arr);//we can directly return set also
+//        System.out.println(ans);
+
+        //Optimal Soln
+        //first sort then use two pointer
+        List<List<Integer>> ans = array.threeSumByOptimalSol(arr);
+        System.out.println(ans);
 
 
 
