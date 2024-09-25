@@ -1,6 +1,5 @@
 import javafx.util.Pair;
 
-import javax.swing.*;
 import java.util.*;
 
 
@@ -833,6 +832,72 @@ public class Arrayss {
             }
             return list;
         }
+
+        public List<Integer> majorityElement2BruteForce(int[] arr) {
+            int n=arr.length;
+            int floor=(int)(n/3)+1;
+            List<Integer> list= new ArrayList<>();
+            for(int i=0;i<n;i++){
+                if(list.size()==0 || list.get(0)!=arr[i]){
+                    int count=0;
+                    for(int j=0;j<n;j++){
+                        if(arr[j]==arr[i])
+                            count++;
+                    }
+                    if(count>=floor)
+                        list.add(arr[i]);
+                }
+               if(list.size()==2)break;//in every list only 2 elements possible of size >n/3  means minimum (n/3)+1
+            }
+            return list;
+        }
+
+        public List majorityElement2BetterSol(int[] arr) {
+            List<Integer> list= new ArrayList<>();
+            int n=arr.length;
+            int minFreq=(int)(n/3)+1;
+            Map<Integer,Integer> map= new HashMap<>();
+            for(int i=0;i<n;i++){
+                map.put(arr[i],map.getOrDefault(arr[i],0)+1);
+                if(map.get(arr[i])>=minFreq)
+                    list.add(arr[i]);
+                if(list.size()==2) break;
+            }
+            return list;
+        }
+
+        public List majorityElement2OptimalSol(int[] arr) {
+            int n=arr.length;
+            int count1=0,count2=0;
+            int ele1=Integer.MIN_VALUE,ele2=Integer.MIN_VALUE;
+            for(int i=0;i<n;i++){
+                if(count1==0 && arr[i]!=ele2){
+                    count1++;ele1=arr[i];
+                }else if(count2==0 && arr[i]!=ele1){
+                    count2++;ele2=arr[i];
+                }else if(arr[i]==ele1)
+                    count1++;
+                else if(arr[i]==ele2)
+                    count2++;
+                else{
+                    count1--;
+                    count2--;
+                }
+            }
+            //doing manual check if both ele1 and ele2 are correct ans
+            count1=0;
+            count2=0;
+            for(int i=0;i<n;i++){
+                if(arr[i]==ele1) count1++;
+                if(arr[i]==ele2) count2++;
+            }
+            int minFreqReq=(int)(n/3)+1;
+            List<Integer> list= new ArrayList<>();
+            if(count1>=minFreqReq) list.add(ele1);
+            if(count2>=minFreqReq) list.add(ele2);
+
+            return list;
+        }
     }
     public static void main(String args[]){
         ArrayQuestions array= new ArrayQuestions();
@@ -1155,10 +1220,27 @@ public class Arrayss {
 
         //Optimal
 
-        List<List<Integer>> ans= array.printWholePascalTriangleOptimal(n);
-        for (List<Integer> e:ans)
-            System.out.println(e);
+//        List<List<Integer>> ans= array.printWholePascalTriangleOptimal(n);
+//        for (List<Integer> e:ans)
+//            System.out.println(e);
 
+
+
+        //Majority Element-2---return all numbers which present >n/3 times
+
+//        int arr[]={1,1,1,3,3,2,2,2};
+
+        //brute force
+//        System.out.println(array.majorityElement2BruteForce(arr));
+
+
+        // Better Solution--using remember technique
+//        System.out.println(array.majorityElement2BetterSol(arr));
+
+        int arr[]={2,1,1,3,1,4,5,6};
+
+        //Optimal--using using moose voting Algorithm with modification
+        System.out.println(array.majorityElement2OptimalSol(arr));
 
 
 
