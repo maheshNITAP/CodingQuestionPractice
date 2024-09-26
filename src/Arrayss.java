@@ -971,6 +971,78 @@ public class Arrayss {
             return ans;
 
         }
+
+        public Set<List<Integer>> fourSumByBruteForce(int[] arr, int target) {
+            Set<List<Integer>> ans= new HashSet<>();
+            int n =arr.length;
+            for(int i=0;i<n;i++){
+                for(int j=i+1;j<n;j++){
+                    for(int k=j+1;k<n;k++){
+                        for(int l=k+1;l<n;l++){
+                             long sum=arr[i]+arr[j]+arr[k]+arr[l];
+                            if(sum==target){
+                                ArrayList<Integer> tem= new ArrayList<>(Arrays.asList(arr[i],arr[j],arr[k],arr[l]));
+                                Collections.sort(tem);
+                                ans.add(tem);
+                            }
+                        }
+                    }
+                }
+            }
+            return ans;
+        }
+
+        public Set<List<Integer>> fourSumByBetterApproach(int[] arr, int target) {
+            int n=arr.length;
+
+            Set<List<Integer>> ans= new HashSet<>();
+            for(int i=0;i<n;i++){
+                for(int j=i+1;j<n;j++){
+                    HashSet<Integer> hashSet= new HashSet<>();
+                    for(int k=j+1;k<n;k++){
+                        int fourth=target-(arr[i]+arr[j]+arr[k]);
+                        if(hashSet.contains(fourth)){
+                            List<Integer> temp= new ArrayList<>(Arrays.asList(arr[i],arr[j],arr[k],fourth));
+                            Collections.sort(temp);
+                            ans.add(temp);
+                        }
+                        hashSet.add(arr[k]);
+                    }
+                }
+            }
+            return ans;
+        }
+
+        public Set<List<Integer>> fourSumByOptimalApproach(int[] arr, int target) {
+            int n=arr.length;
+            Set<List<Integer>> ans= new HashSet<>();
+
+            Arrays.sort(arr);
+            for(int i=0;i<n;i++){
+                if(i>0 && arr[i]==arr[i-1]) continue;
+                for(int j=i+1;j<n;j++){
+                    if(j>i+1 && arr[j]== arr[j-1]) continue;
+                    int k=j+1;
+                    int l=n-1;
+                    while(k<l){
+                        long sum=arr[i]+arr[j]+arr[k]+arr[l];
+                        if(sum<target)
+                            k++;
+                        else if(sum>target)
+                            l--;
+                        else{
+                            List<Integer> tem= new ArrayList<>(Arrays.asList(arr[i],arr[j],arr[k],arr[l]));// already in sorted order
+                            ans.add(tem);
+                            k++;
+                            l--;
+                            while(k<l && arr[k]==arr[k-1]) k++;
+                            while(k<l && arr[l]==arr[l+1])l--;
+                        }
+                    }
+                }
+            }
+            return ans;
+        }
     }
     public static void main(String args[]){
         ArrayQuestions array= new ArrayQuestions();
@@ -1318,7 +1390,7 @@ public class Arrayss {
 
         //3 SUM---find out the triplets where sum is zero
 
-        int arr[]={-1,0,1,2,-1,-4};
+//        int arr[]={-1,0,1,2,-1,-4};
 
         //brute force
 //        List<List<Integer>> ans=array.threeSumByBruteForce(arr);
@@ -1334,8 +1406,32 @@ public class Arrayss {
 
         //Optimal Soln
         //first sort then use two pointer
-        List<List<Integer>> ans = array.threeSumByOptimalSol(arr);
-        System.out.println(ans);
+//        List<List<Integer>> ans = array.threeSumByOptimalSol(arr);
+//        System.out.println(ans);
+
+
+        //4 Sum---find four elements whose sum is equals to target
+
+        int arr[]={1,0,-1,0,-2,2};
+        int target=0;
+
+        //brute force
+//        Set<List<Integer>> ans= array.fourSumByBruteForce(arr, target);
+//        System.out.println(ans);
+
+        //Better Soln
+//        Set<List<Integer>> ans= array.fourSumByBetterApproach(arr,target);
+//        System.out.println(ans);
+
+        //Optimal Soln
+//        1) sort array
+//        2) use pointer approach
+
+//        int arr[]={1,3,1,2,4,2,3,1,3,4,2,4,5,5};
+//        int target=8;
+        System.out.println(array.fourSumByOptimalApproach(arr,target));
+
+
 
 
 
