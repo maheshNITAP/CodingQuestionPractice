@@ -1043,6 +1043,34 @@ public class Arrayss {
             }
             return ans;
         }
+
+        public int numberOfSubArraysWithXOR_K_BruteForce(int[] arr, int k) {
+            int count=0;
+
+            for(int i=0;i<arr.length;i++){
+                int XR=0;
+                for(int j=i;j<arr.length;j++){
+                    XR=XR^arr[j];
+                    if(XR==k)
+                        count++;
+                }
+            }
+            return count;
+        }
+
+        public int numberOfSubArraysWithXOR_K_Optimal(int[] arr, int k) {
+            int count=0;
+            int XR=0;
+            HashMap<Integer,Integer> map = new HashMap<>();
+            map.put(0,1);//ele, freq-----0 can be considered as empty array also so we are putting one entry
+            for(int i=0;i<arr.length;i++){
+                XR=XR^arr[i];
+                int x=XR^k;
+                count+=map.getOrDefault(x,0);
+                map.put(XR,map.getOrDefault(XR,0)+1);
+            }
+            return count;
+        }
     }
     public static void main(String args[]){
         ArrayQuestions array= new ArrayQuestions();
@@ -1412,8 +1440,8 @@ public class Arrayss {
 
         //4 Sum---find four elements whose sum is equals to target
 
-        int arr[]={1,0,-1,0,-2,2};
-        int target=0;
+//        int arr[]={1,0,-1,0,-2,2};
+//        int target=0;
 
         //brute force
 //        Set<List<Integer>> ans= array.fourSumByBruteForce(arr, target);
@@ -1429,7 +1457,17 @@ public class Arrayss {
 
 //        int arr[]={1,3,1,2,4,2,3,1,3,4,2,4,5,5};
 //        int target=8;
-        System.out.println(array.fourSumByOptimalApproach(arr,target));
+//        System.out.println(array.fourSumByOptimalApproach(arr,target));
+
+        //number Of SubArrays with XOR K
+        int arr[]={4,2,2,6,4};
+        int k=6;
+
+//        System.out.println(array.numberOfSubArraysWithXOR_K_BruteForce(arr,k));
+
+      //Optimal
+        System.out.println(array.numberOfSubArraysWithXOR_K_Optimal(arr,k));
+
 
 
 
