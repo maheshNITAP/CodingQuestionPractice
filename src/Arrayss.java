@@ -1071,6 +1071,56 @@ public class Arrayss {
             }
             return count;
         }
+
+        public ArrayList<ArrayList<Integer>> mergeOverLappingIntervalsBruteForce(int[][] arr) {
+            ArrayList<ArrayList<Integer>> ans = new ArrayList<>();
+            int n=arr.length;
+            Arrays.sort(arr,new Comparator<int []>(){
+                @Override
+                public int compare(int a[],int b[]){
+                    if(a[0]==b[0])
+                        return a[1]-b[1];
+                    else
+                        return a[0]-b[0];
+                }
+            });
+            for(int i=0;i<n;i++){
+                int start=arr[i][0];
+                int end=arr[i][1];
+                if(!ans.isEmpty() && end<=ans.get(ans.size()-1).get(1))
+                    continue;
+                for(int j=i+1;j<n;j++){
+                    if(arr[j][0]<=end)
+                        end=Math.max(arr[j][1],end);
+                    else
+                        break;
+                }
+                ans.add(new ArrayList<>(Arrays.asList(start,end)));
+            }
+            return ans;
+        }
+
+        public List<List<Integer>> mergeOverLappingIntervalsByOptimal(int[][] arr) {
+            int n=arr.length;
+
+            List<List<Integer>> ans = new ArrayList<>();
+            Arrays.sort(arr,new Comparator<int[]>(){
+                public int compare(int a[],int b[]){
+                    if(a[0]==b[0])
+                        return a[1]-b[1];
+                    else
+                        return a[0]-b[0];
+                }
+            });
+            for(int i=0;i<n;i++){
+                if(ans.isEmpty() || arr[i][0]>ans.get(ans.size()-1).get(1))
+                    ans.add(Arrays.asList(arr[i][0],arr[i][1]));
+                else
+                    ans.get(ans.size()-1).set(1,Math.max(ans.get(ans.size()-1).get(1),arr[i][1]));
+            }
+            return ans;
+
+        }
     }
     public static void main(String args[]){
         ArrayQuestions array= new ArrayQuestions();
@@ -1460,13 +1510,22 @@ public class Arrayss {
 //        System.out.println(array.fourSumByOptimalApproach(arr,target));
 
         //number Of SubArrays with XOR K
-        int arr[]={4,2,2,6,4};
-        int k=6;
+//        int arr[]={4,2,2,6,4};
+//        int k=6;
 
 //        System.out.println(array.numberOfSubArraysWithXOR_K_BruteForce(arr,k));
 
       //Optimal
-        System.out.println(array.numberOfSubArraysWithXOR_K_Optimal(arr,k));
+//        System.out.println(array.numberOfSubArraysWithXOR_K_Optimal(arr,k));
+
+        //Merge OverLapping Intervals
+        int arr[][]={{1,3},{2,6},{8,9},{9,11},{8,11},{2,3},{15,18},{16,17}};
+
+        //brute force
+//        System.out.println(array.mergeOverLappingIntervalsBruteForce(arr));
+
+        //Optimal Soln
+        System.out.println(array.mergeOverLappingIntervalsByOptimal(arr));
 
 
 
