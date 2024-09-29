@@ -1121,6 +1121,77 @@ public class Arrayss {
             return ans;
 
         }
+
+        public void mergeTwoSortedArrayWithExtraSpace(int[] arr1, int[] arr2, int n, int m) {
+            int arr[]= new int[n+m];
+            int left=0,right=0;
+            int indx=0;
+            while(left<n && right<m){
+                if(arr1[left]<=arr2[right])
+                    arr[indx++]=arr1[left++];
+                else
+                    arr[indx++]=arr2[right++];
+            }
+            while(left<n)
+                arr[indx++]=arr1[left++];
+            while(right<m)
+                arr[indx++]=arr2[right++];
+            for(int i=0;i<n+m;i++){
+                if(i<n)
+                    arr1[i]=arr[i];
+                else
+                    arr2[i-n]=arr[i];
+            }
+
+        }
+        public void swap(int arr1[],int arr2[],int left,int right){
+            int tem=arr1[left];
+            arr1[left]=arr2[right];
+            arr2[right]=tem;
+        }
+
+        public void mergeTwoSortedArrayWithOptimal1(int[] arr1, int[] arr2, int n, int m) {
+            int left=n-1,right=0;
+            while(left>=0 && right<m){
+                if(arr1[left]>arr2[right]){
+                    swap(arr1,arr2,left,right);
+                    left--;
+                    right++;
+                } else
+                    break;
+            }
+
+            Arrays.sort(arr1);
+            Arrays.sort(arr2);
+        }
+
+        public void mergeTwoSortedArrayWithOptimal2(int[] arr1, int[] arr2, int n, int m) {
+            int len=n+m;
+            int gap=(len/2)+(len%2);
+            while(gap>0){
+                int left=0;
+                int right=left+gap;
+                while(right<len){
+
+                    //on arr1 and arr2 element
+                    if(left <n && right>=n)
+                        swapIfGreater(arr1,arr2,left,right-n);
+                    else if(left>=n)//on arr2 and arr2 ele
+                        swapIfGreater(arr2,arr2,left-n,right-n);
+                    else //if both ele on arr1 only-->on arr1 and arr1
+                        swapIfGreater(arr1,arr1,left,right);
+                    left++;
+                    right++;
+                }
+                if(gap==1) break;
+                gap=(gap/2)+(gap%2);
+            }
+        }
+
+        private void swapIfGreater(int[] arr1, int[] arr2, int ind1, int ind2) {
+            if(arr1[ind1]>arr2[ind2])
+                swap(arr1,arr2,ind1,ind2);
+        }
     }
     public static void main(String args[]){
         ArrayQuestions array= new ArrayQuestions();
@@ -1428,7 +1499,7 @@ public class Arrayss {
 
 
         //print nth row of pascal triangle
-        int n=6;
+//        int n=6;
 
 //        System.out.println(array.printNthRowOfPascalTriangle(n));
 
@@ -1519,16 +1590,30 @@ public class Arrayss {
 //        System.out.println(array.numberOfSubArraysWithXOR_K_Optimal(arr,k));
 
         //Merge OverLapping Intervals
-        int arr[][]={{1,3},{2,6},{8,9},{9,11},{8,11},{2,3},{15,18},{16,17}};
+//        int arr[][]={{1,3},{2,6},{8,9},{9,11},{8,11},{2,3},{15,18},{16,17}};
 
         //brute force
 //        System.out.println(array.mergeOverLappingIntervalsBruteForce(arr));
 
         //Optimal Soln
-        System.out.println(array.mergeOverLappingIntervalsByOptimal(arr));
+//        System.out.println(array.mergeOverLappingIntervalsByOptimal(arr));
 
 
+        //Merge Two Sorted arrays without Extra Space
+        int arr1[]={1,3,5,7}; int arr2[]={0,2,6,8,9};
+        int n=arr1.length,m=arr2.length;
 
+        //with Extra Space--kind of Brute Force
+//        array.mergeTwoSortedArrayWithExtraSpace(arr1,arr2,n,m);
+
+        //Optimal-1
+//        array.mergeTwoSortedArrayWithOptimal1(arr1,arr2,n,m);
+
+        //Optimal--Approach 2
+        array.mergeTwoSortedArrayWithOptimal2(arr1,arr2,n,m);
+        Arrays.stream(arr1).forEach(System.out::print);
+        System.out.println();
+        Arrays.stream(arr2).forEach(System.out::print);
 
 
 
