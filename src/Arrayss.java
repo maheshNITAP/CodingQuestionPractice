@@ -1192,6 +1192,99 @@ public class Arrayss {
             if(arr1[ind1]>arr2[ind2])
                 swap(arr1,arr2,ind1,ind2);
         }
+
+        public Pair<Integer,Integer> findMissingNumberAndRepeatingNumberBruteForce(int[] arr, int n) {
+            int missing=-1,repeating=-1;
+            for(int i=1;i<=n;i++){
+                int count=0;
+                for(int j=0;j<n;j++){
+                    if(i==arr[j])
+                        count++;
+                }
+                if(count==0)
+                    missing=i;
+                else if(count==2)
+                    repeating=i;
+                if(repeating!=-1 && missing!=-1)
+                    break;
+            }
+            return new Pair<>(missing,repeating);
+        }
+
+        public Pair<Integer,Integer> findMissingNumberAndRepeatingNumberBetterSoln(int[] arr, int n) {
+            int hash[]=new int[n+1];
+            for(int i=0;i<n;i++)
+                hash[arr[i]]++;
+            int repeating=-1,missing=-1;
+            for(int i=1;i<=n;i++){
+                if(hash[i]==2)
+                    repeating=i;
+                else if(hash[i]==0)
+                    missing=i;
+
+                if(missing!=-1 && repeating!=-1)
+                    break;
+            }
+            return new Pair<>(missing,repeating);
+        }
+
+        public Pair<Integer,Integer> findMissingNumberAndRepeatingNumberOptimalSoln1(int[] arr, int n) {
+            int SN=(n*(n+1))/2;
+            int S2N=(n*(n+1)*(2*(n+1)))/6;
+            int s=0,s2=0;
+            for(int i=0;i<n;i++){
+                s+=arr[i];
+                s2+=(arr[i]*arr[i]);
+            }
+
+            int val1=s-SN;
+            int val2=s2-S2N;
+            val2=val2/val1;
+
+            int repeating =(val1+val2)/2;
+            int missing=repeating-val1;
+            return new Pair<>(missing,repeating);
+        }
+
+        public Pair<Integer,Integer> findMissingNumberAndRepeatingNumberOptimalSoln2(int[] arr, int n) {
+            int xr=0;
+            for(int i=0;i<n;i++){
+                xr=xr^arr[i];
+                xr=xr^(i+1);
+            }
+            int bitNo=0;
+            while(true){
+                if((xr &(1<<bitNo))!=0){
+                    break;
+                }
+                bitNo++;
+            }
+            int zero=0,one=0;
+            for(int i=0;i<n;i++){//for array
+                if((arr[i] &(1<<bitNo))!=0)
+                    one=one^arr[i];
+                else
+                    zero=zero^arr[i];
+            }
+
+            for(int i=0;i<=n;i++){
+                if((i &(1<<bitNo))!=0)
+                    one =one^i;
+                else
+                    zero=zero^i;
+            }
+            int count=0;
+            for(int i=0;i<n;i++){
+                if(arr[i]==zero)
+                    count++;
+            }
+            if(count==2)
+                return new Pair<>(one,zero);//missing, repeating
+            return new Pair<>(zero,one);
+
+
+
+        }
     }
     public static void main(String args[]){
         ArrayQuestions array= new ArrayQuestions();
@@ -1600,8 +1693,8 @@ public class Arrayss {
 
 
         //Merge Two Sorted arrays without Extra Space
-        int arr1[]={1,3,5,7}; int arr2[]={0,2,6,8,9};
-        int n=arr1.length,m=arr2.length;
+//        int arr1[]={1,3,5,7}; int arr2[]={0,2,6,8,9};
+//        int n=arr1.length,m=arr2.length;
 
         //with Extra Space--kind of Brute Force
 //        array.mergeTwoSortedArrayWithExtraSpace(arr1,arr2,n,m);
@@ -1610,10 +1703,28 @@ public class Arrayss {
 //        array.mergeTwoSortedArrayWithOptimal1(arr1,arr2,n,m);
 
         //Optimal--Approach 2
-        array.mergeTwoSortedArrayWithOptimal2(arr1,arr2,n,m);
-        Arrays.stream(arr1).forEach(System.out::print);
-        System.out.println();
-        Arrays.stream(arr2).forEach(System.out::print);
+//        array.mergeTwoSortedArrayWithOptimal2(arr1,arr2,n,m);
+//        Arrays.stream(arr1).forEach(System.out::print);
+//        System.out.println();
+//        Arrays.stream(arr2).forEach(System.out::print);
+
+
+        //find Repeating and missing Number
+
+        int arr[]={4,3,6,2,1,1};
+        int n=arr.length;
+
+        //brute force------p.key==missing,p.val--repeating
+//        System.out.println(array.findMissingNumberAndRepeatingNumberBruteForce(arr,n));
+
+        //Better Soln--using hashtable
+//        System.out.println(array.findMissingNumberAndRepeatingNumberBetterSoln(arr,n));
+
+        //Optimal Soln-1---using Math formula
+//        System.out.println(array.findMissingNumberAndRepeatingNumberOptimalSoln1(arr,n));
+
+        //Optimal Soln-2--By Approach 2
+        System.out.println(array.findMissingNumberAndRepeatingNumberOptimalSoln2(arr,n));
 
 
 
