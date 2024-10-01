@@ -1285,6 +1285,61 @@ public class Arrayss {
 
 
         }
+
+        public int countInversionInArrayBruteForce(int[] arr) {
+            int count=0;
+            int n=arr.length;
+            for(int i=0;i<n;i++){
+                for(int j=i+1;j<n;j++){
+                    if(arr[i]>arr[j])
+                        count++;
+                }
+            }
+            return count;
+        }
+
+        public int countInversionInArrayOptimalSoln(int[] arr) {
+
+            int n=arr.length;
+            return mergeSortMethod(arr,0,n-1);
+        }
+
+        private int mergeSortMethod(int[] arr, int low, int high) {
+            int count=0;
+            if(low>=high) return 0;
+            int mid=low+(high-low)/2;
+            count+=mergeSortMethod(arr,low,mid);
+            count+=mergeSortMethod(arr,mid+1,high);
+            count+=mergeMethod(arr,low,mid,high);
+            return count;
+
+        }
+
+        private int mergeMethod(int[] arr, int low, int mid, int high) {
+            int count=0;
+            int left=low;
+            int right=mid+1;
+            Vector<Integer> v= new Vector<>();
+
+            while(left<= mid && right<=high){
+                if(arr[left]<=arr[right])
+                    v.add(arr[left++]);
+                else {//if left is greater than right
+                    v.add(arr[right++]);
+                    count+=(mid-left)+1;
+                }
+            }
+
+            while(left<=mid)
+                v.add(arr[left++]);
+            while(right<=high)
+                v.add(arr[right++]);
+
+            for(int i=low;i<=high;i++){
+                arr[i]=v.get(i-low);//because v is new array so take from 0 but arr may be some middle part of array
+            }
+            return count;
+        }
     }
     public static void main(String args[]){
         ArrayQuestions array= new ArrayQuestions();
@@ -1711,8 +1766,8 @@ public class Arrayss {
 
         //find Repeating and missing Number
 
-        int arr[]={4,3,6,2,1,1};
-        int n=arr.length;
+//        int arr[]={4,3,6,2,1,1};
+//        int n=arr.length;
 
         //brute force------p.key==missing,p.val--repeating
 //        System.out.println(array.findMissingNumberAndRepeatingNumberBruteForce(arr,n));
@@ -1724,8 +1779,18 @@ public class Arrayss {
 //        System.out.println(array.findMissingNumberAndRepeatingNumberOptimalSoln1(arr,n));
 
         //Optimal Soln-2--By Approach 2
-        System.out.println(array.findMissingNumberAndRepeatingNumberOptimalSoln2(arr,n));
+//        System.out.println(array.findMissingNumberAndRepeatingNumberOptimalSoln2(arr,n));
 
+
+        //count inversions in an array
+
+        int arr[]={5,3,2,4,1};
+
+        //Brute Force
+//        System.out.println(array.countInversionInArrayBruteForce(arr));
+
+        //Optimal Soln
+        System.out.println(array.countInversionInArrayOptimalSoln(arr));
 
 
 
