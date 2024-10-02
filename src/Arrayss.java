@@ -1062,6 +1062,7 @@ public class Arrayss {
             int count=0;
             int XR=0;
             HashMap<Integer,Integer> map = new HashMap<>();
+
             map.put(0,1);//ele, freq-----0 can be considered as empty array also so we are putting one entry
             for(int i=0;i<arr.length;i++){
                 XR=XR^arr[i];
@@ -1337,6 +1338,67 @@ public class Arrayss {
 
             for(int i=low;i<=high;i++){
                 arr[i]=v.get(i-low);//because v is new array so take from 0 but arr may be some middle part of array
+            }
+            return count;
+        }
+
+        public int numberOfReversePairsBruteForce(int[] arr) {
+            int n=arr.length;
+            int count=0;
+            for(int i=0;i<n;i++){
+                for(int j=i+1;j<n;j++){
+                    if(arr[i]>2*arr[j])
+                        count++;
+                }
+            }
+            return count;
+        }
+
+        public int numberOfReversePairsOptimalSoln(int[] arr) {
+            int n=arr.length;
+            int count= mergeSortMethod1(arr,0,n-1);
+           return count;
+        }
+
+        private int mergeSortMethod1(int[] arr, int low, int high) {
+            int count=0;
+            if(low>=high) return 0;
+            int mid=low+(high-low)/2;
+            count+=mergeSortMethod1(arr,low,mid);
+            count+=mergeSortMethod1(arr,mid+1,high);
+            count+=countPairs(arr,low,mid,high);
+            mergeMethod1(arr,low,mid,high);
+            return count;
+        }
+
+        private void mergeMethod1(int[] arr, int low, int mid, int high) {
+            int left=low,right=mid+1;
+            Vector<Integer> v= new Vector<>();
+            while(left<=mid && right<=high){
+                if(arr[left]<=arr[right])
+                    v.add(arr[left++]);
+                else
+                    v.add(arr[right++]);
+            }
+            while(left<=mid)
+                v.add(arr[left++]);
+            while(right<=high)
+                v.add(arr[right++]);
+
+            for(int i=low;i<=high;i++){
+                arr[i]=v.get(i-low);
+            }
+
+        }
+
+        private int countPairs(int[] arr, int low, int mid, int high) {
+            int count=0;
+            int right=mid+1;
+            for(int i=low;i<=mid;i++){
+                while(right<=high && arr[i]>2*arr[right]){
+                    right++;
+                }
+                count+=(right-(mid+1));
             }
             return count;
         }
@@ -1784,13 +1846,21 @@ public class Arrayss {
 
         //count inversions in an array
 
-        int arr[]={5,3,2,4,1};
+//        int arr[]={5,3,2,4,1};
 
         //Brute Force
 //        System.out.println(array.countInversionInArrayBruteForce(arr));
 
         //Optimal Soln
-        System.out.println(array.countInversionInArrayOptimalSoln(arr));
+//        System.out.println(array.countInversionInArrayOptimalSoln(arr));
+
+
+        //Reverse Pairs--return the number of reverse Pairs in the array
+        int arr[]={40,25,19,12,9,6,2};
+
+//        System.out.println(array.numberOfReversePairsBruteForce(arr));
+
+        System.out.println(array.numberOfReversePairsOptimalSoln(arr));
 
 
 
