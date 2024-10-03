@@ -1402,6 +1402,34 @@ public class Arrayss {
             }
             return count;
         }
+
+        public int maximumProductSubArrayBruteForce(int[] arr) {
+            int n=arr.length;
+            int maxProduct=Integer.MIN_VALUE;
+            for(int i=0;i<n;i++){
+                int p=1;
+                for(int j=i;j<n;j++){
+                    p=p*arr[j];
+                    maxProduct=Math.max(maxProduct,p);
+                }
+            }
+            return maxProduct;
+        }
+
+        public int maximumProductSubArrayOptimalApproach(int[] arr) {
+            int maxP=Integer.MIN_VALUE;
+            int prefix=1,suffix=1;
+            int n=arr.length;
+            for(int i=0;i<n;i++){
+                if(prefix==0) prefix=1;
+                if(suffix==0) suffix=1;
+
+                prefix=prefix*arr[i];
+                suffix=suffix*arr[n-i-1];
+                maxP=Math.max(maxP,Math.max(prefix,suffix));
+            }
+            return maxP;
+        }
     }
     public static void main(String args[]){
         ArrayQuestions array= new ArrayQuestions();
@@ -1856,12 +1884,20 @@ public class Arrayss {
 
 
         //Reverse Pairs--return the number of reverse Pairs in the array
-        int arr[]={40,25,19,12,9,6,2};
+//        int arr[]={40,25,19,12,9,6,2};
 
 //        System.out.println(array.numberOfReversePairsBruteForce(arr));
 
-        System.out.println(array.numberOfReversePairsOptimalSoln(arr));
+//        System.out.println(array.numberOfReversePairsOptimalSoln(arr));
 
+        //Maximum Product SubArray
+        int arr[]={2,3,-2,4};
+
+        //Brute Force
+//        System.out.println(array.maximumProductSubArrayBruteForce(arr));
+
+        //Optimal--By Observation
+        System.out.println(array.maximumProductSubArrayOptimalApproach(arr));
 
 
 
