@@ -491,7 +491,7 @@ public class TwoPointerOrSlidingWindow {
                 }
                 r++;
             }
-            return s.substring(StartIndex,StartIndex+minLen);
+            return StartIndex ==-1 ? "" : s.substring(StartIndex,StartIndex+minLen);
         }
     }
     public static void main(String args[]){
@@ -637,7 +637,10 @@ public class TwoPointerOrSlidingWindow {
 //        System.out.println(sw.minWindowSubString(s,t));
 
         //Optimal sliding window
-//        System.out.println(sw.minWindowSubStringSlidingWindow(s,t));
+
+        String s="a";
+        String t="aa";
+        System.out.println(sw.minWindowSubStringSlidingWindow(s,t));
 
 
 
