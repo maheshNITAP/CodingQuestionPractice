@@ -106,9 +106,9 @@ public class StackAndQueueQuestions {
         public int sumOfSubArrayMinimumOptimal(int[] arr) {
             int sum=0;
             int n=arr.length;
-            int nse[]=findNSE(arr,n);
+            int nse[]=findNSE(arr,n);// we are looking for next smaller because the moment we find smaller than, that element won't be anymore smaller in that subArray
             int mod=(int)1e9+7;
-            int psse[]=findPSEE(arr,n);//previous smaller element and equals
+            int psse[]=findPSEE(arr,n);//previous smaller element and equals--added for edge case
             for(int i=0;i<n;i++){
                 int left=i-psse[i];
                 int right=nse[i]-i;
@@ -141,6 +141,103 @@ public class StackAndQueueQuestions {
             }
             return nse;
         }
+
+        public int sumOfSubArrayRangesBruteForce(int[] arr) {
+            int n=arr.length;
+            int sum=0;
+            for(int i=0;i<n;i++){
+                int smallest=arr[i],largest=arr[i];
+                for(int j=i+1;j<n;j++){
+                    smallest=Math.min(smallest,arr[j]);
+                    largest=Math.max(largest,arr[j]);
+                    sum+=(largest-smallest);
+                }
+            }
+            return sum;
+        }
+
+        public int sumOfSubArrayRangesOptimal(int[] arr) {
+            return sumOfSubArrayMaximum(arr)-sumOfSubArrayMinimum(arr);
+        }
+
+        private int sumOfSubArrayMaximum(int[] arr) {
+            int n=arr.length;
+            int nge[]=findNextGreaterElement(arr,n);
+            int pgee[]=previousGreaterOrEqualElement(arr,n);
+            int sum=0;
+            for(int i=0;i<n;i++){
+                int left=i-pgee[i];
+                int right=nge[i]-i;
+                sum+=(left*right*arr[i]);
+            }
+            return sum;
+
+        }
+        private int[] previousGreaterOrEqualElement(int[] arr, int n) {
+            int pgee[]= new int[n];
+            Stack<Integer> st= new Stack<>();
+            for(int i=0;i<n;i++){
+                while(!st.isEmpty() && arr[st.peek()]<arr[i])
+                    st.pop();
+                pgee[i]=st.isEmpty()?-1:st.peek();
+                st.push(i);
+            }
+            return pgee;
+        }
+
+        private int[] findNextGreaterElement(int[] arr, int n) {
+            int nge[]= new int[n];
+            Stack<Integer> st= new Stack<>();
+            for(int i=n-1;i>=0;i--){
+                while(!st.isEmpty() && arr[st.peek()]<=arr[i])
+                    st.pop();
+
+                nge[i]=st.isEmpty()? n:st.peek();
+                st.push(i);
+            }
+            return nge;
+        }
+
+        private int sumOfSubArrayMinimum(int[] arr) {
+            int n=arr.length;
+            int nse[]=findNextSmallElement(arr,n);
+            int psee[]= findPreviousSmallOrEquivalentElement(arr,n);
+            int sum=0;
+            for(int i=0;i<n;i++){
+                int left=i-psee[i];
+                int right=nse[i]-i;
+                sum+=(left*right*arr[i]);
+            }
+            return sum;
+        }
+
+        private int[] findPreviousSmallOrEquivalentElement(int[] arr, int n) {
+            int psee[]=new int[n];
+            Stack<Integer> st= new Stack<>();
+            for(int i=0;i<n;i++){
+                while(!st.isEmpty() && arr[st.peek()]>arr[i])
+                    st.pop();
+                psee[i]=st.isEmpty()?-1:st.peek();
+                st.push(i);
+            }
+            return psee;
+        }
+
+
+
+        private int[] findNextSmallElement(int[] arr, int n) {
+            int nse[]= new int[n];
+            Stack<Integer> st= new Stack<>();
+            for(int i=n-1;i>=0;i--){
+                while(!st.isEmpty() && arr[st.peek()]>=arr[i])
+                    st.pop();
+                nse[i]=st.isEmpty()?n:st.peek();
+                st.push(i);
+            }
+            return nse;
+        }
+
+
     }
     public static void main(String args[]){
         StackAndQueue sq= new StackAndQueue();
@@ -173,10 +270,19 @@ public class StackAndQueueQuestions {
         //sum Of SubArray Minimum
         //brute force
 
-        int arr[]={3,1,2,4};
+//        int arr[]={3,1,2,4};
 //        System.out.println(sq.sumOfSubArrayMinmimumBruteForce(arr));
 
-        System.out.println(sq.sumOfSubArrayMinimumOptimal(arr));
+//        System.out.println(sq.sumOfSubArrayMinimumOptimal(arr));
+
+        //Sum Of subArray Ranges
+        int arr[]={1,4,3,2};
+
+        //brute force
+//        System.out.println(sq.sumOfSubArrayRangesBruteForce(arr));
+
+        //Optimal--using sum Of subArray Min techniquye
+        System.out.println(sq.sumOfSubArrayRangesOptimal(arr));
         
         
 
