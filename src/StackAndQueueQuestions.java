@@ -238,6 +238,46 @@ public class StackAndQueueQuestions {
         }
 
 
+        public List<Integer> asteroidCollisionsUsingStack(int[] arr) {
+            int n=arr.length;
+            Stack<Integer> st = new Stack<>();
+            for(int i=0;i<n;i++){
+                if(arr[i]>0){
+                    st.push(arr[i]);
+                }else {
+                    while(!st.isEmpty() && st.peek()>0 && st.peek()<Math.abs(arr[i]))
+                        st.pop();
+                    if(!st.isEmpty() && st.peek()>0 && st.peek()==Math.abs(arr[i]))
+                        st.pop();
+                    else if(st.isEmpty() || st.peek()<0)// specially for -ve values
+                        st.push(arr[i]);
+                }
+            }
+            List<Integer> ls= new ArrayList<>();
+            while(!st.isEmpty()){
+                ls.add(st.pop());
+            }
+            Collections.reverse(ls);
+            return ls;
+        }
+
+        public List<Integer> asteroidCollisionsUsingList(int[] arr) {
+            int n=arr.length;
+            List<Integer> lis= new ArrayList<>();
+            for(int i=0;i<n;i++){
+                if(arr[i]>0){
+                    lis.add(arr[i]);
+                }else{
+                    while(!lis.isEmpty() && lis.get(lis.size()-1)>0 && lis.get(lis.size()-1)<Math.abs(arr[i]))
+                        lis.remove(lis.size()-1);
+                    if(!lis.isEmpty() && lis.get(lis.size()-1)>0 && lis.get(lis.size()-1)==Math.abs(arr[i]))
+                        lis.remove(lis.size()-1);
+                    else if(lis.isEmpty() || lis.get(lis.size()-1)<0) //specially for -ve ele
+                        lis.add(arr[i]);
+                }
+            }
+            return lis;
+        }
     }
     public static void main(String args[]){
         StackAndQueue sq= new StackAndQueue();
@@ -276,14 +316,25 @@ public class StackAndQueueQuestions {
 //        System.out.println(sq.sumOfSubArrayMinimumOptimal(arr));
 
         //Sum Of subArray Ranges
-        int arr[]={1,4,3,2};
+//        int arr[]={1,4,3,2};
 
         //brute force
 //        System.out.println(sq.sumOfSubArrayRangesBruteForce(arr));
 
         //Optimal--using sum Of subArray Min techniquye
-        System.out.println(sq.sumOfSubArrayRangesOptimal(arr));
-        
+//        System.out.println(sq.sumOfSubArrayRangesOptimal(arr));
+
+
+        //Asteroid Collisions
+
+        int arr[]={4,7,1,1,2,-3,-7,17,15,-16};
+//        int arr[]={4,7,1,1,2,-3,-7,17,15,-16,-18,-19};
+
+        //using Sack
+//        System.out.println(sq.asteroidCollisionsUsingStack(arr));
+
+        //Using List without stack
+        System.out.println(sq.asteroidCollisionsUsingList(arr));
         
 
 
