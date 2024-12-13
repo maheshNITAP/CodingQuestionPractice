@@ -1,7 +1,4 @@
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Stack;
+import java.util.*;
 
 public class StackAndQueueQuestions {
     static class StackAndQueue{
@@ -286,8 +283,8 @@ public class StackAndQueueQuestions {
             for(int i=0;i<n;i++){
                 while(!st.isEmpty() && arr[st.peek()]>arr[i]){
                     int currTouchingEle=st.pop();   //current touching or  (building for which we are calculating area) is current kicked iut element
-                    int nse=i;  //nse is where we found smaller than this which is ih location
-                    int pse=st.isEmpty()?-1:arr[st.peek()]; ////pse is top os stack after kicked ele
+                    int nse=i;  //nse is where we found smaller than this which is ih location--just index
+                    int pse=st.isEmpty()?-1:st.peek(); ////pse is top os stack after kicked ele--just index
                     maxArea=Math.max(maxArea, arr[currTouchingEle]*(nse-pse-1));
                 }
                 st.push(i);
@@ -300,6 +297,26 @@ public class StackAndQueueQuestions {
 
             }
             return  maxArea;
+        }
+
+        public int maxRectAngleAreaInMatrix(int[][] mat) {
+            int n=mat.length;
+            int m=mat[0].length;
+            int arr[]= new int[m];
+            int maxArea=0;
+            for(int j=0;j<m;j++)
+                arr[j]=mat[0][j];
+            maxArea=maxAreaOfHistogram(arr);
+            for(int i=1;i<n;i++){
+                for(int j=0;j<m;j++){
+                    if(mat[i][j]!=0)
+                        arr[j]=arr[j]+mat[i][j];
+                    else
+                        arr[j]=0;
+                }
+                maxArea=Math.max(maxArea,maxAreaOfHistogram(arr));
+            }
+            return maxArea;
         }
     }
     public static void main(String args[]){
@@ -362,9 +379,17 @@ public class StackAndQueueQuestions {
 
         //maximum area Of rectangle using single traversal
 
-        int arr[]={3,2,10,11,5,10,6,3};
+//        int arr[]={3,2,10,11,5,10,6,3};
 
-        System.out.println(sq.maxAreaOfHistogram(arr));
+//        System.out.println(sq.maxAreaOfHistogram(arr));
+
+        //maximum rectangle in matrix
+
+        int mat[][]={{1,0,1,0,1}
+                ,    {1,0,1,1,1},
+                     {1,1,1,1,1,},
+                     {1,0,0,1,0}};
+        System.out.println(sq.maxRectAngleAreaInMatrix(mat));
 
 
 
