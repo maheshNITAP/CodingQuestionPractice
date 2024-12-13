@@ -318,6 +318,36 @@ public class StackAndQueueQuestions {
             }
             return maxArea;
         }
+
+        public String removeKDigits(String s, int k) {
+            Stack<Character> st= new Stack<>();
+            int n=s.length();
+            for(int i=0;i<n;i++){
+                while(!st.isEmpty() && k>0 && st.peek()-'a'>s.charAt(i)-'a'){
+                    st.pop();
+                    k--;
+                }
+                st.push(s.charAt(i));
+            }
+            while(k>0){
+                st.pop();
+                k--;
+            }
+            if(st.isEmpty())
+                return "0";
+
+            StringBuilder res= new StringBuilder();
+            while (!st.isEmpty()){
+                res.append(st.pop());
+            }
+            while(res.length()>0 && res.charAt(res.length()-1)=='0')
+                res.deleteCharAt(res.length()-1);
+            res.reverse();
+            if(res.length()==0)
+                return "0";
+            return res.toString();
+
+        }
     }
     public static void main(String args[]){
         StackAndQueue sq= new StackAndQueue();
@@ -385,11 +415,18 @@ public class StackAndQueueQuestions {
 
         //maximum rectangle in matrix
 
-        int mat[][]={{1,0,1,0,1}
-                ,    {1,0,1,1,1},
-                     {1,1,1,1,1,},
-                     {1,0,0,1,0}};
-        System.out.println(sq.maxRectAngleAreaInMatrix(mat));
+//        int mat[][]={{1,0,1,0,1}
+//                ,    {1,0,1,1,1},
+//                     {1,1,1,1,1,},
+//                     {1,0,0,1,0}};
+//        System.out.println(sq.maxRectAngleAreaInMatrix(mat));
+
+        //Remove K digits
+
+//        String num="1432219";
+        String num="123456";
+        int k=3;
+        System.out.println(sq.removeKDigits(num,k));
 
 
 
