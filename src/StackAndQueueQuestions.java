@@ -278,6 +278,29 @@ public class StackAndQueueQuestions {
             }
             return lis;
         }
+
+        public int maxAreaOfHistogram(int[] arr) {
+            int n=arr.length;
+            Stack<Integer> st= new Stack<>();//storing Index
+            int maxArea=0;
+            for(int i=0;i<n;i++){
+                while(!st.isEmpty() && arr[st.peek()]>arr[i]){
+                    int currTouchingEle=st.pop();   //current touching or  (building for which we are calculating area) is current kicked iut element
+                    int nse=i;  //nse is where we found smaller than this which is ih location
+                    int pse=st.isEmpty()?-1:arr[st.peek()]; ////pse is top os stack after kicked ele
+                    maxArea=Math.max(maxArea, arr[currTouchingEle]*(nse-pse-1));
+                }
+                st.push(i);
+            }
+            while (!st.isEmpty()){
+                int nse=n;
+                int currTouchingEle=st.pop();
+                int pse=st.isEmpty()?-1:st.peek();
+                maxArea=Math.max(maxArea,arr[currTouchingEle]*(nse-pse-1));
+
+            }
+            return  maxArea;
+        }
     }
     public static void main(String args[]){
         StackAndQueue sq= new StackAndQueue();
@@ -327,15 +350,21 @@ public class StackAndQueueQuestions {
 
         //Asteroid Collisions
 
-        int arr[]={4,7,1,1,2,-3,-7,17,15,-16};
+//        int arr[]={4,7,1,1,2,-3,-7,17,15,-16};
 //        int arr[]={4,7,1,1,2,-3,-7,17,15,-16,-18,-19};
 
         //using Sack
 //        System.out.println(sq.asteroidCollisionsUsingStack(arr));
 
         //Using List without stack
-        System.out.println(sq.asteroidCollisionsUsingList(arr));
-        
+//        System.out.println(sq.asteroidCollisionsUsingList(arr));
+
+
+        //maximum area Of rectangle using single traversal
+
+        int arr[]={3,2,10,11,5,10,6,3};
+
+        System.out.println(sq.maxAreaOfHistogram(arr));
 
 
 
