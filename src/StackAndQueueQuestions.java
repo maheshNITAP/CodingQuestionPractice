@@ -377,6 +377,38 @@ public class StackAndQueueQuestions {
             }
             return ans;
         }
+
+        public List slidingWindowMaximum(int[] arr, int k) {
+            int n=arr.length;
+            List<Integer> lis= new ArrayList<>();
+            Deque<Integer> deque= new ArrayDeque<>();
+            for(int i=0;i<n;i++){
+
+                if(!deque.isEmpty() && deque.peek()==i-k)
+                    deque.poll();
+
+                while(!deque.isEmpty() && arr[deque.peekLast()]<arr[i])
+                    deque.pollLast();
+
+                deque.offer(i);
+
+                if(i>=k-1) lis.add(arr[deque.peek()]);
+            }
+            return lis;
+        }
+
+        public List slidingWindowMaximumBruteForce(int[] arr, int k) {
+            int n=arr.length;
+            List<Integer> lis= new ArrayList<>();
+            for(int i=0;i<=n-k;i++){
+                int maxi=arr[i];
+                for(int j=i;j<=((i+k)-1);j++){
+                    maxi=Math.max(maxi,arr[j]);
+                }
+                lis.add(maxi);
+            }
+            return lis;
+        }
     }
     public static void main(String args[]){
         StackAndQueue sq= new StackAndQueue();
@@ -460,13 +492,23 @@ public class StackAndQueueQuestions {
 
         //Online Stock Span Problem--In noteBook did it with call base approach there we no need array we were accepting function again and again by passing value
         //here ans also returned as array only
-        int arr[]= {7,2,1,3,3,1,8};
+//        int arr[]= {7,2,1,3,3,1,8};
 
         //Brute force
 //        System.out.println(sq.onlineStockSpanProblemBruteForce(arr));
 
         //using stack and NGE
-        System.out.println(sq.onlineStockSpanProblemOptimal(arr));
+//        System.out.println(sq.onlineStockSpanProblemOptimal(arr));
+
+        //Sliding window maximum
+        int arr[]={1,3,-1,-3,5,3,2,1,6};
+        int k=3;
+
+        //bruteForce
+//        System.out.println(sq.slidingWindowMaximumBruteForce(arr,k));
+
+//        Optimal Using Dequq
+        System.out.println(sq.slidingWindowMaximum(arr,k));
 
 
 
