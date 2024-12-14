@@ -348,6 +348,35 @@ public class StackAndQueueQuestions {
             return res.toString();
 
         }
+
+        public List onlineStockSpanProblemBruteForce(int[] arr) {
+            List<Integer> ans= new LinkedList<>();
+            Stack<Integer> st= new Stack<>();
+            int n=arr.length;
+            for(int i=0;i<n;i++){
+                int count=1;
+                for(int j=i-1;j>=0;j--){
+                    if(arr[j]<=arr[i]) count++;
+                    else  break;
+                }
+                ans.add(count);
+            }
+            return ans;
+
+        }
+
+        public List onlineStockSpanProblemOptimal(int[] arr) {
+            Stack<Integer> st= new Stack<>();
+            int n=arr.length;
+            List<Integer> ans= new ArrayList<>();
+            for(int i=0;i<n;i++){
+                while(!st.isEmpty() && arr[st.peek()]<=arr[i])
+                    st.pop();
+                ans.add(i-(st.isEmpty()?-1:st.peek()));
+                st.push(i);
+            }
+            return ans;
+        }
     }
     public static void main(String args[]){
         StackAndQueue sq= new StackAndQueue();
@@ -424,9 +453,21 @@ public class StackAndQueueQuestions {
         //Remove K digits
 
 //        String num="1432219";
-        String num="123456";
-        int k=3;
-        System.out.println(sq.removeKDigits(num,k));
+//        String num="123456";
+//        int k=3;
+//        System.out.println(sq.removeKDigits(num,k));
+
+
+        //Online Stock Span Problem--In noteBook did it with call base approach there we no need array we were accepting function again and again by passing value
+        //here ans also returned as array only
+        int arr[]= {7,2,1,3,3,1,8};
+
+        //Brute force
+//        System.out.println(sq.onlineStockSpanProblemBruteForce(arr));
+
+        //using stack and NGE
+        System.out.println(sq.onlineStockSpanProblemOptimal(arr));
+
 
 
 
