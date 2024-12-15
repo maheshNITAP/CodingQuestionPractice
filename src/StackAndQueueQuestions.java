@@ -409,6 +409,52 @@ public class StackAndQueueQuestions {
             }
             return lis;
         }
+
+        public int celebrityProblemBruteForce(int[][] mat) {
+            int n=mat.length;
+            int Iknow[]= new int[n];
+            int knowMe[]= new int[n];
+            for(int i=0;i<n;i++){
+                for(int j=0;j<n;j++){
+                    if(mat[i][j]==1){
+                        Iknow[i]++;
+                        knowMe[j]++;
+                    }
+                }
+            }
+            for(int i=0;i<n;i++){
+                if(Iknow[i]==0 && knowMe[i]==n-1)
+                    return i;
+            }
+            return -1;
+        }
+
+        public int celebrityProblemOptimal(int[][] mat) {
+            int n=mat.length;
+            int top=0,down=n-1;
+            while(top<down){
+                if(mat[top][down]==1)
+                    top++;
+                else if(mat[down][top]==1)
+                    down--;
+                else{
+                    top++;
+                    down--;
+                }
+            }
+            if(top>down)
+                return -1;
+
+            for(int i=0;i<n;i++){
+                if(top==i)
+                    continue;
+                if(mat[top][0]==0 && mat[i][top]==1)
+                    continue;
+                else
+                    return -1;
+            }
+            return top;
+        }
     }
     public static void main(String args[]){
         StackAndQueue sq= new StackAndQueue();
@@ -501,15 +547,24 @@ public class StackAndQueueQuestions {
 //        System.out.println(sq.onlineStockSpanProblemOptimal(arr));
 
         //Sliding window maximum
-        int arr[]={1,3,-1,-3,5,3,2,1,6};
-        int k=3;
+//        int arr[]={1,3,-1,-3,5,3,2,1,6};
+//        int k=3;
 
         //bruteForce
 //        System.out.println(sq.slidingWindowMaximumBruteForce(arr,k));
 
 //        Optimal Using Dequq
-        System.out.println(sq.slidingWindowMaximum(arr,k));
+//        System.out.println(sq.slidingWindowMaximum(arr,k));
 
+
+        //Celebrity Problem
+        int mat[][]={{0,1,1,0},{0,0,0,0},{0,1,0,0},{1,1,0,0}};
+
+        //Brute Force
+//        System.out.println(sq.celebrityProblemBruteForce(mat));
+
+//        Optimal
+        System.out.println(sq.celebrityProblemOptimal(mat));
 
 
 
