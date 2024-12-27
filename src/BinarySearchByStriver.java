@@ -69,6 +69,39 @@ public class BinarySearchByStriver {
         return ans;
     }
 
+    //same as min element inr rotated array
+    private int findHowManyTimesAnArrayIsRotated(int[] arr) {
+        int n=arr.length;
+        int low=0;
+        int high=n-1;
+        int ans=Integer.MAX_VALUE;
+        int index=-1;
+        while(low<=high){
+            int mid=low+(high-low)/2;
+            if(arr[low]<=arr[high]){
+                if(arr[low]<ans){
+                    ans=arr[low];
+                    index=low;
+                }
+                break;
+            }
+            if(arr[low]<=arr[mid]){
+                if(arr[low]<ans){
+                    ans=arr[low];
+                    index=low;
+                }
+                low=mid+1;
+            }else{
+                if(arr[mid]<ans){
+                    ans=arr[mid];
+                    index=mid;
+                }
+                high=mid-1;
+            }
+        }
+        return index;
+    }
+
     public static void main(String args[]){
         BinarySearchByStriver bs=new BinarySearchByStriver();
 
@@ -83,8 +116,12 @@ public class BinarySearchByStriver {
 //        System.out.println(bs.searchElementInRotatedSortedArrayWithDuplicateElement(arr,target));
 
         ///search minimum element in rotated sorted array
-        int arr[]={4,5,6,7,0,1,2};
-        System.out.println(bs.searchMinimumElementInRotatedSortedArray(arr));
+//        int arr[]={4,5,6,7,0,1,2};
+//        System.out.println(bs.searchMinimumElementInRotatedSortedArray(arr));
+
+        //find out how many times an array has rotated--same as min element in rotated array
+        int arr[]={3,4,5,1,2};
+        System.out.println(bs.findHowManyTimesAnArrayIsRotated(arr));
 
 
     }
