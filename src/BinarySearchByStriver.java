@@ -165,6 +165,22 @@ public class BinarySearchByStriver {
         }
         return -1;
     }
+    static class BinarySearchOnAnswers{
+
+        public int findSqrtOnNumberUsingBS(int n) {
+            int low=1,high=n,ans=1;
+            while(low<=high){
+                int mid=low+(high-low)/2;
+                if((mid*mid)<=n){
+                    ans=mid;
+                    low=mid+1;
+                }else
+                    high=mid-1;
+            }
+            return high;
+//            return ans;
+        }
+    }
     public static void main(String args[]){
         BinarySearchByStriver bs=new BinarySearchByStriver();
 
@@ -198,11 +214,21 @@ public class BinarySearchByStriver {
 
         //find any Peak Element--multiple peak and single peak both
 //        int arr[]={1,2,3,4,5,6,7,8,5,1};//--8 at 7th index so output is 7
-        int arr[]={1,5,1,2,1};
+        //int arr[]={1,5,1,2,1};
         //brute force
 //        System.out.println(bs.findPeakElementByBruteForce(arr));
 
-        System.out.println(bs.findPeakElementByBinarySearch(arr));
+       // System.out.println(bs.findPeakElementByBinarySearch(arr));
+
+
+        //BINARY SEARCH ON ANSWERS
+
+        //find sqrt of numbers using binary search
+        BinarySearchOnAnswers bsoa= new BinarySearchOnAnswers();
+
+        int n=28;
+
+        System.out.println(bsoa.findSqrtOnNumberUsingBS(n));
 
 
 
