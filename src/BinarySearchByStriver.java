@@ -1,3 +1,5 @@
+import static com.sun.javafx.scene.traversal.Hueristic2D.findMin;
+
 public class BinarySearchByStriver {
     public int searchElementInRotatedSortedArray(int []arr, int target){
         int n=arr.length;
@@ -244,6 +246,14 @@ public class BinarySearchByStriver {
             return max;
         }
 
+        private int findMini(int[] bloomingDay, int n) {
+            int min=Integer.MAX_VALUE;
+            for(int i=0;i<n;i++){
+                min=Math.min(min,bloomingDay[i]);
+            }
+            return min;
+        }
+
         public int kokoEatingBananasByBinarySearch(int[] piles, int h) {
             int n= piles.length;
             int low=1,high=findMax(piles, n);
@@ -259,6 +269,55 @@ public class BinarySearchByStriver {
                     low=mid+1;
             }
             return ans;//or we can return low also
+        }
+
+        public int minNumberOfDaysToMakeMBouquetsByLinearSearch(int[] bloomingDay, int m, int k) {
+            int n=bloomingDay.length;
+            if(n<(m*k)) return -1;
+            int mini=findMini(bloomingDay,n);
+            int maxi=findMax(bloomingDay,n);
+            for(int i=mini;i<=maxi;i++){
+                if(isPossibleToMakeBouquets(bloomingDay,n,m,k,i))
+                    return i;
+            }
+            return -1;
+        }
+
+        private boolean isPossibleToMakeBouquets(int[] bloomingDay, int n, int m, int k, int day) {
+            int noOfBouquets=0;
+            int count=0;
+            for(int i=0;i<n;i++){
+                if(bloomingDay[i]<=day)
+                    count++;
+                else{
+                    noOfBouquets+=(count/k);
+                    count=0;
+                }
+            }
+            noOfBouquets+=(count/k);
+
+            if(noOfBouquets>=m)
+                return true;
+            return false;
+
+        }
+
+
+        public int minNumberOfDaysToMakeMBouquetsByBinarySearch(int[] bloomingDay, int m, int k) {
+            int n=bloomingDay.length;
+            if(n<(m*k)) return -1;
+            int low=findMini(bloomingDay,n);
+            int high=findMax(bloomingDay,n);
+            int ans=-1;
+            while(low<=high){
+                int mid=low+(high-low)/2;
+                if(isPossibleToMakeBouquets(bloomingDay,n,m,k,mid)){
+                    ans=mid;
+                    high=mid-1;
+                }else
+                    low=mid+1;
+            }
+            return low;
         }
     }
     public static void main(String args[]){
@@ -322,13 +381,23 @@ public class BinarySearchByStriver {
 
 
         //Koko eating bananas
-        int piles[]={3,6,7,11};
-        int h=8;
+//        int piles[]={3,6,7,11};
+//        int h=8;
 
 //        System.out.println(bsoa.kokoEatingBananasByLinearSearch(piles,h));
 
 
-        System.out.println(bsoa.kokoEatingBananasByBinarySearch(piles,h));
+//        System.out.println(bsoa.kokoEatingBananasByBinarySearch(piles,h));
+
+
+//        Minimum number of days to make m bouquets
+        int bloomingDay[]={7,7,7,7,13,11,12,7};
+        int m=2,k=3;
+
+        //by linear search
+//        System.out.println(bsoa.minNumberOfDaysToMakeMBouquetsByLinearSearch(bloomingDay,m,k));
+
+        System.out.println(bsoa.minNumberOfDaysToMakeMBouquetsByBinarySearch(bloomingDay,m,k));
 
 
 
