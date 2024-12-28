@@ -180,6 +180,42 @@ public class BinarySearchByStriver {
             return high;
 //            return ans;
         }
+
+        public int findTheNthRootOfAnIntegerLinear(int n, int m) {
+            int ans=1;
+            for(int i=1;i<=m;i++){
+                if(nthRootOfI(i,n,m)==1)
+                    return i;
+                else if(nthRootOfI(i,n,m)==2)
+                    break;
+            }
+            return -1;
+        }
+
+        private int nthRootOfI(int ele, int n, int m) {
+            long ans=1;
+            for(int i=1;i<=n;i++){
+                ans*=ele;
+                if(ans>m) return 2;
+            }
+            if(ans==m) return 1;
+            return 0;
+        }
+
+        public int findTheNthRootOfAnIntegerByBinarySearch(int n, int m) {
+            int low=1,high=m;
+            while(low<=high){
+                int mid=low+(high-low)/2;
+                int nthRootOfMid= nthRootOfI(mid,n,m);
+                if(nthRootOfMid==1)
+                    return mid;
+                else if(nthRootOfMid==0)
+                    low=mid+1;
+                else
+                    high=mid-1;
+            }
+            return -1;
+        }
     }
     public static void main(String args[]){
         BinarySearchByStriver bs=new BinarySearchByStriver();
@@ -226,9 +262,23 @@ public class BinarySearchByStriver {
         //find sqrt of numbers using binary search
         BinarySearchOnAnswers bsoa= new BinarySearchOnAnswers();
 
-        int n=28;
+//        int n=28;
+//        System.out.println(bsoa.findSqrtOnNumberUsingBS(n));
 
-        System.out.println(bsoa.findSqrtOnNumberUsingBS(n));
+
+        //Find the Nth root of an Integer
+//        int n=3,m=27;
+        int n=4,m=69;
+
+        //by linear search
+//        System.out.println(bsoa.findTheNthRootOfAnIntegerLinear(n,m));
+
+        //by binary search
+        System.out.println(bsoa.findTheNthRootOfAnIntegerByBinarySearch(n,m));
+
+
+
+
 
 
 
