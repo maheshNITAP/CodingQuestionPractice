@@ -216,6 +216,50 @@ public class BinarySearchByStriver {
             }
             return -1;
         }
+
+        public int kokoEatingBananasByLinearSearch(int[] piles, int h) {
+            int n= piles.length;
+            int max= findMax(piles,n);
+            for(int i=1;i<=max;i++){
+                int requiredTime= totalTimeToEatBananas(piles,i,n);
+                if(requiredTime<=h)
+                    return i;//-------minimum number of bananas need to eat to finish in h hours
+            }
+            return -1;
+        }
+
+        private int totalTimeToEatBananas(int[] piles, int hourly, int n) {
+            int time=0;
+            for(int i=0;i<n;i++){
+                time+=Math.ceil((double)piles[i]/hourly);
+            }
+            return time;
+        }
+
+        private int findMax(int[] piles, int n) {
+            int max=Integer.MIN_VALUE;
+            for(int i=0;i<n;i++){
+                max=Math.max(max,piles[i]);
+            }
+            return max;
+        }
+
+        public int kokoEatingBananasByBinarySearch(int[] piles, int h) {
+            int n= piles.length;
+            int low=1,high=findMax(piles, n);
+            int ans=-1;
+            while(low<=high){
+                int mid=low+(high-low)/2;
+                int reqTime=totalTimeToEatBananas(piles,mid,n);
+                if(reqTime<=h){
+                    ans=mid;
+                    high=mid-1;
+                }
+                else
+                    low=mid+1;
+            }
+            return ans;//or we can return low also
+        }
     }
     public static void main(String args[]){
         BinarySearchByStriver bs=new BinarySearchByStriver();
@@ -268,14 +312,23 @@ public class BinarySearchByStriver {
 
         //Find the Nth root of an Integer
 //        int n=3,m=27;
-        int n=4,m=69;
+        //int n=4,m=69;
 
         //by linear search
 //        System.out.println(bsoa.findTheNthRootOfAnIntegerLinear(n,m));
 
         //by binary search
-        System.out.println(bsoa.findTheNthRootOfAnIntegerByBinarySearch(n,m));
+        //System.out.println(bsoa.findTheNthRootOfAnIntegerByBinarySearch(n,m));
 
+
+        //Koko eating bananas
+        int piles[]={3,6,7,11};
+        int h=8;
+
+//        System.out.println(bsoa.kokoEatingBananasByLinearSearch(piles,h));
+
+
+        System.out.println(bsoa.kokoEatingBananasByBinarySearch(piles,h));
 
 
 
