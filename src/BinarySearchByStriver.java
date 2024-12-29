@@ -165,6 +165,30 @@ public class BinarySearchByStriver {
         }
         return -1;
     }
+
+    private static int kthMissingPositiveIntegerLinearSearch(int[] arr, int k) {
+        int n=arr.length;
+        for(int i=0;i<n;i++){
+            if(arr[i]<=k)
+                k++;
+            else break;
+        }
+        return k;
+
+    }
+
+    private static int kthMissingPositiveIntegerByBinarySearch(int[] arr, int k) {
+        int low=0,high=arr.length-1;
+        while(low<=high){
+           int mid=low+(high-low)/2;
+           int missing=arr[mid]-(mid+1);
+           if(missing<k)
+               low=mid+1;
+           else
+               high=mid-1;
+        }
+        return low+k;
+    }
     static class BinarySearchOnAnswers{
 
         public int findSqrtOnNumberUsingBS(int n) {
@@ -501,13 +525,22 @@ public class BinarySearchByStriver {
 
         //Capacity to ship packages within D days
 
-        int weights[]={1,2,3,4,5,6,7,8,9,10};
-        int days=5;
+//        int weights[]={1,2,3,4,5,6,7,8,9,10};
+//        int days=5;
 
 //        System.out.println(bsoa.findCapacityToShipPackagesWithingDDaysByLinearSearch(weights,days));
 
-        System.out.println(bsoa.findCapacityToShipPackagesWithingDDaysByBinarySearch(weights,days));
+//        System.out.println(bsoa.findCapacityToShipPackagesWithingDDaysByBinarySearch(weights,days));
 
+
+        //Kth missing positive number
+
+        int arr[]={2,3,4,7,11};
+        int k=5;
+
+        //System.out.println(kthMissingPositiveIntegerLinearSearch(arr,k));
+
+        System.out.println(kthMissingPositiveIntegerByBinarySearch(arr,k));
 
 
 
