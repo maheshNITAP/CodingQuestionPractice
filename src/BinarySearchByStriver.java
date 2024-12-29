@@ -1,5 +1,3 @@
-import static com.sun.javafx.scene.traversal.Hueristic2D.findMin;
-
 public class BinarySearchByStriver {
     public int searchElementInRotatedSortedArray(int []arr, int target){
         int n=arr.length;
@@ -319,6 +317,48 @@ public class BinarySearchByStriver {
             }
             return low;
         }
+
+        public int findASmallestDivisorForGivenThresholdByLinearSearch(int[] arr, int threshold) {
+            int n=arr.length;
+            int max=findMax(arr,n);
+            for(int d=1;d<=max;d++){
+                int sum=0;
+                for(int i=0;i<n;i++){
+                    sum+=Math.ceil((double)arr[i]/d);
+                }
+                if(sum<=threshold)
+                    return d;
+            }
+            return -1;
+        }
+
+        public int findASmallestDivisorForGivenThresholdByBinarySearch(int[] arr, int threshold) {
+            int n=arr.length;
+            int low=1;
+            int high=findMax(arr,n);
+            int ans=0;
+            while(low<=high){
+                int mid=low+(high-low)/2;
+                if(isPossibleDivisor(arr,mid,n,threshold)){
+                    ans=mid;
+                    //either we can store mid as ans or low is also is accepted arean in last
+                    high=mid-1;
+                }else{
+                    low=mid+1;
+                }
+            }
+            return ans;//low
+        }
+
+        private boolean isPossibleDivisor(int[] arr, int mid, int n, int threshold) {//mid---->divisor
+            int sum=0;
+            for(int i=0;i<n;i++){
+                sum+=Math.ceil((double) arr[i]/mid);
+            }
+            if(sum<=threshold)
+                return true;
+            return false;
+        }
     }
     public static void main(String args[]){
         BinarySearchByStriver bs=new BinarySearchByStriver();
@@ -391,14 +431,23 @@ public class BinarySearchByStriver {
 
 
 //        Minimum number of days to make m bouquets
-        int bloomingDay[]={7,7,7,7,13,11,12,7};
-        int m=2,k=3;
+//        int bloomingDay[]={7,7,7,7,13,11,12,7};
+//        int m=2,k=3;
 
         //by linear search
 //        System.out.println(bsoa.minNumberOfDaysToMakeMBouquetsByLinearSearch(bloomingDay,m,k));
 
-        System.out.println(bsoa.minNumberOfDaysToMakeMBouquetsByBinarySearch(bloomingDay,m,k));
+//        System.out.println(bsoa.minNumberOfDaysToMakeMBouquetsByBinarySearch(bloomingDay,m,k));
 
+
+        //find a smallest divisor given a threshold
+        int arr[]={1,2,5,9};
+        int threshold=6;
+
+        //linear search
+//        System.out.println(bsoa.findASmallestDivisorForGivenThresholdByLinearSearch(arr,threshold));
+
+        System.out.println(bsoa.findASmallestDivisorForGivenThresholdByBinarySearch(arr,threshold));
 
 
 
