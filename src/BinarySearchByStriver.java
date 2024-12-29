@@ -252,6 +252,13 @@ public class BinarySearchByStriver {
             return min;
         }
 
+        private int finSumOfArray(int[] weights, int n) {
+            int sum=0;
+            for(int x:weights)
+                sum+=x;
+            return sum;
+        }
+
         public int kokoEatingBananasByBinarySearch(int[] piles, int h) {
             int n= piles.length;
             int low=1,high=findMax(piles, n);
@@ -359,6 +366,47 @@ public class BinarySearchByStriver {
                 return true;
             return false;
         }
+
+        public int findCapacityToShipPackagesWithingDDaysByLinearSearch(int[] weights, int days) {
+            int n=weights.length;
+            int maxArr=findMax(weights,n);
+            int arrSum=finSumOfArray(weights,n);
+            for(int cap=maxArr;cap<=arrSum;cap++){
+                int daysReq=reqDaysToShip(weights,cap,n);
+                if(daysReq<=days)
+                    return cap;
+            }
+            return -1;
+        }
+
+        private int reqDaysToShip(int[] weights, int cap, int n) {
+            int day=1,load=0;
+            for(int i=0;i<n;i++){
+                if(load+weights[i]>cap){
+                    day++;
+                    load=weights[i];
+                }else{
+                    load+=weights[i];
+                }
+
+            }
+            return day;
+        }
+
+
+        public int findCapacityToShipPackagesWithingDDaysByBinarySearch(int[] weights, int days) {
+            int n=weights.length;
+            int low=findMax(weights,n);
+            int high=finSumOfArray(weights,n);
+            while(low<=high){
+                int mid=low+(high-low)/2;
+                if(reqDaysToShip(weights,mid,n)<=days)//we can store this mid in ans as well
+                    high=mid-1;
+                else
+                    low=mid+1;
+            }
+            return low;
+        }
     }
     public static void main(String args[]){
         BinarySearchByStriver bs=new BinarySearchByStriver();
@@ -441,14 +489,24 @@ public class BinarySearchByStriver {
 
 
         //find a smallest divisor given a threshold
-        int arr[]={1,2,5,9};
-        int threshold=6;
+//        int arr[]={1,2,5,9};
+//        int threshold=6;
 
         //linear search
 //        System.out.println(bsoa.findASmallestDivisorForGivenThresholdByLinearSearch(arr,threshold));
 
-        System.out.println(bsoa.findASmallestDivisorForGivenThresholdByBinarySearch(arr,threshold));
+//        System.out.println(bsoa.findASmallestDivisorForGivenThresholdByBinarySearch(arr,threshold));
 
+
+
+        //Capacity to ship packages within D days
+
+        int weights[]={1,2,3,4,5,6,7,8,9,10};
+        int days=5;
+
+//        System.out.println(bsoa.findCapacityToShipPackagesWithingDDaysByLinearSearch(weights,days));
+
+        System.out.println(bsoa.findCapacityToShipPackagesWithingDDaysByBinarySearch(weights,days));
 
 
 
