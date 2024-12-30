@@ -463,7 +463,7 @@ public class BinarySearchByStriver {
             int n=stalls.length;
             Arrays.sort(stalls);
             int low=1;//it can be min of all consecutive distances difference
-            int high=stalls[n-1]-stalls[0];//max distance we can place between two cowa
+            int high=stalls[n-1]-stalls[0];//max distance we can place between two cows
             while(low<=high){
                 int mid=low+(high-low)/2;
                 if(isPossibleToPlaceCow(stalls,mid,cows))
@@ -473,6 +473,46 @@ public class BinarySearchByStriver {
             }
             return high;
 
+        }
+
+        public int allocateBooksByLinearSearch(int[] arr, int m) {
+            int n=arr.length;
+            int low=findMax(arr,n);
+            int high=finSumOfArray(arr,n);
+
+            for(int pages=low;pages<=high;pages++){
+                if(m==numberOfStudents(arr,pages))
+                    return pages;
+            }
+            return -1;
+        }
+
+        private int numberOfStudents(int[] arr, int pages) {
+            int student=1; int allocatedPages=0;
+            for(int i=0;i<arr.length;i++){
+                if(allocatedPages+arr[i]<=pages)
+                    allocatedPages+=arr[i];
+                else {
+                    allocatedPages=arr[i];
+                    student++;
+                }
+            }
+            return student;
+        }
+
+        public int allocateBooksByBinarySearch(int[] arr, int m) {
+            int n=arr.length;
+            int low=findMax(arr,n);
+            int high=finSumOfArray(arr,n);
+            while(low<=high){
+                int mid=low+(high-low)/2;
+                int students=numberOfStudents(arr,mid);
+                if(students>m)
+                    low=mid+1;
+                else
+                    high=mid-1;
+            }
+            return low;
         }
     }
     public static void main(String args[]){
@@ -588,12 +628,23 @@ public class BinarySearchByStriver {
         //from here we will do Question on (min)Of max OR (max)of min
         //Aggressive Cows
 
-        int stalls[]={0,3,4,7,10,9};
-        int cows=4;
+//        int stalls[]={0,3,4,7,10,9};
+//        int cows=4;
 
 //        System.out.println(bsoa.aggressiveCowsLinearSearch(stalls,cows));
 
-        System.out.println(bsoa.aggressiveCowsBinarySearch(stalls,cows));
+//        System.out.println(bsoa.aggressiveCowsBinarySearch(stalls,cows));
+
+
+        //Allocate Books
+
+        int arr[]= {25,46,28,49,24};// n books means length of array which contains pages arr[i]
+        int m=4;// number to students whom we need to allocate
+
+//        System.out.println(bsoa.allocateBooksByLinearSearch(arr,m));
+
+        System.out.println(bsoa.allocateBooksByBinarySearch(arr,m));
+
 
 
     }
