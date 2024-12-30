@@ -1,4 +1,7 @@
+import javafx.util.Pair;
+
 import java.util.Arrays;
+import java.util.PriorityQueue;
 
 public class BinarySearchByStriver {
     public int searchElementInRotatedSortedArray(int []arr, int target){
@@ -514,7 +517,54 @@ public class BinarySearchByStriver {
             }
             return low;
         }
+
+        public double minimiseMaximumDistanceBetweenGasStationsBruteForce(int[] arr, int k) {
+            int n=arr.length;
+            int howMany[]= new int[n-1];
+            for(int gasStation =1;gasStation<=k;gasStation++){
+                double maxSection=-1;
+                int maxSecIndex=-1;
+                for(int i=0;i<n-1;i++){
+                    double diff=arr[i+1]-arr[i];
+                    double sectionLength=diff/(double) (howMany[i]+1);
+                    if(sectionLength>maxSection){
+                        maxSection=sectionLength;
+                        maxSecIndex=i;
+                    }
+                }
+                howMany[maxSecIndex]++;
+            }
+            double maxAns=-1;
+            for(int i=0;i<n-1;i++){
+                double diff=arr[i+1]-arr[i];
+                double sectionLength= diff/(double)(howMany[i]+1);
+                maxAns=Math.max(maxAns,sectionLength);
+            }
+            return maxAns;
+        }
+
+        public double minimiseMaximumDistanceBetweenGasStationsOptimalByHeap(int[] arr, int k) {
+            int n=arr.length;
+            int howMany[] = new int[n-1];
+            PriorityQueue<Pair<Double,Integer>> pq= new PriorityQueue<>((a,b)->Double.compare(b.getKey(),a.getKey()));
+
+            for(int i=0;i<n-1;i++){
+                pq.add(new Pair<>((double)arr[i+1]-arr[i],i));
+            }
+            for(int gasStation=1;gasStation<=k;gasStation++){
+                Pair<Double,Integer> top= pq.poll();
+                int sectionIndex=top.getValue();
+                howMany[sectionIndex]++;
+
+                double diff=arr[sectionIndex+1]-arr[sectionIndex];
+                double newSection=diff/(double) (howMany[sectionIndex]+1);
+                pq.add(new Pair<>(newSection,sectionIndex));
+            }
+            return pq.peek().getKey();
+
+        }
     }
+
     public static void main(String args[]){
         BinarySearchByStriver bs=new BinarySearchByStriver();
 
@@ -638,12 +688,21 @@ public class BinarySearchByStriver {
 
         //Allocate Books
 
-        int arr[]= {25,46,28,49,24};// n books means length of array which contains pages arr[i]
-        int m=4;// number to students whom we need to allocate
+//        int arr[]= {25,46,28,49,24};// n books means length of array which contains pages arr[i]
+//        int m=4;// number to students whom we need to allocate
 
 //        System.out.println(bsoa.allocateBooksByLinearSearch(arr,m));
 
-        System.out.println(bsoa.allocateBooksByBinarySearch(arr,m));
+//        System.out.println(bsoa.allocateBooksByBinarySearch(arr,m));
+
+
+        //Minimise Maximum Distance Between Gas Station
+        int arr[]={1,13,17,23};
+        int k=5;//----O/P--3
+
+//        System.out.println(bsoa.minimiseMaximumDistanceBetweenGasStationsBruteForce(arr,k));
+
+        System.out.println(bsoa.minimiseMaximumDistanceBetweenGasStationsOptimalByHeap(arr,k));
 
 
 
