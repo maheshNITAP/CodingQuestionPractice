@@ -1,3 +1,5 @@
+import java.util.Arrays;
+
 public class BinarySearchByStriver {
     public int searchElementInRotatedSortedArray(int []arr, int target){
         int n=arr.length;
@@ -431,6 +433,47 @@ public class BinarySearchByStriver {
             }
             return low;
         }
+
+        public int aggressiveCowsLinearSearch(int[] stalls, int cows) {
+            int n=stalls.length;
+            Arrays.sort(stalls);
+            for(int dist=1;dist<stalls[n-1]-stalls[0];dist++){
+                if(isPossibleToPlaceCow(stalls,dist,cows))
+                    continue;
+                else
+                    return dist-1;//if this is not possible then previous was out answer
+            }
+            return -1;
+        }
+
+        private boolean isPossibleToPlaceCow(int[] stalls, int dist, int cows) {
+            int placedCow=1; int lastPosOfCow=stalls[0];
+            for(int i=1;i<stalls.length;i++){
+                if(stalls[i]-lastPosOfCow>=dist){
+                    placedCow++;
+                    lastPosOfCow=stalls[i];
+                }
+                if(placedCow>=cows)
+                    return true;
+            }
+            return false;
+        }
+
+        public int aggressiveCowsBinarySearch(int[] stalls, int cows) {
+            int n=stalls.length;
+            Arrays.sort(stalls);
+            int low=1;//it can be min of all consecutive distances difference
+            int high=stalls[n-1]-stalls[0];//max distance we can place between two cowa
+            while(low<=high){
+                int mid=low+(high-low)/2;
+                if(isPossibleToPlaceCow(stalls,mid,cows))
+                    low=mid+1;
+                else
+                    high=mid-1;
+            }
+            return high;
+
+        }
     }
     public static void main(String args[]){
         BinarySearchByStriver bs=new BinarySearchByStriver();
@@ -535,14 +578,22 @@ public class BinarySearchByStriver {
 
         //Kth missing positive number
 
-        int arr[]={2,3,4,7,11};
-        int k=5;
+//        int arr[]={2,3,4,7,11};
+//        int k=5;
 
         //System.out.println(kthMissingPositiveIntegerLinearSearch(arr,k));
 
-        System.out.println(kthMissingPositiveIntegerByBinarySearch(arr,k));
+//        System.out.println(kthMissingPositiveIntegerByBinarySearch(arr,k));
 
+        //from here we will do Question on (min)Of max OR (max)of min
+        //Aggressive Cows
 
+        int stalls[]={0,3,4,7,10,9};
+        int cows=4;
+
+//        System.out.println(bsoa.aggressiveCowsLinearSearch(stalls,cows));
+
+        System.out.println(bsoa.aggressiveCowsBinarySearch(stalls,cows));
 
 
     }
