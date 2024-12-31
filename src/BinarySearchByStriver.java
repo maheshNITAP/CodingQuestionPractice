@@ -685,6 +685,55 @@ public class BinarySearchByStriver {
         }
     }
 
+    static class BinarySearchOn2D{
+
+        public int findTheRowWithMaximum1sWithBruteForce(int[][] mat) {
+            int n=mat.length;
+            int maxCount=-1;
+            int maxIndex=-1;
+            for(int i=0;i<mat.length;i++){
+                int count=0;
+                for(int j=0;j<mat[i].length;j++){
+                    count+=mat[i][j];
+                }
+                if(count>maxCount){
+                    maxCount=count;
+                    maxIndex=i;
+                }
+            }
+            return maxIndex;
+        }
+
+        public int findTheRowWithMaximum1sByBinarySearch(int[][] mat) {
+            int n=mat.length;
+            int m=mat[0].length;
+            int maxCount=-1;
+            int maxIndex=-1;
+            for(int i=0;i<n;i++){
+                int countOnes=m-lowerBound(mat[i],m,1);
+                if(countOnes>maxCount){
+                    maxCount=countOnes;
+                    maxIndex=i;
+                }
+            }
+            return maxIndex;
+        }
+
+        private int lowerBound(int[] arr, int n, int x) {
+            int low=0, high=n-1;
+            int ans=n;
+            while(low<=high){
+                int mid=low+(high-low)/2;
+                if(arr[mid]>=x){
+                    ans=mid;
+                    high=mid-1;
+                }else
+                    low=mid+1;
+            }
+            return ans;
+        }
+    }
+
     public static void main(String args[]){
         BinarySearchByStriver bs=new BinarySearchByStriver();
 
@@ -844,11 +893,26 @@ public class BinarySearchByStriver {
         //Kth Element of two sorted Arrays
         //--same concept as Median of two sorted arrays of Different Sizes only instead of median we need to find kth element
 
-        int arr1[]={2,3,6,7,9};
-        int arr2[]={1,4,8,10};
+//        int arr1[]={2,3,6,7,9};
+//        int arr2[]={1,4,8,10};
+//
+//        int k=4;
+//        System.out.println(bsoa.kthElementOfTwoSortedArrayByBinarySearch(arr1,arr2,k));
 
-        int k=4;
-        System.out.println(bsoa.kthElementOfTwoSortedArrayByBinarySearch(arr1,arr2,k));
+
+        BinarySearchOn2D BSon2D= new BinarySearchOn2D();
+
+        //find the row with maximum ones
+
+        int mat[][]={{0,0,1,1,1},{0,0,0,0,0},{0,1,1,1,1},{0,0,0,0,0},{0,1,1,1,1}};
+
+        //Brute force
+//        System.out.println(BSon2D.findTheRowWithMaximum1sWithBruteForce(mat));
+
+        //Binary Search
+        System.out.println(BSon2D.findTheRowWithMaximum1sByBinarySearch(mat));
+
+
 
 
 
