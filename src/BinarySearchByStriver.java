@@ -817,6 +817,39 @@ public class BinarySearchByStriver {
             }
             return new Pair<>(-1,-1);
         }
+
+        public Pair<Integer,Integer> findPeakElementByBinarySearch(int[][] mat) {
+            int n=mat.length;
+            int m=mat[0].length;
+            int low=0,high=m-1;
+            while(low<=high){
+                int mid=low+(high-low)/2;
+                int row=maxElementInColumn(mat,n,m,mid);
+                int left= mid-1>=0? mat[row][mid-1]:-1;
+                int right=mid+1<m ? mat[row][mid+1]:-1;
+
+                if(mat[row][mid]>left && mat[row][mid]>right)
+                    return new Pair<>(row,mid);
+                else if(mat[row][mid]<left)
+                    high=mid-1;
+                else
+                    low=mid+1;
+            }
+            return new Pair<>(-1,-1);
+
+        }
+
+        private int maxElementInColumn(int[][] mat, int n, int m, int col) {
+            int maxVal=-1;
+            int maxInd=-1;
+            for(int i=0;i<n;i++){
+                if(mat[i][col]>maxVal){
+                    maxVal=mat[i][col];
+                    maxInd=i;
+                }
+            }
+            return maxInd;
+        }
     }
 
     public static void main(String args[]){
@@ -1015,14 +1048,20 @@ public class BinarySearchByStriver {
 
         //search in 2d matrix-||
 
-        int mat[][]={{1,4,7,11,15},{2,5,8,12,19},{3,6,9,16,22},{10,13,14,17,24},{18,21,23,26,30}};
-        int target=14;
+//        int mat[][]={{1,4,7,11,15},{2,5,8,12,19},{3,6,9,16,22},{10,13,14,17,24},{18,21,23,26,30}};
+//        int target=14;
 
         //BS on every row
 //        System.out.println(BSon2D.searchIn2DMatrix2ndBetter(mat,target));
 
         //Optimal Solution
-        System.out.println(BSon2D.searchIn2DMatrix2ndOptimalByPointer(mat,target));
+//        System.out.println(BSon2D.searchIn2DMatrix2ndOptimalByPointer(mat,target));
+
+        //find Peak element-||
+
+        int mat[][]={{4,2,5,1,4,5},{2,9,3,2,3,2},{1,7,6,0,1,3},{3,6,2,3,7,2}};
+
+        System.out.println(BSon2D.findPeakElementByBinarySearch(mat));
 
 
 
