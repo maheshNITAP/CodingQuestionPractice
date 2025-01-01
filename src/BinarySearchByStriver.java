@@ -759,7 +759,7 @@ public class BinarySearchByStriver {
         }
 
         private int bs(int[] arr, int target) {
-            int high=arr.length;
+            int high=arr.length-1;
             int low=0;
             while(low<=high){
                 int mid=low+(high-low)/2;
@@ -790,6 +790,32 @@ public class BinarySearchByStriver {
                     high=mid-1;
             }
             return false;
+        }
+
+        public Pair<Integer,Integer> searchIn2DMatrix2ndBetter(int[][] mat, int target) {
+            int n=mat.length;
+            for(int i=0;i<n;i++){
+                int index=bs(mat[i],target);
+                if(index!=-1)
+                    return new Pair<>(i,index);
+            }
+            return new Pair<>(-1,-1);
+        }
+
+        public Pair<Integer,Integer> searchIn2DMatrix2ndOptimalByPointer(int[][] mat, int target) {
+            int n=mat.length;
+            int m=mat[0].length;
+            int row=0;
+            int col=m-1;
+            while(row<n && col>=0){
+                if(mat[row][col]==target)
+                    return new Pair<>(row,col);
+                else if(mat[row][col]<target)
+                    row++;
+                else
+                    col--;
+            }
+            return new Pair<>(-1,-1);
         }
     }
 
@@ -973,8 +999,8 @@ public class BinarySearchByStriver {
 
         //Search in 2d Matrix
 
-        int mat[][]={{3,4,7,9},{12,13,16,18},{20,21,23,29}};
-        int target=23;
+//        int mat[][]={{3,4,7,9},{12,13,16,18},{20,21,23,29}};
+//        int target=23;
 
         //Brute force
 //        System.out.println(BSon2D.searchIn2DMatrixBruteForce(mat,target));
@@ -984,8 +1010,19 @@ public class BinarySearchByStriver {
 //        System.out.println(BSon2D.searchIn2DMatrixOptimal(mat,target));
 
 //        Bs on range of indexes
-        System.out.println(BSon2D.searchIn2DMatrixByProperBinarySearch(mat,target));
+//        System.out.println(BSon2D.searchIn2DMatrixByProperBinarySearch(mat,target));
 
+
+        //search in 2d matrix-||
+
+        int mat[][]={{1,4,7,11,15},{2,5,8,12,19},{3,6,9,16,22},{10,13,14,17,24},{18,21,23,26,30}};
+        int target=14;
+
+        //BS on every row
+//        System.out.println(BSon2D.searchIn2DMatrix2ndBetter(mat,target));
+
+        //Optimal Solution
+        System.out.println(BSon2D.searchIn2DMatrix2ndOptimalByPointer(mat,target));
 
 
 
