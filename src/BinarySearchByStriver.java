@@ -2,6 +2,7 @@ import javafx.util.Pair;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.PriorityQueue;
 
 public class BinarySearchByStriver {
@@ -850,6 +851,83 @@ public class BinarySearchByStriver {
             }
             return maxInd;
         }
+
+        public int medianInRowWiseSortedMatrix(int[][] mat) {
+            int n=mat.length;
+            int m=mat[0].length;
+            ArrayList<Integer> lis= new ArrayList<>();
+            for(int i=0;i<n;i++){
+                for(int j=0;j<m;j++){
+                    lis.add(mat[i][j]);
+                }
+            }
+            Collections.sort(lis);
+            return lis.get((n*m)/2);
+
+        }
+
+        public int medianInRowWiseSortedMatrixByBinarySearch(int[][] mat) {
+            int n=mat.length;
+            int m=mat[0].length;
+
+            int low=minOfGivenCol(mat,0);
+            int high=maxOfGivenCol(mat,m-1);
+            int req=(n*m)/2;
+            while(low<=high){
+                int mid=low+(high-low)/2;
+                int smallerEquals=countOfSmallerEquals(mat,mid);
+
+                if(smallerEquals<=req)
+                    low=mid+1;
+                else
+                    high=mid-1;
+            }
+            return low;
+        }
+
+        private int countOfSmallerEquals(int[][] mat, int x) {
+            int count=0;
+            for(int i=0;i<mat.length;i++){
+                count+=upperBound(mat[i],x);
+            }
+            return count;
+        }
+
+        private int upperBound(int[] arr, int x) {
+            int n=arr.length;
+            int low=0,high=n-1;
+            int ans=n;
+            while(low<=high){
+                int mid=low+(high-low)/2;
+                if(arr[mid]>x){
+                    ans=mid;
+                    high=mid-1;
+                }else{
+                    low=mid+1;
+                }
+            }
+            return ans;
+
+        }
+
+        private int maxOfGivenCol(int[][] mat, int col) {
+            int maxValue=Integer.MIN_VALUE;
+            for(int i=0;i<mat.length;i++){
+                if(mat[i][col]>maxValue)
+                    maxValue=mat[i][col];
+            }
+            return maxValue;
+
+        }
+
+        private int minOfGivenCol(int[][] mat, int col) {
+            int minValue=Integer.MAX_VALUE;
+            for(int i=0;i<mat.length;i++){
+                if(mat[i][col]<minValue)
+                    minValue=mat[i][col];
+            }
+            return minValue;
+        }
     }
 
     public static void main(String args[]){
@@ -1059,9 +1137,21 @@ public class BinarySearchByStriver {
 
         //find Peak element-||
 
-        int mat[][]={{4,2,5,1,4,5},{2,9,3,2,3,2},{1,7,6,0,1,3},{3,6,2,3,7,2}};
+//        int mat[][]={{4,2,5,1,4,5},{2,9,3,2,3,2},{1,7,6,0,1,3},{3,6,2,3,7,2}};
+//
+//        System.out.println(BSon2D.findPeakElementByBinarySearch(mat));
 
-        System.out.println(BSon2D.findPeakElementByBinarySearch(mat));
+
+        //Median in row wise sorted matrix--revisit
+
+        int mat[][]={{1,5,7,9,11},{2,3,4,5,10},{9,10,12,14,15}};
+
+//        brute force
+//        System.out.println(BSon2D.medianInRowWiseSortedMatrix(mat));
+
+        //By Binary search
+        System.out.println(BSon2D.medianInRowWiseSortedMatrixByBinarySearch(mat));
+
 
 
 
