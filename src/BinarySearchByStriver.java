@@ -732,6 +732,65 @@ public class BinarySearchByStriver {
             }
             return ans;
         }
+
+        public boolean searchIn2DMatrixBruteForce(int[][] mat, int target) {
+            int n=mat.length;
+            int m=mat[0].length;
+            for(int i=0;i<n;i++){
+                for(int j=0;j<m;j++){
+                    if(mat[i][j]==target)
+                        return true;
+                }
+            }
+            return false;
+        }
+
+        public boolean searchIn2DMatrixOptimal(int[][] mat, int target) {
+            int n=mat.length;
+            int m=mat[0].length;
+            for(int i=0;i<n;i++){
+                if(mat[i][0]<=target && target<=mat[i][m-1]){
+                    int ind=bs(mat[i],target);
+                    if(ind!=-1)
+                        return true;
+                }
+            }
+            return false;
+        }
+
+        private int bs(int[] arr, int target) {
+            int high=arr.length;
+            int low=0;
+            while(low<=high){
+                int mid=low+(high-low)/2;
+                if(arr[mid]==target)
+                    return mid;
+                else if(target<mid)
+                    high=mid-1;
+                else
+                    low=mid+1;
+            }
+            return -1;
+        }
+
+        public boolean searchIn2DMatrixByProperBinarySearch(int[][] mat, int target) {
+            int n=mat.length;
+            int m=mat[0].length;
+            int low=0;
+            int high=(n*m)-1;
+            while(low<=high){
+                int mid=low+(high-low)/2;
+                int row=mid/m;
+                int col=mid%m;
+                if(mat[row][col]==target)
+                    return true;
+                else if(mat[row][col]<target)
+                    low=mid+1;
+                else
+                    high=mid-1;
+            }
+            return false;
+        }
     }
 
     public static void main(String args[]){
@@ -904,13 +963,29 @@ public class BinarySearchByStriver {
 
         //find the row with maximum ones
 
-        int mat[][]={{0,0,1,1,1},{0,0,0,0,0},{0,1,1,1,1},{0,0,0,0,0},{0,1,1,1,1}};
+//        int mat[][]={{0,0,1,1,1},{0,0,0,0,0},{0,1,1,1,1},{0,0,0,0,0},{0,1,1,1,1}};
 
         //Brute force
 //        System.out.println(BSon2D.findTheRowWithMaximum1sWithBruteForce(mat));
 
         //Binary Search
-        System.out.println(BSon2D.findTheRowWithMaximum1sByBinarySearch(mat));
+//        System.out.println(BSon2D.findTheRowWithMaximum1sByBinarySearch(mat));
+
+        //Search in 2d Matrix
+
+        int mat[][]={{3,4,7,9},{12,13,16,18},{20,21,23,29}};
+        int target=23;
+
+        //Brute force
+//        System.out.println(BSon2D.searchIn2DMatrixBruteForce(mat,target));
+
+
+        //bs on respected row
+//        System.out.println(BSon2D.searchIn2DMatrixOptimal(mat,target));
+
+//        Bs on range of indexes
+        System.out.println(BSon2D.searchIn2DMatrixByProperBinarySearch(mat,target));
+
 
 
 
