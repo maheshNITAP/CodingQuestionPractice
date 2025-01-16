@@ -28,10 +28,8 @@ public class TrieMaxXOROfTwoNumbersInAnArray {
                 int bit=(num>>i)&1;
                 if(!node.containsKey(bit)){
                     node.put(bit,new Node());
-                    node=node.get(bit);
-                }else{
-                    node=node.get(bit);
                 }
+                node=node.get(bit);
             }
         }
 
