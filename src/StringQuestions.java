@@ -64,6 +64,23 @@ public class StringQuestions {
             }
             return ans.toString();
         }
+
+        public String integerToRoman(int n) {
+            int nums[]={ 1000,900, 500,400, 100,90,50,40,10,9,5,4,1};
+            String val[]={"M", "CM", "D","CD", "C", "XC", "L", "XL", "X", "IX","V", "IV", "I"};
+            StringBuilder ans= new StringBuilder();
+            for(int i=0;i< nums.length;i++){
+                if(n==0) break;
+                if(n>=nums[i]){
+                    int times=n/nums[i];
+                    n=n%nums[i];
+                    while(times-->0){
+                        ans.append(val[i]);
+                    }
+                }
+            }
+            return ans.toString();
+        }
     }
     public static void main(String args[]){
         SQ sq= new SQ();
@@ -81,8 +98,12 @@ public class StringQuestions {
 
         //Count and Say
 
-        int n=5;
-        System.out.println(sq.countAndSay(n));
+//        int n=5;
+//        System.out.println(sq.countAndSay(n));
+
+        //Integer to Roman
+        int n=1994;
+        System.out.println(sq.integerToRoman(n));
     }
 
 }
