@@ -1,9 +1,28 @@
+import java.util.ArrayList;
+import java.util.Arrays;
+
 public class StringQuestions {
     //String used functions
     //Integer to String---->String s=Integer.toString(123);
     //print subArray from index i to some length ---->String.valueOf(s,0,ind)
     //String to charArray---> char ch[]=s.toCharArray()
 //    In Java, the equals() method for StringBuilder does not compare the content of the strings; instead, it checks for reference equality. This means that even if two StringBuilder instances contain the same sequence of characters, equals() will return false unless they are the same object.
+//    String temp=s.substring(i)+s.substring(0,i);
+//    s.substring(i)--string starting for i to end of string
+    //s.substring(0,i)--starting from 0 to i-1, ith will will not be included
+
+    //compare string
+//    String s= "baaca";
+//    String res=s;
+//    String temp=s.substring(i)+s.substring(0,i);
+//     if(temp.compareTo(res)<0){
+//        res=temp;
+//    }
+
+
+
+
+
     static class SQ{
 
         public int stringCompression(char[] chars) {
@@ -118,6 +137,23 @@ public class StringQuestions {
                 return true;
             return false;
         }
+
+        public String orderlyQueue(String s, int k) {
+            if(k>1){
+                char chars[]= s.toCharArray();
+                Arrays.sort(chars);
+                return new String(chars);
+            }
+            String res=s;
+            int n=s.length();
+            for(int i=1;i<n;i++){
+                String temp=s.substring(i)+s.substring(0,i);
+                if(temp.compareTo(res)<0){
+                    res=temp;
+                }
+            }
+            return res;
+        }
     }
     public static void main(String args[]){
         SQ sq= new SQ();
@@ -144,13 +180,24 @@ public class StringQuestions {
 
         //Check if two Arrays Are Equivalent
 
-        String word1[]= {"a", "bc"};
-        String word2[]={"ab", "c"};
+//        String word1[]= {"a", "bc"};
+//        String word2[]={"ab", "c"};
 
         //Approach1 with string concatenation
 //        System.out.println(sq.checkIfTwoArraysAreEquivalent(word1,word2));
 
-        System.out.println(sq.checkIfTwoArraysAreEquivalentApproach2(word1,word2));
+//        System.out.println(sq.checkIfTwoArraysAreEquivalentApproach2(word1,word2));
+
+        //Orderly Queue
+
+//        String s= "ceabd";
+//        int k=1;
+//        String s= "cba";
+//        int k=1;
+
+        String s= "baaca";
+        int k=3;
+        System.out.println(sq.orderlyQueue(s,k));
     }
 
 }
