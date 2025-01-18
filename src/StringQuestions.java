@@ -44,6 +44,26 @@ public class StringQuestions {
             }
             return false;
         }
+
+        public String countAndSay(int n) {
+            if(n==1) return  "1";
+            String say=countAndSay(n-1);
+
+            int i= 0;
+            int len=say.length();
+            StringBuilder ans= new StringBuilder();
+            while(i<len){
+                int count=0;
+                char curr_ch= say.charAt(i);
+                while(i<len && curr_ch== say.charAt(i)){
+                    count++;
+                    i++;
+                }
+                ans.append(Integer.toString(count));
+                ans.append(curr_ch);
+            }
+            return ans.toString();
+        }
     }
     public static void main(String args[]){
         SQ sq= new SQ();
@@ -56,8 +76,13 @@ public class StringQuestions {
 //        Check if the Sentence Is Pangram
 
 //        String s="thequickbrownfoxjumpsoverthelazydog"
-        String s="leetcode";
-        System.out.println(sq.checkIfTheSentenceIsPangram(s));
+//        String s="leetcode";
+//        System.out.println(sq.checkIfTheSentenceIsPangram(s));
+
+        //Count and Say
+
+        int n=5;
+        System.out.println(sq.countAndSay(n));
     }
 
 }
