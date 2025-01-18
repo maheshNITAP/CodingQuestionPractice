@@ -3,6 +3,7 @@ public class StringQuestions {
     //Integer to String---->String s=Integer.toString(123);
     //print subArray from index i to some length ---->String.valueOf(s,0,ind)
     //String to charArray---> char ch[]=s.toCharArray()
+//    In Java, the equals() method for StringBuilder does not compare the content of the strings; instead, it checks for reference equality. This means that even if two StringBuilder instances contain the same sequence of characters, equals() will return false unless they are the same object.
     static class SQ{
 
         public int stringCompression(char[] chars) {
@@ -81,6 +82,42 @@ public class StringQuestions {
             }
             return ans.toString();
         }
+
+        public boolean checkIfTwoArraysAreEquivalent(String[] word1, String[] word2) {
+            StringBuilder w1=new StringBuilder();
+            StringBuilder w2=new StringBuilder();
+            for(int i=0;i< word1.length;i++){
+                w1.append(word1[i]);
+            }
+            for(int i=0;i< word2.length;i++){
+                w2.append(word2[i]);
+            }
+            return w1.toString().equals(w2.toString());
+        }
+
+        public boolean checkIfTwoArraysAreEquivalentApproach2(String[] word1, String[] word2) {
+            int n= word1.length;
+            int m= word2.length;
+            int w1i=0,w2i=0;
+            int i=0,j=0;
+            while(w1i<n && w2i<m){
+                if(word1[w1i].charAt(i)!=word2[w2i].charAt(j))
+                    return false;
+                i++;
+                j++;
+                if(i==word1[w1i].length()){
+                    w1i++;
+                    i=0;
+                }
+                if(j==word2[w2i].length()){
+                    w2i++;
+                    j=0;
+                }
+            }
+            if(w1i==n && w2i==m)
+                return true;
+            return false;
+        }
     }
     public static void main(String args[]){
         SQ sq= new SQ();
@@ -102,8 +139,18 @@ public class StringQuestions {
 //        System.out.println(sq.countAndSay(n));
 
         //Integer to Roman
-        int n=1994;
-        System.out.println(sq.integerToRoman(n));
+//        int n=1994;
+//        System.out.println(sq.integerToRoman(n));
+
+        //Check if two Arrays Are Equivalent
+
+        String word1[]= {"a", "bc"};
+        String word2[]={"ab", "c"};
+
+        //Approach1 with string concatenation
+//        System.out.println(sq.checkIfTwoArraysAreEquivalent(word1,word2));
+
+        System.out.println(sq.checkIfTwoArraysAreEquivalentApproach2(word1,word2));
     }
 
 }
