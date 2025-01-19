@@ -174,6 +174,26 @@ public class StringQuestions {
             return ans.toString();
 
         }
+
+        public boolean checkIfStringHalvesAreAlike(String s) {
+            int i=0,j=s.length()-1,leftCount=0,rightCount=0;
+            while(i<j){
+                if(isVowel(s.charAt(i)))
+                    leftCount++;
+                if(isVowel(s.charAt(j)))
+                    rightCount++;
+                i++;
+                j--;
+            }
+            return leftCount==rightCount;
+        }
+
+        private boolean isVowel(char ch) {
+            if(ch =='a' || ch =='e' || ch =='i' || ch =='i' || ch =='u' || ch =='A' || ch =='E' || ch =='I' || ch =='O' || ch =='U')
+                return true;
+            return false;
+
+        }
     }
     public static void main(String args[]){
         SQ sq= new SQ();
@@ -221,8 +241,15 @@ public class StringQuestions {
 
         //Make the string great
 //        String s="leEeetcode";
-        String s="abBACc";
-        System.out.println(sq.makeTheStringGreat(s));
+        //String s="abBACc";
+//        System.out.println(sq.makeTheStringGreat(s));
+
+        //Determine if String Halves are alike
+//        String s="book";
+        String s= "textbook";
+        System.out.println(sq.checkIfStringHalvesAreAlike(s));
+
+
 
     }
 
