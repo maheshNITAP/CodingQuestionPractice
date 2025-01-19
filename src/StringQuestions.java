@@ -19,6 +19,8 @@ public class StringQuestions {
 //        res=temp;
 //    }
 
+    //ans.deleteCharAt(ans.length()-1)
+
 
 
 
@@ -154,6 +156,24 @@ public class StringQuestions {
             }
             return res;
         }
+
+        public String makeTheStringGreat(String s) {
+            int n=s.length();
+            if(n<=1)
+                return s;
+
+            StringBuilder ans= new StringBuilder();
+            ans.append(s.charAt(0));
+            for(int i=1;i<n;i++){
+                if(ans.length()>0 && (s.charAt(i)+32 ==ans.charAt(ans.length()-1) || s.charAt(i)-32==ans.charAt(ans.length()-1))){
+                    ans.deleteCharAt(ans.length()-1);
+                }else {
+                    ans.append(s.charAt(i));
+                }
+            }
+            return ans.toString();
+
+        }
     }
     public static void main(String args[]){
         SQ sq= new SQ();
@@ -195,9 +215,15 @@ public class StringQuestions {
 //        String s= "cba";
 //        int k=1;
 
-        String s= "baaca";
-        int k=3;
-        System.out.println(sq.orderlyQueue(s,k));
+//        String s= "baaca";
+//        int k=3;
+//        System.out.println(sq.orderlyQueue(s,k));
+
+        //Make the string great
+//        String s="leEeetcode";
+        String s="abBACc";
+        System.out.println(sq.makeTheStringGreat(s));
+
     }
 
 }
