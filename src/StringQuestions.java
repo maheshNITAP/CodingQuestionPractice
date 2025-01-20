@@ -1,4 +1,3 @@
-import java.util.ArrayList;
 import java.util.Arrays;
 
 public class StringQuestions {
@@ -23,6 +22,8 @@ public class StringQuestions {
 
     //Compare Arrays values
 //    Arrays.equals(freq1,freq2);
+
+    //Character.isUpperCase(s.charAt(0))
 
 
 
@@ -220,6 +221,41 @@ public class StringQuestions {
             Arrays.sort(freq2);
             return  Arrays.equals(freq1,freq2);
         }
+
+        public boolean detectCapitalApproach1(String s) {
+            if(allCapital(s) || allSmall(s) || allSmall(s.substring(1)) )
+                    return true;
+            return false;
+        }
+
+        private boolean allSmall(String s) {
+            for(char ch:s.toCharArray()){
+                if(ch<'a' || ch >'z')
+                    return false;
+            }
+            return true;
+        }
+
+        private boolean allCapital(String s) {
+            for(char ch:s.toCharArray()){
+                if(ch<'A' || ch>'Z')
+                    return false;
+            }
+            return true;
+        }
+
+        public boolean detectCapitalUseApproach2(String s) {
+            int capitalCount=0;
+            for(char ch:s.toCharArray()){
+                if(ch>='A' && ch<='Z')
+                    capitalCount++;
+            }
+            if(capitalCount==0 || capitalCount==s.length())
+                return true;
+            if(capitalCount==1 && Character.isUpperCase(s.charAt(0)))
+                return true;
+            return false;
+        }
     }
     public static void main(String args[]){
         SQ sq= new SQ();
@@ -276,8 +312,16 @@ public class StringQuestions {
 //        System.out.println(sq.checkIfStringHalvesAreAlike(s));
 
         //Determine If two Strings are close
-        String word1="cabbba", word2="abbccc";
-        System.out.println(sq.checkIfTwoStringsAreClose(word1,word2));
+//        String word1="cabbba", word2="abbccc";
+//        System.out.println(sq.checkIfTwoStringsAreClose(word1,word2));
+
+        //Detect Capital -(GOOGLE) :
+
+//        String s="USA";
+        String s="Leetcode";
+//        System.out.println(sq.detectCapitalApproach1(s));
+
+        System.out.println(sq.detectCapitalUseApproach2(s));
 
 
 
