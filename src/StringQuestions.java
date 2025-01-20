@@ -256,6 +256,21 @@ public class StringQuestions {
                 return true;
             return false;
         }
+
+        public int deleteColumnToMakeSorted(String[] strs) {
+            int n= strs.length;
+            int m=strs[0].length();
+            int count=0;
+            for(int j=0;j<m;j++){
+                for(int i=1;i<n;i++){
+                    if(strs[i].charAt(j)<strs[i-1].charAt(j)){
+                        count++;
+                        break;
+                    }
+                }
+            }
+            return count;
+        }
     }
     public static void main(String args[]){
         SQ sq= new SQ();
@@ -318,10 +333,15 @@ public class StringQuestions {
         //Detect Capital -(GOOGLE) :
 
 //        String s="USA";
-        String s="Leetcode";
+//        String s="Leetcode";
 //        System.out.println(sq.detectCapitalApproach1(s));
 
-        System.out.println(sq.detectCapitalUseApproach2(s));
+//        System.out.println(sq.detectCapitalUseApproach2(s));
+
+        //Delete Column to make sorted
+//        String []strs = {"cba","daf","ghi"}; // O/P-1
+        String []strs = {"zyx","wvu","tsr"};//-----O/P-3
+        System.out.println(sq.deleteColumnToMakeSorted(strs));
 
 
 
