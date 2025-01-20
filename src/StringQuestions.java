@@ -21,6 +21,9 @@ public class StringQuestions {
 
     //ans.deleteCharAt(ans.length()-1)
 
+    //Compare Arrays values
+//    Arrays.equals(freq1,freq2);
+
 
 
 
@@ -194,6 +197,29 @@ public class StringQuestions {
             return false;
 
         }
+
+        public boolean checkIfTwoStringsAreClose(String word1, String word2) {
+            int freq1[]= new int[26];
+            int freq2[]=new int[26];
+            int n=word1.length();
+            int m=word2.length();
+            if(n!=m) return false;
+            for(int i=0;i<n;i++){
+                freq1[word1.charAt(i)-'a']++;
+                freq2[word2.charAt(i)-'a']++;
+            }
+            //1st point--jo char word 1 main h vo word 2 main bhi hona chiye
+            for(int i=0;i<26;i++){
+                if(freq1[i]!=0 && freq2[i]!=0) continue;
+                if(freq1[i]==0 && freq2[i]==0) continue;
+                return false;
+            }
+
+            //2nd point--frequency should match---mtlb kis character ki h vo nhi dekhnapa pr number should match
+            Arrays.sort(freq1);
+            Arrays.sort(freq2);
+            return  Arrays.equals(freq1,freq2);
+        }
     }
     public static void main(String args[]){
         SQ sq= new SQ();
@@ -246,8 +272,12 @@ public class StringQuestions {
 
         //Determine if String Halves are alike
 //        String s="book";
-        String s= "textbook";
-        System.out.println(sq.checkIfStringHalvesAreAlike(s));
+//        String s= "textbook";
+//        System.out.println(sq.checkIfStringHalvesAreAlike(s));
+
+        //Determine If two Strings are close
+        String word1="cabbba", word2="abbccc";
+        System.out.println(sq.checkIfTwoStringsAreClose(word1,word2));
 
 
 
