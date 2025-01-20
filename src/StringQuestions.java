@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Arrays;
 
 public class StringQuestions {
@@ -271,6 +272,40 @@ public class StringQuestions {
             }
             return count;
         }
+
+        public ArrayList<String> restoreIpAddresses(String s) {
+            int ind=0,parts=0;
+            String curr="";
+            int n=s.length();
+            ArrayList<String> ans= new ArrayList<>();
+            if(s.length()>12) return ans;
+            solve(s,ind,parts,curr,n, ans);
+            return ans;
+        }
+
+        private void solve(String s, int ind, int parts, String curr, int n, ArrayList<String> ans) {
+            if(ind==n && parts==4){
+                ans.add(curr.substring(0,curr.length()-1));
+                return;
+            }
+            if(ind+1<=n)
+                solve(s,ind+1,parts+1,curr+s.substring(ind,ind+1)+".",n ,ans);
+
+            if(ind+2<= n && isValid(s.substring(ind,ind+2)))
+                solve(s,ind+2,parts+1,curr+s.substring(ind,ind+2)+".",n,ans);
+
+            if(ind+3<= n && isValid(s.substring(ind,ind+3)))
+                solve(s,ind+3,parts+1,curr+s.substring(ind,ind+3)+".",n,ans);
+
+        }
+
+        private boolean isValid(String s) {
+            if(s.charAt(0)=='0')
+                return false;
+            if(Integer.parseInt(s)<=255)
+                return true;
+            return false;
+        }
     }
     public static void main(String args[]){
         SQ sq= new SQ();
@@ -340,8 +375,12 @@ public class StringQuestions {
 
         //Delete Column to make sorted
 //        String []strs = {"cba","daf","ghi"}; // O/P-1
-        String []strs = {"zyx","wvu","tsr"};//-----O/P-3
-        System.out.println(sq.deleteColumnToMakeSorted(strs));
+//        String []strs = {"zyx","wvu","tsr"};//-----O/P-3
+//        System.out.println(sq.deleteColumnToMakeSorted(strs));
+
+        //Restore Ip Addresses
+        String s = "25525511135";
+        System.out.println(sq.restoreIpAddresses(s));
 
 
 
