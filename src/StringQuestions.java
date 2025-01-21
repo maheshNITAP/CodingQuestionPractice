@@ -343,6 +343,45 @@ public class StringQuestions {
             }
             return -1;
         }
+
+        public boolean buddyStrings(String s, String goal) {
+            if(s.length()!=goal.length())
+                return false;
+            if(s.equals(goal)){
+                return checkFreq(s);
+            }
+            ArrayList<Integer> index= new ArrayList<>();
+            for(int i=0;i<s.length();i++){
+                if(s.charAt(i)!=goal.charAt(i))
+                    index.add(i);
+            }
+            if(index.size()!=2)
+                return false;
+            s=swap(s,index.get(0),index.get(1));
+            return s.equals(goal);
+        }
+
+        private String swap(String s, Integer i, Integer j) {
+            char temp=s.charAt(i);
+            StringBuilder res= new StringBuilder(s);
+            res.setCharAt(i,s.charAt(j));
+            res.setCharAt(j,temp);
+            return res.toString();
+        }
+
+        private boolean checkFreq(String s) {
+            int hash[]= new int[26];
+            for(char ch:s.toCharArray()){
+                hash[ch-'a']++;
+                if(hash[ch-'a']>1)
+                    return true;
+            }
+            return false;
+        }
+
+        private void swap(String s, char c, char c1) {
+
+        }
     }
     public static void main(String args[]){
         SQ sq= new SQ();
@@ -424,8 +463,12 @@ public class StringQuestions {
 //        System.out.println(sq.findAllConcatenatedWordsInADict(words));
 
         //find the index of the first occurrence in String
-        String haystack = "sadbutsad", needle = "sad";
-        System.out.println(sq.findTheIndexOfTheFirstOccurrenceInString(haystack,needle));
+//        String haystack = "sadbutsad", needle = "sad";
+//        System.out.println(sq.findTheIndexOfTheFirstOccurrenceInString(haystack,needle));
+
+        //Buddy Strings
+        String s = "ab", goal = "ba";
+        System.out.println(sq.buddyStrings(s,goal));
 
 
 
