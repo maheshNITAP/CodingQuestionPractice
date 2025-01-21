@@ -1,5 +1,4 @@
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.*;
 
 public class StringQuestions {
     //String used functions
@@ -306,6 +305,30 @@ public class StringQuestions {
                 return true;
             return false;
         }
+
+        public ArrayList<String> findAllConcatenatedWordsInADict(String[] words) {
+            Set<String> st= new HashSet<>();
+            Collections.addAll(st,words);
+            ArrayList<String> ans= new ArrayList<>();
+            for(int i=0;i< words.length;i++){
+                if(isConcatenated(words[i],st))
+                    ans.add(words[i]);
+
+            }
+            return ans;
+        }
+
+        private boolean isConcatenated( String word, Set<String> st) {
+            int n=word.length();
+            for(int i=0;i<n;i++){
+                String prefix=word.substring(0,i+1);
+                String suffix=word.substring(i+1);
+//                if((st.contains(prefix) && st.contains(suffix)) || (st.contains(prefix) && isConcatenated(suffix,st)))
+                if(st.contains(prefix) && (st.contains(suffix) || isConcatenated(suffix,st)))
+                    return true;
+            }
+            return false;
+        }
     }
     public static void main(String args[]){
         SQ sq= new SQ();
@@ -379,8 +402,12 @@ public class StringQuestions {
 //        System.out.println(sq.deleteColumnToMakeSorted(strs));
 
         //Restore Ip Addresses
-        String s = "25525511135";
-        System.out.println(sq.restoreIpAddresses(s));
+//        String s = "25525511135";
+//        System.out.println(sq.restoreIpAddresses(s));
+
+        //Concatenated Words
+        String words[]={"cat","cats","catsdogcats","dog","dogcatsdog","hippopotamuses","rat","ratcatdogcat"};
+        System.out.println(sq.findAllConcatenatedWordsInADict(words));
 
 
 
