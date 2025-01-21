@@ -329,6 +329,20 @@ public class StringQuestions {
             }
             return false;
         }
+
+        public int findTheIndexOfTheFirstOccurrenceInString(String haystack, String needle) {
+            int m=haystack.length();
+            int n=needle.length();
+            for(int i=0;i<=m-n;i++){
+                for(int j=0;j<m;j++){
+                    if(haystack.charAt(i+j)!=needle.charAt(j))
+                        break;
+                    if(j==n-1)
+                        return i;
+                }
+            }
+            return -1;
+        }
     }
     public static void main(String args[]){
         SQ sq= new SQ();
@@ -406,8 +420,13 @@ public class StringQuestions {
 //        System.out.println(sq.restoreIpAddresses(s));
 
         //Concatenated Words
-        String words[]={"cat","cats","catsdogcats","dog","dogcatsdog","hippopotamuses","rat","ratcatdogcat"};
-        System.out.println(sq.findAllConcatenatedWordsInADict(words));
+//        String words[]={"cat","cats","catsdogcats","dog","dogcatsdog","hippopotamuses","rat","ratcatdogcat"};
+//        System.out.println(sq.findAllConcatenatedWordsInADict(words));
+
+        //find the index of the first occurrence in String
+        String haystack = "sadbutsad", needle = "sad";
+        System.out.println(sq.findTheIndexOfTheFirstOccurrenceInString(haystack,needle));
+
 
 
 
