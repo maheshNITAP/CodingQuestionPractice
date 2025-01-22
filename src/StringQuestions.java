@@ -382,6 +382,39 @@ public class StringQuestions {
         private void swap(String s, char c, char c1) {
 
         }
+
+        public int findSubStringLengthWithLargestLength(String s) {
+            int res=0;
+            int hash[]= new int[26];
+            for(char ch:s.toCharArray())
+                hash[ch-'a']++;
+            for(int first ='a';first<='z';first++){
+                for(int second='a'; second<='z';second++){
+                    if(hash[first-'a']==0 || hash[second-'a']==0)
+                        continue;
+                    int firstCount=0;//F1
+                    int secCount=0;//F2
+                    boolean pastSecond=false;
+                    for(char ch:s.toCharArray()){
+                        if(ch==first) firstCount++;
+                        if(ch==second) secCount++;
+
+                        if(secCount>0){
+                            res=Math.max(res,firstCount-secCount);
+                        }else{
+                            if(pastSecond)
+                                res=Math.max(res,firstCount-1);
+                        }
+                        if(secCount>firstCount){
+                            firstCount=0;
+                            secCount=0;
+                            pastSecond=true;
+                        }
+                    }
+                }
+            }
+            return res;
+        }
     }
     public static void main(String args[]){
         SQ sq= new SQ();
@@ -467,8 +500,14 @@ public class StringQuestions {
 //        System.out.println(sq.findTheIndexOfTheFirstOccurrenceInString(haystack,needle));
 
         //Buddy Strings
-        String s = "ab", goal = "ba";
-        System.out.println(sq.buddyStrings(s,goal));
+//        String s = "ab", goal = "ba";
+//        System.out.println(sq.buddyStrings(s,goal));
+
+        //subString with the largest Variance
+        String s = "aababbb";
+
+        System.out.println(sq.findSubStringLengthWithLargestLength(s));
+
 
 
 
