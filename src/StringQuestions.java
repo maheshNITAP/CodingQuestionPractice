@@ -25,6 +25,9 @@ public class StringQuestions {
 
     //Character.isUpperCase(s.charAt(0))
 
+    //for comparing stringBuilder to string first convert stringBuilder to String than compare
+//    if(newStr.toString().equals(s))
+
 
 
 
@@ -415,6 +418,23 @@ public class StringQuestions {
             }
             return res;
         }
+
+        public boolean repeatedSubStringPatters(String s) {
+            int n=s.length();
+            for(int l=1;l<=n/2;l++){
+                if(n%l==0){
+                    int times=n/l;
+                    StringBuilder newStr= new StringBuilder();
+                    while(times>0){
+                        newStr.append(s.substring(0,l));
+                        times--;
+                    }
+                    if(newStr.toString().equals(s))
+                        return true;
+                }
+            }
+            return false;
+        }
     }
     public static void main(String args[]){
         SQ sq= new SQ();
@@ -504,9 +524,13 @@ public class StringQuestions {
 //        System.out.println(sq.buddyStrings(s,goal));
 
         //subString with the largest Variance
-        String s = "aababbb";
+//        String s = "aababbb";
+//
+//        System.out.println(sq.findSubStringLengthWithLargestLength(s));
 
-        System.out.println(sq.findSubStringLengthWithLargestLength(s));
+        //Repeated SubString Pattern
+        String s = "abcabcabcabc";
+        System.out.println(sq.repeatedSubStringPatters(s));
 
 
 
