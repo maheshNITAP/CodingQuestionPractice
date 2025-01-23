@@ -1,3 +1,4 @@
+import java.awt.image.AreaAveragingScaleFilter;
 import java.util.*;
 
 public class StringQuestions {
@@ -435,6 +436,53 @@ public class StringQuestions {
             }
             return false;
         }
+
+        public ArrayList textJustification(String[] words, int maxWidth) {
+            ArrayList<String> res= new ArrayList<>();
+            int i=0;
+            int n= words.length;
+            while(i<n){
+                int lettersCount=words[0].length();
+                int j=i+1;
+                int gaddhe=0;
+                while(j<n && words[j].length()+1+gaddhe+lettersCount<=maxWidth){
+                    lettersCount+=words[j].length();
+                    gaddhe+=1;
+                    j++;
+                }
+                int remaningGaddhe=maxWidth-lettersCount;
+
+                int eachGaddheSpace= gaddhe==0 ?0:remaningGaddhe/gaddhe;
+                int extraSpaceGaddhe=gaddhe==0?0 :remaningGaddhe%gaddhe;
+
+                if(j==n){//last line left justified
+                    eachGaddheSpace=1;
+                    extraSpaceGaddhe=0;
+                }
+                res.add(findLine(i,j,eachGaddheSpace,extraSpaceGaddhe,words,maxWidth));
+                i=j;
+            }
+            return res;
+        }
+
+        private String findLine(int i, int j, int eachGaddheSpace, int extraSpaceGaddhe, String[] words, int maxWidth) {
+            StringBuilder line= new StringBuilder();
+            for(int k=i;k<j;k++){
+                line.append(words[k]);
+                if(k==j-1)
+                    continue;
+                for(int z=1;z<=eachGaddheSpace;z++){
+                    line.append(" ");
+                }
+                if(extraSpaceGaddhe>0){
+                    line.append(" ");
+                    extraSpaceGaddhe--;
+                }
+            }
+            while(line.length()<maxWidth)
+                line.append(" ");
+            return line.toString();
+        }
     }
     public static void main(String args[]){
         SQ sq= new SQ();
@@ -529,8 +577,14 @@ public class StringQuestions {
 //        System.out.println(sq.findSubStringLengthWithLargestLength(s));
 
         //Repeated SubString Pattern
-        String s = "abcabcabcabc";
-        System.out.println(sq.repeatedSubStringPatters(s));
+//        String s = "abcabcabcabc";
+//        System.out.println(sq.repeatedSubStringPatters(s));
+
+
+        //Text Justification
+        String[] words={"This", "is", "an", "example", "of", "text", "justification."};
+        int maxWidth=16;
+        System.out.println(sq.textJustification(words,maxWidth));
 
 
 
