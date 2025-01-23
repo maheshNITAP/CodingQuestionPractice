@@ -1,4 +1,3 @@
-import java.awt.image.AreaAveragingScaleFilter;
 import java.util.*;
 
 public class StringQuestions {
@@ -483,6 +482,66 @@ public class StringQuestions {
                 line.append(" ");
             return line.toString();
         }
+
+        public boolean isSubSequence(String s, String t) {
+            int i=0;
+            int j=0;
+            while(i<s.length() && j<t.length()){
+                if(s.charAt(i)==t.charAt(j)){
+                    i++;
+                }
+                j++;
+            }
+            if(i==s.length())
+                return true;
+            return false;
+        }
+
+        private int upperBound(ArrayList<Integer> arr, int x) {
+            int n=arr.size();
+            int low=0,high=n-1;
+            int ans=n;
+            while(low<=high){
+                int mid=low+(high-low)/2;
+                if(arr.get(mid)>x){
+                    ans=mid;
+                    high=mid-1;
+                }else{
+                    low=mid+1;
+                }
+            }
+            return ans;
+
+        }
+
+        public boolean isSubSequence2(String s, String t) {
+            int m=s.length();
+            int n=t.length();
+            HashMap<Character,ArrayList<Integer>> map= new HashMap<>();
+            for(int i=0;i<n;i++){
+                if(map.containsKey(t.charAt(i))){
+                    map.get(t.charAt(i)).add(i);
+                }else{
+                    map.put(t.charAt(i),new ArrayList<>());
+                    map.get(t.charAt(i)).add(i);
+                }
+            }
+
+            int prev=-1;
+            for(int i=0;i<m;i++){
+                char ch=s.charAt(i);
+                if(!map.containsKey(ch))
+                    return false;
+                ArrayList<Integer> indices=map.get(ch);
+                int it=upperBound(indices,prev);
+                if(it==indices.size())
+                    return false;
+                prev=it;
+
+            }
+            return true;
+
+        }
     }
     public static void main(String args[]){
         SQ sq= new SQ();
@@ -582,9 +641,18 @@ public class StringQuestions {
 
 
         //Text Justification
-        String[] words={"This", "is", "an", "example", "of", "text", "justification."};
-        int maxWidth=16;
-        System.out.println(sq.textJustification(words,maxWidth));
+//        String[] words={"This", "is", "an", "example", "of", "text", "justification."};
+//        int maxWidth=16;
+//        System.out.println(sq.textJustification(words,maxWidth));
+
+
+        //IsSubSequence--for only 1 s input
+        String s="ace";
+        String t="abcde";
+//        System.out.println(sq.isSubSequence(s,t));
+
+        //what if there is so many s like s1,s2,s3,s4,........ than this abouve method will be expensive
+        System.out.println(sq.isSubSequence2(s,t));
 
 
 
