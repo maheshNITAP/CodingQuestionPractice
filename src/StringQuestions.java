@@ -29,6 +29,20 @@ public class StringQuestions {
 //    if(newStr.toString().equals(s))
 
 
+    //String []arr= s.split(" ");
+//    Character.isDigit(s.charAt(i))
+//    Character.isAlphabetic(s.charAt(i))
+ //Character.toString(s.charAt(i))
+
+//    String []arr= s.split(" ");
+//    StringBuilder ans= new StringBuilder();
+//        for(int i=0;i<arr.length;i++){
+//        StringBuilder temp=new StringBuilder();
+//        temp.append(arr[i]).reverse();
+//        ans.append(temp+" ");
+//    }
+//        return ans.toString().trim();
+
 
 
 
@@ -590,6 +604,19 @@ public class StringQuestions {
             return "";
 
         }
+
+        public String reverseWordsInString(String s) {
+            StringTokenizer stringTokenizer= new StringTokenizer(s);
+            StringBuilder res= new StringBuilder();
+            while (stringTokenizer.hasMoreTokens()){
+                String token=stringTokenizer.nextToken();
+                StringBuilder reversedToken= new StringBuilder(token).reverse();
+                res.append(reversedToken+" ");
+
+            }
+            res.trimToSize();
+            return res.toString().trim();
+        }
     }
     public static void main(String args[]){
         SQ sq= new SQ();
@@ -710,9 +737,13 @@ public class StringQuestions {
 
 
         ////Decode String At Index
-        String s = "leet2code3";
-        int k = 10;
-        System.out.println(sq.decodeAtIndex(s,k));
+//        String s = "leet2code3";
+//        int k = 10;
+//        System.out.println(sq.decodeAtIndex(s,k));
+
+        //Reverse words in a string using tokenizer
+        String s = "Let's take LeetCode contest";
+        System.out.println(sq.reverseWordsInString(s));
 
 
 
