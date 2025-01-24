@@ -567,6 +567,29 @@ public class StringQuestions {
             }
             return res.toString();
         }
+
+        public String decodeAtIndex(String s, int k) {
+            int n=s.length();
+            long size=0;
+            for(int i=0;i<n;i++){
+                if(Character.isDigit(s.charAt(i)))
+                    size=size*(s.charAt(i)-'0');
+                else
+                    size+=1;
+            }
+            for(int i=n-1;i>=0;i--){
+                k= (int) (k%size);
+                if(k==0 && Character.isAlphabetic(s.charAt(i)))
+                    return Character.toString(s.charAt(i));
+
+                if(Character.isAlphabetic(s.charAt(i))){
+                    size-=1;
+                }else
+                    size=size/(s.charAt(i)-'0');
+            }
+            return "";
+
+        }
     }
     public static void main(String args[]){
         SQ sq= new SQ();
@@ -682,8 +705,14 @@ public class StringQuestions {
 
         //remove duplicate lettres and return lexicographical smallest string
         //TO DO:-- leetcode--1081
-        String s="bcabc";
-        System.out.println(sq.removeDuplicateLettres(s));
+//        String s="bcabc";
+//        System.out.println(sq.removeDuplicateLettres(s));
+
+
+        ////Decode String At Index
+        String s = "leet2code3";
+        int k = 10;
+        System.out.println(sq.decodeAtIndex(s,k));
 
 
 
