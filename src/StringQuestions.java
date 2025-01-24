@@ -542,6 +542,31 @@ public class StringQuestions {
             return true;
 
         }
+
+        public String removeDuplicateLettres(String s) {
+
+            boolean taken[]= new boolean[26];
+            int lastIndex[]=new int[26];
+            int n=s.length();
+            for(int i=0;i<n;i++){
+                lastIndex[s.charAt(i)-'a']=i;
+            }
+            StringBuilder res= new StringBuilder();
+            for(int i=0;i<n;i++){
+                char ch=s.charAt(i);
+                int indx=ch-'a';
+
+                if(taken[indx])
+                    continue;
+                while(res.length()>0 && res.charAt(res.length()-1)>ch && lastIndex[res.charAt(res.length()-1)-'a']>i){
+                    taken[res.charAt(res.length()-1)-'a']=false;
+                    res.deleteCharAt(res.length()-1);
+                }
+                res.append(ch);
+                taken[indx]=true;
+            }
+            return res.toString();
+        }
     }
     public static void main(String args[]){
         SQ sq= new SQ();
@@ -647,13 +672,18 @@ public class StringQuestions {
 
 
         //IsSubSequence--for only 1 s input
-        String s="ace";
-        String t="abcde";
+//        String s="ace";
+//        String t="abcde";
 //        System.out.println(sq.isSubSequence(s,t));
 
         //what if there is so many s like s1,s2,s3,s4,........ than this abouve method will be expensive
-        System.out.println(sq.isSubSequence2(s,t));
+//        System.out.println(sq.isSubSequence2(s,t));
 
+
+        //remove duplicate lettres and return lexicographical smallest string
+        //TO DO:-- leetcode--1081
+        String s="bcabc";
+        System.out.println(sq.removeDuplicateLettres(s));
 
 
 
