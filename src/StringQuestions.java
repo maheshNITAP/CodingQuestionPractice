@@ -213,10 +213,8 @@ public class StringQuestions {
         }
 
         private boolean isVowel(char ch) {
-            if(ch =='a' || ch =='e' || ch =='i' || ch =='i' || ch =='u' || ch =='A' || ch =='E' || ch =='I' || ch =='O' || ch =='U')
-                return true;
-            return false;
-
+            ch=Character.toLowerCase(ch);
+            return  (ch =='a' || ch =='e' || ch =='i' || ch =='o' || ch =='u' );
         }
 
         public boolean checkIfTwoStringsAreClose(String word1, String word2) {
@@ -691,6 +689,47 @@ public class StringQuestions {
             }
             return res;
         }
+
+        public String sortVowelsInAString(String s) {
+            StringBuilder res= new StringBuilder(s);
+            StringBuilder temp= new StringBuilder();
+            for(int i=0;i<s.length();i++){
+                if(isVowel(s.charAt(i)))
+                    temp.append(s.charAt(i));
+            }
+            char []chars=temp.toString().toCharArray();
+            Arrays.sort(chars);
+            int j=0;
+            for(int i=0;i<res.length();i++){
+                if(isVowel(res.charAt(i))){
+                    res.setCharAt(i,chars[j++]);
+                }
+            }
+            return res.toString();
+        }
+
+        public String sortVowelsInAStringApproach2(String s) {
+            int n=s.length();
+            HashMap<Character,Integer> map= new HashMap<>();
+            String temp="AEIOUaeiou";
+            int j=0;
+            for(int i=0;i<n;i++){
+                if(isVowel(s.charAt(i)))
+                    map.put(s.charAt(i),map.getOrDefault(s.charAt(i),0)+1);
+            }
+            StringBuilder res= new StringBuilder(s);
+            for(int i=0;i<n;i++){
+                if(isVowel(res.charAt(i))){
+                    while (!map.containsKey(temp.charAt(j)))
+                        j++;
+                    res.setCharAt(i,temp.charAt(j));
+                    map.put(temp.charAt(j),map.get(temp.charAt(j))-1);
+                    if(map.get(temp.charAt(j))==0)
+                        map.remove(temp.charAt(j));
+                }
+            }
+            return res.toString();
+        }
     }
     public static void main(String args[]){
         SQ sq= new SQ();
@@ -831,9 +870,18 @@ public class StringQuestions {
 
 
         //count the number of homogenous subString
-        String s= "abbcccaa";
-        System.out.println(sq.countTheNumberOfHomogenousSubString(s));
+//        String s= "abbcccaa";
+//        System.out.println(sq.countTheNumberOfHomogenousSubString(s));
 
+
+        //sort vowels in a String'
+        String s="lEetcOde";
+
+        //Approach with extra space and new sorting
+//        System.out.println(sq.sortVowelsInAString(s));
+
+
+        System.out.println(sq.sortVowelsInAStringApproach2(s));
 
 
 
