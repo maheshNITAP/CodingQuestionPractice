@@ -677,6 +677,24 @@ public class StringQuestions {
             }
             return true;
         }
+
+        public int countTheNumberOfHomogenousSubString(String s) {
+            int n=s.length();
+            if(n<=1)
+                return n;
+            int len=1;
+            int res=1;
+            for(int i=1;i<n;i++){
+                if(s.charAt(i)==s.charAt(i-1)){
+                    len+=1;
+                    res+=len;
+                }else{
+                    len=1;
+                    res+=1;
+                }
+            }
+            return res;
+        }
     }
     public static void main(String args[]){
         SQ sq= new SQ();
@@ -806,14 +824,19 @@ public class StringQuestions {
 //        System.out.println(sq.reverseWordsInString(s));
 
         //Back Space String compare
-        String s="ab#c";
-        String t="ad#c";
+//        String s="ab#c";
+//        String t="ad#c";
 
         //with extra space Approach1
 //        System.out.println(sq.backSpaceWithExtraQuestionsApproach1(s,t));
 
         //without extra space by traversing from reverse
-        System.out.println(sq.backSpaceWithExtraQuestionsApproach2(s,t));
+//        System.out.println(sq.backSpaceWithExtraQuestionsApproach2(s,t));
+
+
+        //count the number of homogenous subString
+        String s= "abbcccaa";
+        System.out.println(sq.countTheNumberOfHomogenousSubString(s));
 
 
 
