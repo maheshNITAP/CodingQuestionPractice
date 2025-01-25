@@ -680,18 +680,14 @@ public class StringQuestions {
 
         public int countTheNumberOfHomogenousSubString(String s) {
             int n=s.length();
-            if(n<=1)
-                return n;
-            int len=1;
-            int res=1;
-            for(int i=1;i<n;i++){
-                if(s.charAt(i)==s.charAt(i-1)){
+            int len=0;
+            int res=0;
+            for(int i=0;i<n;i++){
+                if( i>0 && s.charAt(i)==s.charAt(i-1))
                     len+=1;
-                    res+=len;
-                }else{
+                else
                     len=1;
-                    res+=1;
-                }
+                res+=len;
             }
             return res;
         }
