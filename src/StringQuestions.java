@@ -28,6 +28,9 @@ public class StringQuestions {
     //for comparing stringBuilder to string first convert stringBuilder to String than compare
 //    if(newStr.toString().equals(s))
 
+    //if both are string builder than also you have to convert to String
+//    tt.toString().equals(st.toString());
+
 
     //String []arr= s.split(" ");
 //    Character.isDigit(s.charAt(i))
@@ -617,6 +620,63 @@ public class StringQuestions {
             res.trimToSize();
             return res.toString().trim();
         }
+
+        public boolean backSpaceWithExtraQuestionsApproach1(String s, String t) {
+            int n=s.length();
+            int m=t.length();
+            StringBuilder st= new StringBuilder();
+            for(int i=0;i<n;i++){
+                if(s.charAt(i)!='#')
+                    st.append(s.charAt(i));
+                else if(st.length()>0)
+                    st.deleteCharAt(st.length()-1);
+
+            }
+            StringBuilder tt= new StringBuilder();
+            for(int i=0;i<m;i++){
+                if(t.charAt(i)!='#'){
+                    tt.append(t.charAt(i));
+                }else if(tt.length()>0)
+                    tt.deleteCharAt(tt.length()-1);
+            }
+            return tt.toString().equals(st.toString());
+        }
+
+        public boolean backSpaceWithExtraQuestionsApproach2(String s, String t) {
+            int n=s.length(),m=t.length(),t_skip=0,s_skip=0;
+            int i=n-1,j=m-1;
+            while(i>=0 || j>=0){
+
+                while(i>=0){
+                    if(s.charAt(i)=='#'){
+                        s_skip++;
+                        i--;
+                    }else if(s_skip>0){
+                        s_skip--;
+                        i--;
+                    }else
+                        break;
+                }
+
+                while(j>=0){
+                    if(t.charAt(j)=='#'){
+                        t_skip++;
+                        j--;
+                    }else if(t_skip>0){
+                        t_skip--;
+                        j--;
+                    }else break;
+                }
+
+                char first=i<0 ?'$':s.charAt(i);
+                char sec=j<0 ? '$':t.charAt(j);
+                if(first!=sec)
+                    return false;
+                i--;
+                j--;
+            }
+            return true;
+        }
     }
     public static void main(String args[]){
         SQ sq= new SQ();
@@ -742,8 +802,19 @@ public class StringQuestions {
 //        System.out.println(sq.decodeAtIndex(s,k));
 
         //Reverse words in a string using tokenizer
-        String s = "Let's take LeetCode contest";
-        System.out.println(sq.reverseWordsInString(s));
+//        String s = "Let's take LeetCode contest";
+//        System.out.println(sq.reverseWordsInString(s));
+
+        //Back Space String compare
+        String s="ab#c";
+        String t="ad#c";
+
+        //with extra space Approach1
+//        System.out.println(sq.backSpaceWithExtraQuestionsApproach1(s,t));
+
+        //without extra space by traversing from reverse
+        System.out.println(sq.backSpaceWithExtraQuestionsApproach2(s,t));
+
 
 
 
