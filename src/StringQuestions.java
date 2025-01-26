@@ -767,6 +767,24 @@ public class StringQuestions {
             return res.toString();
 
         }
+
+        public int countBeautifulSubStringsBruteForce(String s, int k) {
+            int res=0;
+            int n=s.length();
+            for(int i=0;i<n;i++){
+                int vowel=0;
+                int consonents=0;
+                for(int j=i;j<n;j++){
+                    if(isVowel(s.charAt(j)))
+                        vowel++;
+                    else
+                        consonents++;
+                    if(vowel==consonents && (vowel*consonents)%k==0)
+                        res+=1;
+                }
+            }
+            return res;
+        }
     }
     public static void main(String args[]){
         SQ sq= new SQ();
@@ -925,12 +943,20 @@ public class StringQuestions {
         //Both Approaches  are good
         //find Unique Binary Strings
 
-        String nums[]={"111","011","001"};
+//        String nums[]={"111","011","001"};
 //        System.out.println(sq.findUniqueBinaryStrings(nums));
 
         //***** very nice approach
-        System.out.println(sq.findUniqueBinaryStringsApproach2(nums));
+//        System.out.println(sq.findUniqueBinaryStringsApproach2(nums));
 
+
+        //count Beautiful Substrings-1
+
+        String s="baeyh";
+        int k=2;
+
+        //using Brute force
+        System.out.println(sq.countBeautifulSubStringsBruteForce(s,k));
 
     }
 
