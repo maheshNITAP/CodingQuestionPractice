@@ -47,6 +47,13 @@ public class StringQuestions {
 //        return ans.toString().trim();
 
 
+//    num="0101";
+    //Binary to Decimal Integer.parseInt(num, 2);
+
+    //Decimal to Binary
+//    Integer.toBinaryString(number)
+
+
 
 
     static class SQ{
@@ -730,6 +737,36 @@ public class StringQuestions {
             }
             return res.toString();
         }
+
+        public String findUniqueBinaryStrings(String[] nums) {
+            int n=nums.length;
+            HashSet<Integer> st= new HashSet<>();
+            for(String num:nums){
+                st.add(Integer.parseInt(num,2));
+            }
+            String res="";
+            for(int number=0;number<=n;number++){
+                if(!st.contains(number)){
+                    res=Integer.toBinaryString(number);
+                    while(res.length()<n){
+                        res="0"+res;
+                    }
+                    return res;
+                }
+            }
+            return "";
+        }
+
+        public String findUniqueBinaryStringsApproach2(String[] nums) {
+            int n=nums.length;
+            StringBuilder res= new StringBuilder();
+            for(int i=0;i<n;i++){
+                char ch=nums[i].charAt(i);
+                res.append(ch=='0'?'1':'0');
+            }
+            return res.toString();
+
+        }
     }
     public static void main(String args[]){
         SQ sq= new SQ();
@@ -875,15 +912,24 @@ public class StringQuestions {
 
 
         //sort vowels in a String'
-        String s="lEetcOde";
+//        String s="lEetcOde";
 
         //Approach with extra space and new sorting
 //        System.out.println(sq.sortVowelsInAString(s));
 
 
-        System.out.println(sq.sortVowelsInAStringApproach2(s));
+//        System.out.println(sq.sortVowelsInAStringApproach2(s));
 
 
+
+        //Both Approaches  are good
+        //find Unique Binary Strings
+
+        String nums[]={"111","011","001"};
+//        System.out.println(sq.findUniqueBinaryStrings(nums));
+
+        //***** very nice approach
+        System.out.println(sq.findUniqueBinaryStringsApproach2(nums));
 
 
     }
