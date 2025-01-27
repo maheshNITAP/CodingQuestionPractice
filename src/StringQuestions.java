@@ -824,6 +824,25 @@ public class StringQuestions {
             }
             return res;
         }
+
+        public int minimumNumberOfStepsToMakeAStringAnagram(String s, String t) {
+            int n=s.length();
+            int m=t.length();
+            if(n!=m)
+                return 0;
+            int[] freqOfs= new int[26],freqOft= new int[26];
+            for(int i=0;i<n;i++){
+                freqOfs[s.charAt(i)-'a']++;
+                freqOft[t.charAt(i)-'a']++;
+            }
+            int res=0;
+            for(int i=0;i<26;i++){
+                if(freqOfs[i]>freqOft[i])
+                    res+=freqOfs[i]-freqOft[i];
+            }
+            return res;
+
+        }
     }
     public static void main(String args[]){
         SQ sq= new SQ();
@@ -1004,8 +1023,12 @@ public class StringQuestions {
 
         //Number of Leaser Beams In a Bank
 
-        int bank[][]={{0,1,1,0,0,1},{0,0,0,0,0,0}, {0,1,0,1,0,0}, {0,0,1,0,0,0}};
-        System.out.println(sq.numberOfLeaserBeamsInBank(bank));
+//        int bank[][]={{0,1,1,0,0,1},{0,0,0,0,0,0}, {0,1,0,1,0,0}, {0,0,1,0,0,0}};
+//        System.out.println(sq.numberOfLeaserBeamsInBank(bank));
+
+        //Minimum Number Of Steps To make two Strings Anagram
+        String s = "leetcode", t = "practice";
+        System.out.println(sq.minimumNumberOfStepsToMakeAStringAnagram(s,t));
     }
 
 }
