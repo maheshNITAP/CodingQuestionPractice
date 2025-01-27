@@ -785,6 +785,27 @@ public class StringQuestions {
             }
             return res;
         }
+
+        public int numberOfWaysToDivideLongCorridor(String s) {
+            int n=s.length();
+            ArrayList<Integer> seatIndexes= new ArrayList<>();
+            for(int i=0;i<n;i++){
+                if(s.charAt(i)=='S')
+                    seatIndexes.add(i);
+            }
+            if(seatIndexes.size()%2==0)//if odd number off seats are there then we can't divide them in sections of 2
+                return 0;
+            int prev_end_index=seatIndexes.get(1);
+            int res=1;
+            for(int i=2;i<seatIndexes.size();i+=2){
+                int currSeatIndex=seatIndexes.get(i);
+                res=res * (currSeatIndex-prev_end_index);
+                prev_end_index=seatIndexes.get(i+1);
+
+            }
+            return res;
+
+        }
     }
     public static void main(String args[]){
         SQ sq= new SQ();
@@ -952,12 +973,16 @@ public class StringQuestions {
 
         //count Beautiful Substrings-1
 
-        String s="baeyh";
-        int k=2;
+//        String s="baeyh";
+//        int k=2;
 
         //using Brute force
-        System.out.println(sq.countBeautifulSubStringsBruteForce(s,k));
+//        System.out.println(sq.countBeautifulSubStringsBruteForce(s,k));
 
+
+        //Number Of ways to divide a long corridor
+        String s="SPSPPSPPSPPSS";
+        System.out.println(sq.numberOfWaysToDivideLongCorridor(s));
     }
 
 }
