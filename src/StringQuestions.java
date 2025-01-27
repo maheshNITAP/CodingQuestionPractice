@@ -843,6 +843,24 @@ public class StringQuestions {
             return res;
 
         }
+
+        public int minimumNumberOfStepsToMakeAStringAnagramWithOneMap(String s, String t) {//just directly store difference in map
+            int n=s.length();
+            int m=t.length();
+            if(n!=m)
+                return 0;
+            int map_s[]= new int[26];
+            for(int i=0;i<n;i++){
+                map_s[s.charAt(i)-'a']++;
+                map_s[t.charAt(i)-'a']--;
+            }
+            int res=0;
+            for(int i=0;i<26;i++){
+                if(map_s[i]>0)
+                    res+=map_s[i];
+            }
+            return res;
+        }
     }
     public static void main(String args[]){
         SQ sq= new SQ();
@@ -1028,7 +1046,10 @@ public class StringQuestions {
 
         //Minimum Number Of Steps To make two Strings Anagram
         String s = "leetcode", t = "practice";
-        System.out.println(sq.minimumNumberOfStepsToMakeAStringAnagram(s,t));
+//        System.out.println(sq.minimumNumberOfStepsToMakeAStringAnagram(s,t));
+
+        //with only one map array
+        System.out.println(sq.minimumNumberOfStepsToMakeAStringAnagramWithOneMap(s,t));
     }
 
 }
