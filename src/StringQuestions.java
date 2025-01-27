@@ -806,6 +806,24 @@ public class StringQuestions {
             return res;
 
         }
+
+        public int numberOfLeaserBeamsInBank(int[][] bank) {
+            int n=bank.length;
+            int prevDeviceCount=0;
+            int res=0;
+            for(int i=0;i<n;i++){
+                int currDeviceCount=0;
+                for(int curr:bank[i]){
+                    if(curr==1)
+                        currDeviceCount++;
+                }
+                res+=(prevDeviceCount*currDeviceCount);
+                if(currDeviceCount!=0)
+                    prevDeviceCount=currDeviceCount;
+
+            }
+            return res;
+        }
     }
     public static void main(String args[]){
         SQ sq= new SQ();
@@ -981,8 +999,13 @@ public class StringQuestions {
 
 
         //Number Of ways to divide a long corridor
-        String s="SPSPPSPPSPPSS";
-        System.out.println(sq.numberOfWaysToDivideLongCorridor(s));
+//        String s="SPSPPSPPSPPSS";
+//        System.out.println(sq.numberOfWaysToDivideLongCorridor(s));
+
+        //Number of Leaser Beams In a Bank
+
+        int bank[][]={{0,1,1,0,0,1},{0,0,0,0,0,0}, {0,1,0,1,0,0}, {0,0,1,0,0,0}};
+        System.out.println(sq.numberOfLeaserBeamsInBank(bank));
     }
 
 }
