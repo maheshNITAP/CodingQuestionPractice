@@ -861,8 +861,63 @@ public class StringQuestions {
             }
             return res;
         }
+
+
+        public int minimumTimeToRevertWordToInitialState(String word, int k) {
+            int n=word.length();
+            int i=k;
+            int count=1;
+            while(i<n){
+                if(check(word,i,n)){
+                    break;
+                }
+                i+=k;
+                count++;
+            }
+            return count;
     }
-    public static void main(String args[]){
+
+    //to check if that suffix is equal to prefix of that string
+        private boolean check(String word, int i, int n) {
+            return word.substring(0,n-i).equals(word.substring(i));
+        }
+
+        public int minimumTimeToRevertWordToInitialStateByKMP(String word, int k) {
+            int n=word.length();
+            int lps[]= new int[n];
+            lps(word,lps,n);
+            int length_suffix=lps[n-1];
+            while(length_suffix>0 && (n-length_suffix)%k!=0){
+                length_suffix=lps[length_suffix-1];
+            }
+            if((n-length_suffix)%k==0)
+                return (n-length_suffix)/k;
+            else
+                return (int)Math.ceil(n/(double)k);
+        }
+
+        private void lps(String word, int[] lps, int n) {
+            lps[0]=0;
+            int length=0;
+            int i=1;
+            while(i<n){
+                if(word.charAt(i)==word.charAt(length)){
+                    length++;
+                    lps[i]=length;
+                    i++;
+                }else{
+                    if(length!=0){
+                        length=lps[length-1];
+                    }else{
+                        lps[i]=0;
+                        i++;
+                    }
+                }
+            }
+        }
+    }
+
+        public static void main(String args[]){
         SQ sq= new SQ();
 
         //String Compression-------leetcode--443
@@ -1049,7 +1104,20 @@ public class StringQuestions {
 //        System.out.println(sq.minimumNumberOfStepsToMakeAStringAnagram(s,t));
 
         //with only one map array
-        System.out.println(sq.minimumNumberOfStepsToMakeAStringAnagramWithOneMap(s,t));
+//        System.out.println(sq.minimumNumberOfStepsToMakeAStringAnagramWithOneMap(s,t));
+
+
+            //Part 1 and 2 are same only constraint change so part to wil do By KMP
+        //Minimum Time To Revert Word to initial State part-1
+
+        String word ="abacaba";
+        int k=3;
+//            int k=2;
+//        System.out.println(sq.minimumTimeToRevertWordToInitialState(word,k));//O-n^2
+
+
+            //Part-2 by KMP LPS
+            System.out.println(sq.minimumTimeToRevertWordToInitialStateByKMP(word,k));//O-n
     }
 
 }
