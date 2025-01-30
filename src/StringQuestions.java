@@ -915,6 +915,72 @@ public class StringQuestions {
                 }
             }
         }
+
+        public String customSortString(String order, String s) {
+            StringBuilder res= new StringBuilder();
+            //using map--use when chars can be lowercase and uppercase
+//            HashMap<Character, Integer> map= new HashMap<>();
+//            for(char ch:s.toCharArray()){
+//                map.put(ch,map.getOrDefault(ch,0)+1);
+//            }
+//            for(char ch:order.toCharArray()){
+//                if(map.containsKey(ch)){
+//                    int freq=map.get(ch);
+//                    while (freq-->0){
+//                        res.append(ch);
+//                    }
+//                    map.remove(ch);
+//                }
+//            }
+//            for(Map.Entry<Character, Integer> e:map.entrySet()){
+//                char ch=e.getKey();
+//                int freq=e.getValue();
+//                while (freq-->0){
+//                    res.append(ch);
+//                }
+//                map.remove(ch);
+//            }
+
+
+            //if only lowercase letters are there
+            int hash[]= new int[26];
+            for(char ch:s.toCharArray()){
+                hash[ch-'a']++;
+            }
+            for(char ch:order.toCharArray()){
+                while (hash[ch-'a']-->0)
+                    res.append(ch);
+            }
+            for(int i=0;i<26;i++){
+                if(hash[i]>0){
+                    while (hash[i]-->0)
+                        res.append((char) ('a'+i));
+                }
+            }
+            return res.toString();
+        }
+
+
+        public String customSortStringUsingComparator(String order, String s)  {
+                Integer []index= new Integer[26];
+                Arrays.fill(index,Integer.MAX_VALUE);
+                for(int i=0;i<order.length();i++){
+                    index[order.charAt(i)-'a']=i;
+                }
+                Comparator<Character> laqmbda= (ch1,ch2)-> index[ch1-'a'].compareTo(index[ch2-'a']);
+                Character[] cha= new Character[s.length()];
+                for(int i=0;i<s.length();i++){
+                    cha[i]=s.charAt(i);
+                }
+                Arrays.sort(cha,laqmbda);
+                StringBuilder res= new StringBuilder();
+                for(Character ch:cha){
+                    res.append(ch);
+                }
+                return res.toString();
+
+
+        }
     }
 
         public static void main(String args[]){
@@ -1100,7 +1166,7 @@ public class StringQuestions {
 //        System.out.println(sq.numberOfLeaserBeamsInBank(bank));
 
         //Minimum Number Of Steps To make two Strings Anagram
-        String s = "leetcode", t = "practice";
+//        String s = "leetcode", t = "practice";
 //        System.out.println(sq.minimumNumberOfStepsToMakeAStringAnagram(s,t));
 
         //with only one map array
@@ -1110,14 +1176,25 @@ public class StringQuestions {
             //Part 1 and 2 are same only constraint change so part to wil do By KMP
         //Minimum Time To Revert Word to initial State part-1
 
-        String word ="abacaba";
-        int k=3;
+//        String word ="abacaba";
+//        int k=3;
 //            int k=2;
 //        System.out.println(sq.minimumTimeToRevertWordToInitialState(word,k));//O-n^2
 
 
             //Part-2 by KMP LPS
-            System.out.println(sq.minimumTimeToRevertWordToInitialStateByKMP(word,k));//O-n
+//            System.out.println(sq.minimumTimeToRevertWordToInitialStateByKMP(word,k));//O-n
+
+            //custom sort String
+            String order="cba";
+            String s="abcd";
+
+            //approach 1 using map and hash
+//            System.out.println(sq.customSortString(order,s));
+
+//            ..approach 2 using comparator
+            System.out.println(sq.customSortStringUsingComparator(order,s));
     }
+
 
 }
