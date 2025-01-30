@@ -981,6 +981,37 @@ public class StringQuestions {
 
 
         }
+
+        public ArrayList<String> shortestUnCommonSubStringInAnArray(String[] arr) {
+            int n= arr.length;
+            ArrayList<String> res= new ArrayList<>();
+            HashMap<String ,Integer> map= new HashMap<>();
+            for(int i=0;i<n;i++){
+                HashSet<String> seen= new HashSet<>();
+                for(int s=0;s<arr[i].length();s++){
+                    for(int e=s+1;e<=arr[i].length();e++){
+                        String sub=arr[i].substring(s,e);
+                        if(!seen.contains(sub)){
+                            map.put(sub,map.getOrDefault(sub,0)+1);
+                            seen.add(sub);
+                        }
+                    }
+                }
+
+            }
+            for(String s:arr){
+                String shortes="";
+                for(int i=0;i<s.length();i++){
+                    for(int j=i+1;j<=s.length();j++){
+                        String substr=s.substring(i,j);
+                        if(map.get(substr)==1 && (shortes.equals("") || substr.length()<shortes.length() || (substr.length()==shortes.length() && substr.compareTo(shortes)<0)))
+                            shortes=substr;
+                    }
+                }
+                res.add(shortes);
+            }
+            return res;
+        }
     }
 
         public static void main(String args[]){
@@ -1186,15 +1217,26 @@ public class StringQuestions {
 //            System.out.println(sq.minimumTimeToRevertWordToInitialStateByKMP(word,k));//O-n
 
             //custom sort String
-            String order="cba";
-            String s="abcd";
+//            String order="cba";
+//            String s="abcd";
 
             //approach 1 using map and hash
 //            System.out.println(sq.customSortString(order,s));
 
 //            ..approach 2 using comparator
-            System.out.println(sq.customSortStringUsingComparator(order,s));
+//            System.out.println(sq.customSortStringUsingComparator(order,s));
+
+            //Shortest Uncommon SubString in an array
+
+            String arr[]={"cab","ad","bad","c"};
+            System.out.println(sq.shortestUnCommonSubStringInAnArray(arr));
+
+
+
+
     }
+
+
 
 
 }
