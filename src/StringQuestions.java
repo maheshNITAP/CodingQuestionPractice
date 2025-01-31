@@ -1012,6 +1012,28 @@ public class StringQuestions {
             }
             return res;
         }
+
+        public int countSubStringStartingAndEndingWithGivenChar(String s, char c) {
+            int prev_count=0;
+            int ans=0;
+            for(int i=0;i<s.length();i++){
+                if(s.charAt(i)==c){
+                    ans+=1+prev_count;//1 because that char itself is a subString
+                    prev_count++;
+                }
+            }
+            return ans;
+        }
+
+        public int countSubStringStartingAndEndingWithGivenCharByMathFormula(String s, char c) {
+            int count=0;
+            for(int i=0;i<s.length();i++){
+                if(s.charAt(i)==c)
+                    count++;
+            }
+            return count+(count*(count-1))/2;
+
+        }
     }
 
         public static void main(String args[]){
@@ -1228,9 +1250,21 @@ public class StringQuestions {
 
             //Shortest Uncommon SubString in an array
 
-            String arr[]={"cab","ad","bad","c"};
-            System.out.println(sq.shortestUnCommonSubStringInAnArray(arr));
+//            String arr[]={"cab","ad","bad","c"};
+//            System.out.println(sq.shortestUnCommonSubStringInAnArray(arr));
 
+            //count subString Starting and ending with given char
+//            String s="abada";
+//            char c='a';
+
+            String s="zzz";
+            char c='z';
+
+            //approach1
+//            System.out.println(sq.countSubStringStartingAndEndingWithGivenChar(s,c));
+
+            //approach 2 using math formula
+            System.out.println(sq.countSubStringStartingAndEndingWithGivenCharByMathFormula(s,c));
 
 
 
