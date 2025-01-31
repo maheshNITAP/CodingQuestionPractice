@@ -1082,6 +1082,20 @@ public class StringQuestions {
             }
             return 0;
         }
+
+        public int appendCharacterToStringToMakeSubsequence(String s, String t) {
+            int n=s.length();
+            int m=t.length();
+            int i=0,j=0;
+            while(i<n && j<m){
+                if(s.charAt(i)==t.charAt(j))
+                    j++;
+                i++;
+            }
+            if(j==t.length())
+                return 0;
+            return m-j;
+        }
     }
 
         public static void main(String args[]){
@@ -1315,14 +1329,19 @@ public class StringQuestions {
 //            System.out.println(sq.countSubStringStartingAndEndingWithGivenCharByMathFormula(s,c));
 
             //compare version numbers
-            String version1 = "1.2", version2 = "1.10";
+//            String version1 = "1.2", version2 = "1.10";
 //            String version1 = "1.01", version2 = "1.001";
 
             //using tokenizer
 //            System.out.println(sq.compareVersionNumbers(version1,version2));
 
             //Using Split
-            System.out.println(sq.compareVersionNumbersUsingSplit(version1,version2));
+//            System.out.println(sq.compareVersionNumbersUsingSplit(version1,version2));
+
+            //Append Characters to String to make subsequence
+            String s = "coaching", t = "coding";
+
+            System.out.println(sq.appendCharacterToStringToMakeSubsequence(s,t));
 
 
 
