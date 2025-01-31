@@ -1034,6 +1034,54 @@ public class StringQuestions {
             return count+(count*(count-1))/2;
 
         }
+
+        public int compareVersionNumbers(String version1, String version2) {
+            ArrayList<String> l1= getTokens(version1);
+            ArrayList<String> l2= getTokens(version2);
+            int n=l1.size();
+            int m=l2.size();
+            int i=0;
+            while(i<n || i<m){
+                int a=i<n ?Integer.parseInt(l1.get(i)):0;
+                int b=i<m ?Integer.parseInt(l2.get(i)):0;
+                if(a<b)
+                    return -1;
+                else if(b<1)
+                    return  1;
+                else
+                    i++;
+            }
+            return 0;//agr koi less or greater nhi nikla to equals h
+        }
+
+        private ArrayList<String> getTokens(String version1) {
+            ArrayList<String> lis= new ArrayList<>();
+            StringTokenizer tokenizer= new StringTokenizer(version1,".");
+            while (tokenizer.hasMoreTokens()){
+                lis.add(tokenizer.nextToken());
+            }
+            return lis;
+        }
+
+        public int compareVersionNumbersUsingSplit(String version1, String version2) {
+            String arr1[]=version1.split("\\.");//we need \\ because . is a special char in regex so to escape from that we need back slases
+            String arr2[]=version2.split("\\.");
+            int n= arr1.length;
+            int m=arr2.length;
+            int i=0;
+            while(i<n || i<m){
+                int a=i<n ? Integer.parseInt(arr1[i]):0;
+                int b=i<m ? Integer.parseInt(arr2[i]):0;
+
+                if(a<b)
+                    return -1;
+                else if(b<b)
+                    return 1;
+                else
+                    i++;
+            }
+            return 0;
+        }
     }
 
         public static void main(String args[]){
@@ -1257,14 +1305,24 @@ public class StringQuestions {
 //            String s="abada";
 //            char c='a';
 
-            String s="zzz";
-            char c='z';
+//            String s="zzz";
+//            char c='z';
 
             //approach1
 //            System.out.println(sq.countSubStringStartingAndEndingWithGivenChar(s,c));
 
             //approach 2 using math formula
-            System.out.println(sq.countSubStringStartingAndEndingWithGivenCharByMathFormula(s,c));
+//            System.out.println(sq.countSubStringStartingAndEndingWithGivenCharByMathFormula(s,c));
+
+            //compare version numbers
+            String version1 = "1.2", version2 = "1.10";
+//            String version1 = "1.01", version2 = "1.001";
+
+            //using tokenizer
+//            System.out.println(sq.compareVersionNumbers(version1,version2));
+
+            //Using Split
+            System.out.println(sq.compareVersionNumbersUsingSplit(version1,version2));
 
 
 
