@@ -1161,6 +1161,56 @@ public class StringQuestions {
             return mappedNum;
 
         }
+
+        public String fractionAdditionAndSubtraction(String expr) {
+            int nume=0;
+            int deno=1;
+            int i=0;
+            int n=expr.length();
+            while(i<n){
+                int currNum=0;
+                int currDeno=0;
+
+                boolean isNeg=expr.charAt(i)=='-';
+                if(expr.charAt(i)=='+' || expr.charAt(i)=='-')
+                    i++;
+
+                //build the curr Numerator
+                while(i<n && Character.isDigit(expr.charAt(i))){
+                    int val=expr.charAt(i)-'0';
+                    currNum=(currNum*10)+val;
+                    i++;
+                }
+
+                i++; // skipping the divisor character  numerator/denominator
+
+                if(isNeg==true)
+                    currNum*=-1;
+
+                //building the curr denominator
+                while(i<n && Character.isDigit(expr.charAt(i))){
+                    int val=expr.charAt(i)-'0';
+                    currDeno=(currDeno*10)+val;
+                    i++;
+                }
+
+                nume=nume*currDeno +currNum*deno;
+                deno=deno*currDeno;
+            }
+
+            int gcd=gcd(Math.abs(nume),deno);
+            nume/=gcd;
+            deno/=gcd;
+
+            return Integer.toString(nume)+"/"+Integer.toString(deno);
+
+        }
+
+        private int gcd(int a, int b) {
+            if(b==0)
+                return a;
+            return gcd(a,b%a);
+        }
     }
 
         public static void main(String args[]){
@@ -1409,11 +1459,18 @@ public class StringQuestions {
 //            System.out.println(sq.appendCharacterToStringToMakeSubsequence(s,t));
 
             //sort Jumbled
-            int []mapping = {8,9,4,0,2,1,3,5,7,6};
-            int nums[] = {991,338,38};
+//            int []mapping = {8,9,4,0,2,1,3,5,7,6};
+//            int nums[] = {991,338,38};
 //            System.out.println(sq.sortJumbledApproach1(mapping,nums));
 
-            System.out.println(sq.sortJumbledApproach2(mapping,nums));
+//            System.out.println(sq.sortJumbledApproach2(mapping,nums));
+
+            //fraction addition and subtraction
+
+            String expr = "-1/2+1/2+1/3";
+
+            System.out.println(sq.fractionAdditionAndSubtraction(expr));
+
 
 
     }
