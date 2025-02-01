@@ -1,3 +1,6 @@
+import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils;
+import javafx.util.Pair;
+
 import java.util.*;
 
 public class StringQuestions {
@@ -1096,6 +1099,68 @@ public class StringQuestions {
                 return 0;
             return m-j;
         }
+
+        public ArrayList<Integer> sortJumbledApproach1(int[] mapping, int[] nums) {
+            ArrayList<Pair<Integer,Integer>> temp= new ArrayList<>();
+            for(int i=0;i<nums.length;i++){
+                String num=Integer.toString(nums[i]);
+                StringBuilder t= new StringBuilder();
+                for(int j=0;j<num.length();j++){
+                    t.append(mapping[num.charAt(j)-'0']);
+                }
+                temp.add(new Pair<>(Integer.parseInt(t.toString()),i));
+            }
+            Collections.sort(temp, new Comparator<Pair<Integer, Integer>>() {
+                @Override
+                public int compare(Pair<Integer, Integer> o1, Pair<Integer, Integer> o2) {
+
+                    if (o1.getKey() > o2.getKey()) return 1;  // Move o1 after o2
+                    else if (o1.getKey() < o2.getKey()) return -1; // Move o1 before o2
+                    else return 0;
+                }
+            });
+            ArrayList<Integer> res= new ArrayList<>();
+            temp.stream().forEach(x->res.add(nums[x.getValue()]));
+            return res;
+
+        }
+
+        public ArrayList<Integer> sortJumbledApproach2(int[] mapping, int[] nums) {
+            ArrayList<Pair<Integer,Integer>> temp = new ArrayList<>();
+            for(int i=0;i<nums.length;i++){
+                int mappedNum=getMappedNum(mapping,nums[i]);
+                temp.add(new Pair<>(mappedNum,i));
+            }
+            Collections.sort(temp,(a,b)->{
+                if(a.getKey()>b.getKey())
+                    return 1;
+                else if(a.getKey()<b.getKey())
+                    return -1;
+                return 0;
+            });
+            ArrayList<Integer> res= new ArrayList<>();
+            temp.stream().forEach(x->res.add(nums[x.getValue()]));
+            return res;
+
+        }
+
+        private int getMappedNum(int[] mapping, int num) {
+            if(num<10)
+                return mapping[num];
+
+            int mappedNum=0;
+            int placeValue=1;
+            while(num>0){
+                int lastDigit=num%10;
+                int mappedDigit=mapping[lastDigit];
+                mappedNum+=(mappedDigit*placeValue);
+
+                placeValue*=10;
+                num/=10;
+            }
+            return mappedNum;
+
+        }
     }
 
         public static void main(String args[]){
@@ -1339,10 +1404,16 @@ public class StringQuestions {
 //            System.out.println(sq.compareVersionNumbersUsingSplit(version1,version2));
 
             //Append Characters to String to make subsequence
-            String s = "coaching", t = "coding";
+//            String s = "coaching", t = "coding";
 
-            System.out.println(sq.appendCharacterToStringToMakeSubsequence(s,t));
+//            System.out.println(sq.appendCharacterToStringToMakeSubsequence(s,t));
 
+            //sort Jumbled
+            int []mapping = {8,9,4,0,2,1,3,5,7,6};
+            int nums[] = {991,338,38};
+//            System.out.println(sq.sortJumbledApproach1(mapping,nums));
+
+            System.out.println(sq.sortJumbledApproach2(mapping,nums));
 
 
     }
