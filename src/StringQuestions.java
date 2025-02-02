@@ -1267,6 +1267,47 @@ public class StringQuestions {
             }
             return resNum;
         }
+
+        public String shortestPalindrome(String s) {
+            String rev=new StringBuilder(s).reverse().toString();
+            for(int i=0;i<s.length();i++){
+                if(s.substring(0,s.length()-i).equals(rev.substring(i)))
+                    return rev.substring(0,i)+s;
+            }
+            return rev+s;
+        }
+
+        public String shortestPalindromeByKMP(String s) {
+            String rev=new StringBuilder(s).reverse().toString();
+            String temp= s+"-"+rev;
+            int N=temp.length();
+            int lps[]= new int[N];
+            computeLPS(temp,lps,N);
+
+            int longestLPSLength=lps[N-1];
+            return rev.substring(0,s.length()-longestLPSLength)+s;
+
+        }
+
+        private void computeLPS(String pattern, int[] lps, int n) {
+            lps[0]=0;
+            int i=1;
+            int len=0;
+            while(i<n){
+                if(pattern.charAt(i)==pattern.charAt(len)){
+                    len++;
+                    lps[i]=len;
+                    i++;
+                }else{
+                    if(len!=0){
+                        len=lps[len-1];
+                    }else{
+                        lps[i]=0;
+                        i++;
+                    }
+                }
+            }
+        }
     }
 
         public static void main(String args[]){
@@ -1529,9 +1570,19 @@ public class StringQuestions {
 
 
             //find the closest palindrome
-            String n = "123";
-            System.out.println(sq.findTheClosestPalindrome(n));
+//            String n = "123";
+//            System.out.println(sq.findTheClosestPalindrome(n));
 
+            //Shortest palindrome
+
+//            String s="aacecaaa";
+            String s="abcd";
+
+            //Brute force
+//            System.out.println(sq.shortestPalindrome(s));
+
+
+            System.out.println(sq.shortestPalindromeByKMP(s));
 
     }
 
