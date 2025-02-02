@@ -57,6 +57,10 @@ public class StringQuestions {
 //    Integer.toBinaryString(number)
 
 
+//    Integer or long to String
+    //String.valueOf(res);
+
+
 
 
     static class SQ{
@@ -1211,6 +1215,58 @@ public class StringQuestions {
                 return a;
             return gcd(a,b%a);
         }
+
+        public String findTheClosestPalindrome(String n) {
+            int len=n.length();
+            int mid= len/2;
+
+            int firstHalfLength= len%2==0? mid:mid+1;
+
+            long firstHalf =Long.parseLong(n.substring(0,firstHalfLength));
+
+            List<Long> possibleResult= new ArrayList<>();
+
+            //calculate all possible res
+            possibleResult.add(halfToPalindrome(firstHalf,len%2==0));
+            possibleResult.add(halfToPalindrome(firstHalf+1,len%2==0));
+            possibleResult.add(halfToPalindrome(firstHalf-1,len%2==0));
+            possibleResult.add((long)Math.pow(10,len-1)-1);
+            possibleResult.add((long)Math.pow(10,len)+1);
+
+            //find the closest palindrome
+
+            long diff=Long.MAX_VALUE;
+
+            long res=0;
+            Long origionalNum=Long.parseLong(n);
+
+            for(long num:possibleResult){
+                if(num==origionalNum)
+                    continue;
+                if(Math.abs(num-origionalNum)<diff){
+                    diff=Math.abs(num-origionalNum);
+                    res=num;
+                }else if(Math.abs(num-origionalNum)==diff){
+                    res=Math.min(res,num);
+                }
+            }
+
+            return String.valueOf(res);
+        }
+
+        private Long halfToPalindrome(long firstHalf, boolean isEven) {
+            long resNum=firstHalf;
+            if(isEven==false)
+                firstHalf/=10;
+
+            while(firstHalf>0){
+                long digit=firstHalf%10;
+                resNum=(resNum*10)+digit;
+
+                firstHalf/=10;
+            }
+            return resNum;
+        }
     }
 
         public static void main(String args[]){
@@ -1467,10 +1523,14 @@ public class StringQuestions {
 
             //fraction addition and subtraction
 
-            String expr = "-1/2+1/2+1/3";
+//            String expr = "-1/2+1/2+1/3";
 
-            System.out.println(sq.fractionAdditionAndSubtraction(expr));
+//            System.out.println(sq.fractionAdditionAndSubtraction(expr));
 
+
+            //find the closest palindrome
+            String n = "123";
+            System.out.println(sq.findTheClosestPalindrome(n));
 
 
     }
