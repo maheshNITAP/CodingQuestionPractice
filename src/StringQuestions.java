@@ -1308,6 +1308,70 @@ public class StringQuestions {
                 }
             }
         }
+
+        //Using two pointer
+        public boolean sentenceSimilarity3(String s1, String s2) {
+            if(s1.length()<s2.length()){
+                String t=s1;
+                s1=s2;
+                s2=t;
+            }
+            String arr1[]= s1.split(" ");
+            String arr2[]=s2.split(" ");
+
+            int i=0, j=arr1.length-1;
+            int k=0,l=arr2.length-1;
+
+            while(i<arr1.length && k<arr2.length && arr1[i].equals(arr2[k])){
+                k++;
+                i++;
+            }
+
+            while(l>=k && arr1[j].equals(arr2[l])){
+                j--;
+                l--;
+            }
+            if(l<k)
+                return true;
+            return false;
+
+
+        }
+
+        public boolean sentenceSimilarity3UsingDequeue(String s1, String s2) {
+            if(s1.length()<s2.length()){
+                String t=s1;
+                s1=s2;
+                s2=t;
+            }
+            Deque<String> deq1= new LinkedList<>(), deq2= new LinkedList<>();
+            StringTokenizer stringTokenizer= new StringTokenizer(s1, " ");
+            while (stringTokenizer.hasMoreTokens()){
+                deq1.add(stringTokenizer.nextToken());
+            }
+
+            StringTokenizer stringTokenizer2= new StringTokenizer(s2, " ");
+            while (stringTokenizer2.hasMoreTokens()){
+                deq2.add(stringTokenizer2.nextToken());
+            }
+
+            while(!deq1.isEmpty() && !deq2.isEmpty() && deq1.peekFirst().equals(deq2.peekFirst())){
+                deq1.pollFirst();
+                deq2.pollFirst();
+            }
+
+            while (!deq1.isEmpty() && !deq2.isEmpty() && deq1.peekLast().equals(deq2.peekLast())){
+                deq1.pollLast();
+                deq2.pollLast();
+            }
+
+            if(deq2.isEmpty())
+                return true;
+            return false;
+
+
+
+        }
     }
 
         public static void main(String args[]){
@@ -1576,13 +1640,24 @@ public class StringQuestions {
             //Shortest palindrome
 
 //            String s="aacecaaa";
-            String s="abcd";
+//            String s="abcd";
 
             //Brute force
 //            System.out.println(sq.shortestPalindrome(s));
 
 
-            System.out.println(sq.shortestPalindromeByKMP(s));
+//            System.out.println(sq.shortestPalindromeByKMP(s));
+
+            //sentence similarity-3
+            String sentence1 = "My name is Haley", sentence2 = "My Haley";
+//            String sentence1 = "of", sentence2 = "A lot of words";
+
+            //using pointer
+//            System.out.println(sq.sentenceSimilarity3(sentence1,sentence2));
+
+//            using dequeue
+
+            System.out.println(sq.sentenceSimilarity3UsingDequeue(sentence1,sentence2));
 
     }
 
