@@ -1372,6 +1372,20 @@ public class StringQuestions {
 
 
         }
+
+        public int separateWhiteAndBlackBalls(String s) {
+            int n=s.length();
+
+            int swaps=0;
+            int black=0;
+            for(int i=0;i<n;i++){
+                if(s.charAt(i)=='0'){
+                    swaps+=black;
+                }else
+                    black++;
+            }
+            return swaps;
+        }
     }
 
         public static void main(String args[]){
@@ -1649,7 +1663,7 @@ public class StringQuestions {
 //            System.out.println(sq.shortestPalindromeByKMP(s));
 
             //sentence similarity-3
-            String sentence1 = "My name is Haley", sentence2 = "My Haley";
+//            String sentence1 = "My name is Haley", sentence2 = "My Haley";
 //            String sentence1 = "of", sentence2 = "A lot of words";
 
             //using pointer
@@ -1657,7 +1671,14 @@ public class StringQuestions {
 
 //            using dequeue
 
-            System.out.println(sq.sentenceSimilarity3UsingDequeue(sentence1,sentence2));
+//            System.out.println(sq.sentenceSimilarity3UsingDequeue(sentence1,sentence2));
+
+            //Separate white and black balls
+
+            String s="11010";
+
+            //left to right
+            System.out.println(sq.separateWhiteAndBlackBalls(s));
 
     }
 
