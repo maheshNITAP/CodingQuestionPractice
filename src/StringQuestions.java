@@ -1415,6 +1415,47 @@ public class StringQuestions {
             chars[i]=chars[rightMaxIndex];
             chars[rightMaxIndex]=t;
         }
+
+        public List<String> removeSubFolderFromFileSystemApproach1(String[] folder) {
+            Set<String> folderSet= new HashSet<>(Arrays.asList(folder));
+            List<String> res= new ArrayList<>();
+
+            for(String currFolder :folder){
+                String temp=currFolder;
+                boolean isSubFolder=false;
+                while(!currFolder.isEmpty()){
+                    int position=currFolder.lastIndexOf('/');
+                    if(position==-1) break;
+                    currFolder=currFolder.substring(0,position);
+
+                    if(folderSet.contains(currFolder)){
+                        isSubFolder=true;
+                        break;
+                    }
+                }
+                if(!isSubFolder)
+                    res.add(temp);
+            }
+            return res;
+
+        }
+
+        public List<String> removeSubFolderFromFileSystemApproach2(String[] folder) {
+            List<String> res= new ArrayList<>();
+            Arrays.sort(folder);
+            res.add(folder[0]);
+
+            for(int i=1;i<folder.length;i++){
+                String currFolder=folder[i];
+                String lastFolder=res.get(res.size()-1);
+                lastFolder+="/";
+                if(!currFolder.startsWith(lastFolder)){
+                    res.add(currFolder);
+                }
+            }
+            return res;
+
+        }
     }
 
         public static void main(String args[]){
@@ -1711,10 +1752,20 @@ public class StringQuestions {
 
 
             //Maximum Swap
-            int num=2736;
-            System.out.println(sq.maximumSwap(num));
+//            int num=2736;
+//            System.out.println(sq.maximumSwap(num));
 
             //Approach 2 TODO
+
+
+            //Remove Sub Folders from the folder system
+            String  folder[]={"/a","/a/b","/c/d","/c/d/e","/c/f"};
+
+//            System.out.println(sq.removeSubFolderFromFileSystemApproach1(folder));
+
+            //approach 2 using sorting
+            System.out.println(sq.removeSubFolderFromFileSystemApproach2(folder));
+
     }
 
 
