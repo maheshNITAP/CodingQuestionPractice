@@ -1386,6 +1386,35 @@ public class StringQuestions {
             }
             return swaps;
         }
+
+        public int maximumSwap(int num) {
+            char []chars= Integer.toString(num).toCharArray();
+            int n=chars.length;
+            int rightMax[]= new int[n];
+            rightMax[n-1]=n-1;
+            for(int i=n-2;i>=0;i--){
+                int rightMaxIndex=rightMax[i+1];
+                int rightMaxElement= chars[rightMaxIndex];
+
+                rightMax[i]=(chars[i]>rightMaxElement)? i:rightMaxIndex;
+            }
+            for(int i=0;i<n;i++){
+                int rightMaxIndex=rightMax[i];
+                int rightMaxElement=chars[rightMaxIndex];
+                if(chars[i]<rightMaxElement){
+                    swapChars(chars,i,rightMaxIndex);
+                    return Integer.parseInt(new String(chars));
+                }
+            }
+            return num;
+
+        }
+
+        private void swapChars(char[] chars, int i, int rightMaxIndex) {
+            char t=chars[i];
+            chars[i]=chars[rightMaxIndex];
+            chars[rightMaxIndex]=t;
+        }
     }
 
         public static void main(String args[]){
@@ -1675,11 +1704,17 @@ public class StringQuestions {
 
             //Separate white and black balls
 
-            String s="11010";
+//            String s="11010";
 
             //left to right
-            System.out.println(sq.separateWhiteAndBlackBalls(s));
+//            System.out.println(sq.separateWhiteAndBlackBalls(s));
 
+
+            //Maximum Swap
+            int num=2736;
+            System.out.println(sq.maximumSwap(num));
+
+            //Approach 2 TODO
     }
 
 
