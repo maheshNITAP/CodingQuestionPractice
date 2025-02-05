@@ -1456,6 +1456,23 @@ public class StringQuestions {
             return res;
 
         }
+
+        public String stringCompression3(String word) {
+            StringBuilder res= new StringBuilder();
+            int i=0;
+            int n=word.length();
+            while (i<n){
+                int count=0;
+                char ch=word.charAt(i);
+
+                while(i<n && ch==word.charAt(i) && count<9){
+                    i++;
+                    count++;
+                }
+                res.append(Integer.toString(count)).append(ch);
+            }
+            return res.toString();
+        }
     }
 
         public static void main(String args[]){
@@ -1759,12 +1776,18 @@ public class StringQuestions {
 
 
             //Remove Sub Folders from the folder system
-            String  folder[]={"/a","/a/b","/c/d","/c/d/e","/c/f"};
+//            String  folder[]={"/a","/a/b","/c/d","/c/d/e","/c/f"};
 
 //            System.out.println(sq.removeSubFolderFromFileSystemApproach1(folder));
 
             //approach 2 using sorting
-            System.out.println(sq.removeSubFolderFromFileSystemApproach2(folder));
+//            System.out.println(sq.removeSubFolderFromFileSystemApproach2(folder));
+
+            //String Compression -3
+
+//            String word = "aaaaaaaaaaaaaabb";
+            String word = "abcde";
+            System.out.println(sq.stringCompression3(word));
 
     }
 
