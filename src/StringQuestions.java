@@ -1519,6 +1519,19 @@ public class StringQuestions {
             }
             return res.toString();
         }
+
+        public boolean makeStringaSubsequenceUsingCyclicIncrements(String str1, String str2) {
+            int i=0,j=0;
+            int n= str1.length(),m=str2.length();
+            while(i<n && j<m){
+                if(str1.charAt(i)==str2.charAt(j) || (str1.charAt(i)+1)%26==(str2.charAt(j))%26)
+                    j++;
+                i++;
+            }
+            if(j==m)
+                return true;
+            return false;
+        }
     }
 
         public static void main(String args[]){
@@ -1841,10 +1854,16 @@ public class StringQuestions {
 //            System.out.println(sq.minimumNumberOfChangesToMakeBinaryStringBeautifulApproach2(s));
 
             //Adding spaces to String
-            String s = "LeetcodeHelpsMeLearn";
-            int []spaces = {8,13,15};
+//            String s = "LeetcodeHelpsMeLearn";
+//            int []spaces = {8,13,15};
+//
+//            System.out.println(sq.addingSpacesToString(s,spaces));
 
-            System.out.println(sq.addingSpacesToString(s,spaces));
+
+            //Make String a Subsequence Using Cyclic Increments
+            String str1 = "zc", str2 = "ad";
+            System.out.println(sq.makeStringaSubsequenceUsingCyclicIncrements(str1,str2));
+
 
     }
 
