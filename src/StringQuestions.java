@@ -1505,6 +1505,20 @@ public class StringQuestions {
             }
             return change;
         }
+
+        public String addingSpacesToString(String s, int[] spaces) {
+            int j=0,n=s.length(),m=spaces.length;
+            StringBuilder res= new StringBuilder();
+            for(int i=0;i<s.length();i++){
+                if(j< m && i==spaces[j]){
+                    res.append(" ");
+                    j++;
+                }
+                res.append(s.charAt(i));
+
+            }
+            return res.toString();
+        }
     }
 
         public static void main(String args[]){
@@ -1822,9 +1836,15 @@ public class StringQuestions {
 //            System.out.println(sq.stringCompression3(word));
 
             //Minimum number of changes to make Binary String Beautiful
-            String s="100010000111";
+//            String s="100010000111";
 //            System.out.println(sq.minimumNumberOfChangesToMakeBinaryStringBeautiful(s));
-            System.out.println(sq.minimumNumberOfChangesToMakeBinaryStringBeautifulApproach2(s));
+//            System.out.println(sq.minimumNumberOfChangesToMakeBinaryStringBeautifulApproach2(s));
+
+            //Adding spaces to String
+            String s = "LeetcodeHelpsMeLearn";
+            int []spaces = {8,13,15};
+
+            System.out.println(sq.addingSpacesToString(s,spaces));
 
     }
 
