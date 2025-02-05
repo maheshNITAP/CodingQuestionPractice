@@ -1473,6 +1473,38 @@ public class StringQuestions {
             }
             return res.toString();
         }
+
+        public int minimumNumberOfChangesToMakeBinaryStringBeautiful(String s) {
+            int count=0;
+            int n=s.length();
+            char ch=s.charAt(0);
+            int changes=0;
+            for(int i=0;i<n;i++){
+                if(ch==s.charAt(i)){
+                    count++;
+                    continue;
+                }
+
+                if(count%2==0){//previous sbustring is of even length
+                    count=1;//start new substring
+                }else {
+                    //s[i] ko change krna pdega to make even substring
+                    changes++;
+                    count=1;
+                }
+                ch=s.charAt(i);//update the new character
+            }
+            return changes;
+        }
+
+        public int minimumNumberOfChangesToMakeBinaryStringBeautifulApproach2(String s) {
+            int change=0;
+            for(int i=0;i<s.length();i+=2){
+                if(s.charAt(i)!=s.charAt(i+1))
+                    change++;
+            }
+            return change;
+        }
     }
 
         public static void main(String args[]){
@@ -1786,8 +1818,13 @@ public class StringQuestions {
             //String Compression -3
 
 //            String word = "aaaaaaaaaaaaaabb";
-            String word = "abcde";
-            System.out.println(sq.stringCompression3(word));
+//            String word = "abcde";
+//            System.out.println(sq.stringCompression3(word));
+
+            //Minimum number of changes to make Binary String Beautiful
+            String s="100010000111";
+//            System.out.println(sq.minimumNumberOfChangesToMakeBinaryStringBeautiful(s));
+            System.out.println(sq.minimumNumberOfChangesToMakeBinaryStringBeautifulApproach2(s));
 
     }
 
