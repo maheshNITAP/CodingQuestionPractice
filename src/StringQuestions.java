@@ -1,4 +1,3 @@
-import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils;
 import javafx.util.Pair;
 
 import java.util.*;
@@ -1532,6 +1531,71 @@ public class StringQuestions {
                 return true;
             return false;
         }
+
+        public boolean movePiecesToObtainAString(String start, String target) {
+            HashMap<StringBuilder, Boolean> map= new HashMap<>();
+            StringBuilder strt= new StringBuilder(start), trgt= new StringBuilder(target);
+            int n=strt.length();
+            return solvee(strt,trgt,map,n);
+        }
+
+        private boolean solvee(StringBuilder strt, StringBuilder trgt, HashMap<StringBuilder, Boolean> map, int n) {
+            if(strt.toString().equals(trgt.toString()))
+                return true;
+            if(map.containsKey(strt))
+                return map.get(strt);
+
+            for(int i=0;i<strt.length();i++){
+                if(strt.charAt(i)=='L' && i>0 && strt.charAt(i-1)=='_'){
+                    swapInStringBuilder(strt,i,i-1);
+                    if(solvee(strt,trgt,map, n))
+                        return true;
+                    swapInStringBuilder(strt,i,i-1);
+                }else if(strt.charAt(i)=='R' && i<n-1 && strt.charAt(i+1)=='_'){
+                    swapInStringBuilder(strt,i,i+1);
+                    if(solvee(strt,trgt,map,n))
+                        return true;
+                    swapInStringBuilder(strt,i,i+1);
+                }
+            }
+            map.put(strt,false);
+            return false;
+        }
+
+        private void swapInStringBuilder(StringBuilder strt, int i, int j) {
+            char temp=strt.charAt(i);
+            strt.setCharAt(i,strt.charAt(j));
+            strt.setCharAt(j,temp);
+        }
+
+
+        public boolean movePiecesToObtainAStringBy2Pointer(String start, String target) {
+            int n=start.length();
+            int i=0,j=0;
+            while(i<n || j<n){
+                while(i<n && start.charAt(i)=='_')
+                    i++;
+
+                while(j<n && target.charAt(j)=='_')
+                    j++;
+
+                if(i==n || j==n)
+                    return i==n && j==n;
+
+                if(start.charAt(i)!=target.charAt(j))
+                    return false;
+
+                if(start.charAt(i)=='L' && i<j)
+                    return false;
+
+                if(start.charAt(j)=='R' && i>j)
+                    return false;
+
+                i++;
+                j++;
+            }
+            return true;
+        }
     }
 
         public static void main(String args[]){
@@ -1861,8 +1925,18 @@ public class StringQuestions {
 
 
             //Make String a Subsequence Using Cyclic Increments
-            String str1 = "zc", str2 = "ad";
-            System.out.println(sq.makeStringaSubsequenceUsingCyclicIncrements(str1,str2));
+//            String str1 = "zc", str2 = "ad";
+//            System.out.println(sq.makeStringaSubsequenceUsingCyclicIncrements(str1,str2));
+
+            //Move pieces to obtain a String
+
+            String start = "_L__R__R_", target = "L______RR";
+
+            //Approach 1 by recursion
+            System.out.println(sq.movePiecesToObtainAString(start,target));
+
+            //Approach 2 by 2 pinter
+            System.out.println(sq.movePiecesToObtainAStringBy2Pointer(start,target));
 
 
     }
