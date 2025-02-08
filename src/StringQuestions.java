@@ -1596,6 +1596,81 @@ public class StringQuestions {
             }
             return true;
         }
+
+        public int findTheLongestSpecialSubStringThatOccursThriceByBruteForce(String s) {
+            HashMap<String,Integer> map= new HashMap<>();
+            int n=s.length();
+
+            for(int i=0;i<n;i++){
+                StringBuilder temp= new StringBuilder();
+                for(int j=i;j<n;j++){
+                    if(temp.length()==0 || temp.charAt(temp.length()-1)==s.charAt(j)){
+                        temp.append(s.charAt(j));
+                        map.put(temp.toString(),map.getOrDefault(temp.toString(),0)+1);//curr string ko map main copy kr rhe h to O(n)
+                    }else {
+                        break;
+                    }
+                }
+            }
+            Integer res=0;
+            for(Map.Entry<String,Integer> e:map.entrySet()){
+                if(e.getValue()>=3 && e.getKey().length()>res){
+                    res=e.getKey().length();
+                }
+            }
+            return res==0?-1:res;
+        }
+
+        public int findTheLongestSpecialSubStringThatOccursThriceByApproach2(String s) {
+            int n=s.length();
+            HashMap<Pair<Character,Integer>,Integer> map= new HashMap<>();
+            for(int i=0;i<n;i++){
+                for(int j=i;j<n;j++){
+                    if(j==i || s.charAt(j)==s.charAt(j-1)){
+                        map.put(new Pair<>(s.charAt(i),j-i+1),map.getOrDefault(new Pair<>(s.charAt(i),j-i+1),0)+1);//now it will take only O(1)
+                    }
+                }
+            }
+            int res=0;
+            for(Map.Entry<Pair<Character,Integer>,Integer> e:map.entrySet()){
+                if(e.getValue()>=3 && e.getKey().getValue()>res){
+                    res=e.getKey().getValue();
+                }
+            }
+            return res==0 ?-1:res;
+        }
+
+        public int findTheLongestSpecialSubStringThatOccursThriceByApproach3Optimal(String s) {
+            int n=s.length();
+            int mat[][]= new int[26][n+1];
+            int res=-1;
+
+            char prev_char=s.charAt(0);
+            int len=0;
+            for(int i=0;i<n;i++){
+                char currChar=s.charAt(i);
+
+                if(prev_char ==currChar){
+                    len+=1;
+                    mat[currChar-'a'][len]+=1;
+                }else {
+                    len=1;
+                    mat[currChar-'a'][len]+=1;
+                    prev_char=currChar;
+                }
+            }
+            for(int row=0;row<26;row++){
+                int cumSum=0;
+                for(int col=n;col>=1;col--){
+                    cumSum+=mat[row][col];
+                    if(cumSum>=3){
+                        res=Math.max(res,col);
+                        break;
+                    }
+                }
+            }
+            return res;
+        }
     }
 
         public static void main(String args[]){
@@ -1930,13 +2005,29 @@ public class StringQuestions {
 
             //Move pieces to obtain a String
 
-            String start = "_L__R__R_", target = "L______RR";
+//            String start = "_L__R__R_", target = "L______RR";
 
             //Approach 1 by recursion
-            System.out.println(sq.movePiecesToObtainAString(start,target));
+//            System.out.println(sq.movePiecesToObtainAString(start,target));
 
             //Approach 2 by 2 pinter
-            System.out.println(sq.movePiecesToObtainAStringBy2Pointer(start,target));
+//            System.out.println(sq.movePiecesToObtainAStringBy2Pointer(start,target));
+
+
+            //find the longest special substring that occurs thrice
+
+            String s="aaaa";
+//                String s="abcaba";
+            //Brute force
+//            System.out.println(sq.findTheLongestSpecialSubStringThatOccursThriceByBruteForce(s));
+
+            //approach 2
+//            System.out.println(sq.findTheLongestSpecialSubStringThatOccursThriceByApproach2(s));
+
+            //approach 3 optimal O(n)
+            System.out.println(sq.findTheLongestSpecialSubStringThatOccursThriceByApproach3Optimal(s));
+
+
 
 
     }
