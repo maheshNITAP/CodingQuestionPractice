@@ -1671,6 +1671,69 @@ public class StringQuestions {
             }
             return res;
         }
+
+        public String constructStringWithRepeatLimitApproach1(String s, int repeatLimit) {
+            int hash[]= new int[26];
+            for(char ch:s.toCharArray()){
+                hash[ch-'a']++;
+            }
+            int i=25;
+            StringBuilder res= new StringBuilder();
+            while(i>=0){
+                if(hash[i]==0){
+                    i--;
+                    continue;
+                }
+                char ch=(char)(i+'a');
+                int freq=Math.min(hash[i],repeatLimit);
+                for(int k=0;k<freq;k++)
+                    res.append(ch);
+                hash[i]-=freq;
+                if(hash[i]>0){
+                    int j=i-1;
+                    while (j>=0 && hash[j]==0)
+                        j--;
+                    if(j<0)
+                        break;
+                    res.append((char) ('a'+j));
+                    hash[j]--;
+                }
+
+            }
+            return res.toString();
+        }
+
+        public String constructStringWithRepeatLimitApproach2(String s, int repeatLimit) {
+            PriorityQueue<Character> max= new PriorityQueue<>(Collections.reverseOrder());
+            int count[]= new int[26];
+            for(char x:s.toCharArray()){
+                count[x-'a']++;
+                if(!max.contains(x)){
+                    max.add(x);
+                }
+            }
+            StringBuilder res= new StringBuilder();
+            while (!max.isEmpty()){
+                char ch=max.poll();
+                int freq=Math.min(count[ch-'a'],repeatLimit);
+                for(int k=0;k<freq;k++)
+                    res.append(ch);
+                count[ch-'a']-=freq;
+                if(count[ch-'a']>0 & !max.isEmpty()){
+                    char ch2=max.poll();
+                    res.append(ch2);
+                    count[ch2-'a']--;
+
+                    if(count[ch2-'a']>0)
+                        max.add(ch2);
+
+                    max.add(ch);
+                }
+
+
+            }
+            return res.toString();
+        }
     }
 
         public static void main(String args[]){
@@ -2016,7 +2079,7 @@ public class StringQuestions {
 
             //find the longest special substring that occurs thrice
 
-            String s="aaaa";
+//            String s="aaaa";
 //                String s="abcaba";
             //Brute force
 //            System.out.println(sq.findTheLongestSpecialSubStringThatOccursThriceByBruteForce(s));
@@ -2025,10 +2088,23 @@ public class StringQuestions {
 //            System.out.println(sq.findTheLongestSpecialSubStringThatOccursThriceByApproach2(s));
 
             //approach 3 optimal O(n)
-            System.out.println(sq.findTheLongestSpecialSubStringThatOccursThriceByApproach3Optimal(s));
+//            System.out.println(sq.findTheLongestSpecialSubStringThatOccursThriceByApproach3Optimal(s));
 
 
+            //Construct String with repeat limit
 
+            String s="aababab";
+            int repeatLimit=2;
+//
+//            String s="cczazcc";
+//            int repeatLimit=3;
+
+//            System.out.println(sq.constructStringWithRepeatLimitApproach1(s,repeatLimit));
+
+
+//            Approach 2
+
+            System.out.println(sq.constructStringWithRepeatLimitApproach2(s,repeatLimit));
 
     }
 
