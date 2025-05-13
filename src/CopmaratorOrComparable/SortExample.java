@@ -24,10 +24,10 @@ public class SortExample {
 
      //comparator--for comparator we need to make separate class
      ArrayList<Employee> emp1=new ArrayList<>();
-     emp1.add(new Employee(9,"Ravi","91191912344",1000));
-     emp1.add(new Employee(6,"Kisan","8437563657",1000));
-     emp1.add(new Employee(8,"Hari","9363436453",1000));
-     emp1.add(new Employee(7,"Lal","7845362544",1000));
+     emp1.add(new Employee(9,"Ravi","91191912344",1005));
+     emp1.add(new Employee(6,"Kisan","8437563657",1002));
+     emp1.add(new Employee(8,"Hari","9363436453",1004));
+     emp1.add(new Employee(7,"Lal","7845362544",1003));
      System.out.println(emp1);
      //sort by eId
      Collections.sort(emp1,new IdComparator());
@@ -37,6 +37,10 @@ public class SortExample {
      ArrayList<Employee> emps1= new ArrayList<>(emp1);
      Collections.sort(emps1,new NameComparator());
      System.out.println("Sorted by Name by Comparator"+emps1);
+
+     ArrayList<Employee> em2=new ArrayList<>(emp1);
+     Collections.sort(em2, new SalaryComparator());
+     System.out.println("Sorted by salary"+ em2);
 
      List<String> lis= emp.stream().filter(e->e.getName().startsWith("m")).map(Emp::getName).collect(Collectors.toList());
      System.out.println();

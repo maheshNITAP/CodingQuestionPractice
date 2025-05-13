@@ -39,6 +39,7 @@ public class Employee {
                 "eId=" + eId +
                 ", name='" + name + '\'' +
                 ", phone='" + phone + '\'' +
+                ", salary=" + salary +
                 '}';
     }
 }

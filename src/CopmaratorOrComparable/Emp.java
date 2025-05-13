@@ -1,6 +1,6 @@
 package CopmaratorOrComparable;
 
-public class Emp implements Comparable<Emp> {
+public class Emp implements Comparable<Emp>{
 
     private int eId;
     private String name;

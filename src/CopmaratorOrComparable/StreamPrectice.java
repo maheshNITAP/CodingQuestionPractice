@@ -64,6 +64,8 @@ public class StreamPrectice {
                 .skip(4)                                  // Skip the first 4 elements (since we want the 5th largest)
                 .findFirst()                              // Get the 5th largest
                 .orElseThrow(() -> new RuntimeException("Array doesn't have 5 distinct elements"));
+        int fourththLargest=Arrays.stream(array).boxed().sorted((a,b)->b-a).distinct().skip(3).findFirst().orElse(-1);
+        System.out.println("fouth largest ele in array"+ fourththLargest);
 
         System.out.println("The 5th largest element is: " + fifthLargest);
     }
