@@ -41,6 +41,76 @@ public class GreedyQuestions {
             }
             return true;
         }
+
+        public int shortestJobFirst(int[] arr) {
+            int t=0,waitingTime=0;
+            Arrays.sort(arr);
+            for(int x:arr){
+                waitingTime+=t;
+                t+=x;
+            }
+            return waitingTime/arr.length;
+        }
+
+        public boolean jumpGame1(int[] arr) {
+            int n=arr.length;
+            int maxInd=0;
+            for(int i=0;i<n;i++){
+                if(i>maxInd)
+                    return false;
+                maxInd=Math.max(maxInd,i+arr[i]);
+            }
+            return true;
+        }
+
+        public int jumpGame2Recursive(int[] arr) {
+            int n=arr.length;
+//            return recursive(arr,0,0,n);
+
+            int dp[][]= new int[n][n];
+            for(int i=0;i<n;i++)
+                Arrays.fill(dp[i],-1);
+            return recursiveMemo(arr,0,0,n,dp);
+        }
+
+        private int recursiveMemo(int[] arr, int ind, int jumps, int n, int[][] dp) {
+            if(ind>=n-1)
+                return jumps;
+            if(dp[ind][jumps]!=-1)
+                return dp[ind][jumps];
+            int mini=Integer.MAX_VALUE;
+            for(int i=1;i<=arr[ind];i++){
+                mini=Math.min(mini,recursiveMemo(arr,ind+i,jumps+1,n,dp));
+            }
+            return dp[ind][jumps]=mini;
+
+        }
+
+        private int recursive(int[] arr, int ind, int jumps, int n) {
+            if(ind>=n-1)
+                return jumps;
+            int min=Integer.MAX_VALUE;
+            for(int i=1;i<=arr[ind];i++){
+                min=Math.min(min,recursive(arr, ind+i, jumps+1, n));
+            }
+            return min;
+        }
+
+        public int jumpGame2Optimal(int[] arr) {
+            int n=arr.length;
+            int l=0,r=0;
+            int jumps=0;
+            while(r<n-1){
+                int farthest=0;
+                for(int ind=l;r<n && ind<=r;ind++){
+                    farthest=Math.max(farthest,ind+arr[ind]);
+                }
+                l=r+1;
+                r=farthest;
+                jumps++;
+            }
+            return jumps;
+        }
     }
     public static void main(String[] args) {
 
@@ -53,8 +123,24 @@ public class GreedyQuestions {
 
         //lemonade change
 //        int bills[]={5,5,5,10,20};
-        int bills[]={5,5,10,10,20};
-        System.out.println(g.lemonadeChange(bills));
+//        int bills[]={5,5,10,10,20};
+//        System.out.println(g.lemonadeChange(bills));
+
+        //Shortest Job First(SJF)
+//        int arr[]={4,3,7,1,2};
+//        System.out.println(g.shortestJobFirst(arr));
+
+        //Jump Game-1
+//        int arr[]={1,2,4,1,1,0,2,5};//--true
+//        int arr[]={1,2,3,1,1,0,2,5};//--false
+//        System.out.println(g.jumpGame1(arr));
+
+        //jump Game 2
+        int arr[]={2,3,1,4,1,1,1,2};
+
+//        System.out.println(g.jumpGame2Recursive(arr));
+        //Optimal
+        System.out.println(g.jumpGame2Optimal(arr));
 
 
     }
