@@ -1,6 +1,26 @@
-import java.util.Arrays;
+import javafx.util.Pair;
+
+import java.util.*;
 
 public class GreedyQuestions {
+    static class Data{
+        private int id;
+        private int profit;
+        private int deadline;
+        public  Data(int id, int profit, int deadline){
+            this.id=id;
+            this.profit=profit;
+            this.deadline=deadline;
+
+        }
+
+    }
+    public static class ProfitComparator implements Comparator<Data>{
+        @Override
+        public int compare(Data d1, Data d2){
+            return d2.profit-d1.profit;
+        }
+    }
     private static class Greed{
 
         public int assignCookies(int[] greed, int[] s) {
@@ -111,6 +131,35 @@ public class GreedyQuestions {
             }
             return jumps;
         }
+
+
+
+        public Pair<Integer, Integer> jobSequencingProblem(int[] deadline, int[] profit) {
+            int n=deadline.length;
+            ArrayList<Data> arr= new ArrayList<>();
+            int maxDeadline=-1;
+            for(int i=0;i<n;i++){
+                arr.add(new Data(i,profit[i],deadline[i]));
+                maxDeadline=Math.max(maxDeadline,deadline[i]);
+            }
+            Collections.sort(arr, new ProfitComparator() );
+            int totalProfit=0,count=0;
+            int hash[]= new int[maxDeadline+1];
+            Arrays.fill(hash,-1);
+
+            for(int i=0;i<n;i++){
+                for(int j=arr.get(i).deadline;j>=1;j--){
+                    if(hash[j]==-1){
+                        count++;
+                        hash[j]=arr.get(i).id;
+                        totalProfit+=arr.get(i).profit;
+                        break;
+                    }
+                }
+            }
+            return new Pair<Integer,Integer>(count,totalProfit);
+
+        }
     }
     public static void main(String[] args) {
 
@@ -140,8 +189,13 @@ public class GreedyQuestions {
 
 //        System.out.println(g.jumpGame2Recursive(arr));
         //Optimal
-        System.out.println(g.jumpGame2Optimal(arr));
+//        System.out.println(g.jumpGame2Optimal(arr));
 
+        //Job Sequencing Problem
+        int deadline[] = {4, 1, 1, 1};
+        int profit[] = {20, 10, 40, 30};
+
+        System.out.println(g.jobSequencingProblem(deadline,profit));
 
     }
 }
