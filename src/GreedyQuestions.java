@@ -15,10 +15,30 @@ public class GreedyQuestions {
         }
 
     }
+
+    static class MeetingData{
+        private int start;
+        private int end;
+        private int ind;
+
+        public MeetingData(int start, int end, int ind){
+            this.start=start;
+            this.end=end;
+            this.ind=ind;
+        }
+    }
+
+    public static class EndComparator implements Comparator<MeetingData>{
+
+        @Override
+        public int compare(MeetingData d1, MeetingData d2){
+            return d1.end-d2.end;//ascending order
+        }
+    }
     public static class ProfitComparator implements Comparator<Data>{
         @Override
         public int compare(Data d1, Data d2){
-            return d2.profit-d1.profit;
+            return d2.profit-d1.profit; //descending Order
         }
     }
     private static class Greed{
@@ -160,6 +180,27 @@ public class GreedyQuestions {
             return new Pair<Integer,Integer>(count,totalProfit);
 
         }
+
+        public int nMeetingRoomProblem(int[] start, int[] end) {
+            int n=start.length;
+            MeetingData[] arr=  new MeetingData[n];
+            for(int i=0;i<n;i++){
+                arr[i]= new MeetingData(start[i],end[i],i+1);
+
+            }
+            Arrays.sort(arr, new EndComparator());
+            int count=1, freeTime=arr[0].end;
+            ArrayList<Integer> ansList= new ArrayList<>();
+            for(int i=1;i<n;i++){
+                if(arr[i].end>freeTime){
+                    count++;
+                    freeTime=arr[i].end;
+                    ansList.add(arr[i].ind);
+                }
+            }
+            return count;//we can return index of all used interval by ansList
+
+        }
     }
     public static void main(String[] args) {
 
@@ -192,10 +233,16 @@ public class GreedyQuestions {
 //        System.out.println(g.jumpGame2Optimal(arr));
 
         //Job Sequencing Problem
-        int deadline[] = {4, 1, 1, 1};
-        int profit[] = {20, 10, 40, 30};
+//        int deadline[] = {4, 1, 1, 1};
+//        int profit[] = {20, 10, 40, 30};
+//
+//        System.out.println(g.jobSequencingProblem(deadline,profit));
 
-        System.out.println(g.jobSequencingProblem(deadline,profit));
+        //N meeting room in one room
+        int start[]={0,3,1,5,5,8};
+        int end[]={5,4,2,9,7,9};
+
+        System.out.println(g.nMeetingRoomProblem(start,end));
 
     }
 }
