@@ -201,6 +201,45 @@ public class GreedyQuestions {
             return count;//we can return index of all used interval by ansList
 
         }
+
+        public int nonOverLappingProblems(int[][] arr) {
+            int n = arr.length;
+            Arrays.sort(arr, (a, b) -> a[1] - b[1]);
+            int count = 1;
+            int freeTime = arr[0][1];
+            for (int i = 0; i < n; i++) {
+                if (arr[i][0] >= freeTime) {
+                    freeTime = arr[i][1];
+                    count++;
+                }
+            }
+            return n - count;//number of intervals to be removed=total # of intervals-# of non-overlapping intervals
+        }
+
+        public ArrayList<int[]> insetInterval(int[][] arr, int[] newInterval) {
+            ArrayList<int[]> res= new ArrayList<>();
+            int n=arr.length;
+            int i=0;
+            //left part of intervals before overlapping
+            while(i<n && arr[i][1]<newInterval[0]){
+                res.add(arr[i]);
+                i++;
+            }
+
+            //OvreLapping Part of intervals
+            while(i<n && arr[i][0]<=newInterval[1]){
+                newInterval[0]=Math.min(newInterval[0],arr[i][0]);
+                newInterval[1]=Math.max(newInterval[1],arr[i][1]);
+                i++;
+            }
+            res.add(newInterval);
+            //right part after interval
+            while(i<n){
+                res.add(arr[i]);
+                i++;
+            }
+            return res;
+        }
     }
     public static void main(String[] args) {
 
@@ -226,7 +265,7 @@ public class GreedyQuestions {
 //        System.out.println(g.jumpGame1(arr));
 
         //jump Game 2
-        int arr[]={2,3,1,4,1,1,1,2};
+//        int arr[]={2,3,1,4,1,1,1,2};
 
 //        System.out.println(g.jumpGame2Recursive(arr));
         //Optimal
@@ -239,10 +278,27 @@ public class GreedyQuestions {
 //        System.out.println(g.jobSequencingProblem(deadline,profit));
 
         //N meeting room in one room
-        int start[]={0,3,1,5,5,8};
-        int end[]={5,4,2,9,7,9};
+//        int start[]={0,3,1,5,5,8};
+//        int end[]={5,4,2,9,7,9};
+//
+//        System.out.println(g.nMeetingRoomProblem(start,end));
 
-        System.out.println(g.nMeetingRoomProblem(start,end));
+        //Non-Overlapping Problems
+//        int arr[][]={{0,5},{3,4},{1,2},{5,9},{5,7},{7,9}};
+//        System.out.println(g.nonOverLappingProblems(arr));
+
+
+        //Insert Intervals
+        int arr[][]={{1,2},{3,4},{5,7},{8,10},{12,16}};
+        int newInterval[]={6,8};
+
+        ArrayList<int[]> res= g.insetInterval(arr, newInterval);
+        for(int[] x:res){
+            for(int y:x){
+                System.out.print(y+" ");
+            }
+            System.out.println();
+        }
 
     }
 }
