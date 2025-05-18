@@ -240,6 +240,26 @@ public class GreedyQuestions {
             }
             return res;
         }
+
+        public int minNumberOfPlatformsRequiredInRailwayStation(int[] arr, int[] dep) {
+            Arrays.sort(arr);
+            Arrays.sort(dep);
+            int i=0,j=0;
+            int maxCount=0;
+            int count=0;
+            int n=arr.length;
+            while(i<n){
+                if(arr[i]<=dep[j]){
+                    count++;
+                    i++;
+                }else {
+                    count--;
+                    j++;
+                }
+                maxCount=Math.max(count,maxCount);
+            }
+            return maxCount;
+        }
     }
     public static void main(String[] args) {
 
@@ -289,16 +309,22 @@ public class GreedyQuestions {
 
 
         //Insert Intervals
-        int arr[][]={{1,2},{3,4},{5,7},{8,10},{12,16}};
-        int newInterval[]={6,8};
+//        int arr[][]={{1,2},{3,4},{5,7},{8,10},{12,16}};
+//        int newInterval[]={6,8};
+//
+//        ArrayList<int[]> res= g.insetInterval(arr, newInterval);
+//        for(int[] x:res){
+//            for(int y:x){
+//                System.out.print(y+" ");
+//            }
+//            System.out.println();
+//        }
 
-        ArrayList<int[]> res= g.insetInterval(arr, newInterval);
-        for(int[] x:res){
-            for(int y:x){
-                System.out.print(y+" ");
-            }
-            System.out.println();
-        }
+        //minimum number of platforms required in a railway station
+        int arr[]={900, 940, 950, 1100, 1500, 1800};
+        int dep[]={910,1200, 1120, 1130,1900, 2000};
+
+        System.out.println(g.minNumberOfPlatformsRequiredInRailwayStation(arr,dep));
 
     }
 }
