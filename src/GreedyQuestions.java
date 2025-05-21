@@ -260,6 +260,78 @@ public class GreedyQuestions {
             }
             return maxCount;
         }
+
+        public boolean validParenthesisRecursive(String s) {
+            int count = 0;
+            int ind = 0;
+            return validParenthesisSolve(s, ind, count);
+        }
+
+        private boolean validParenthesisSolve(String s, int ind, int count) {
+            if (count < 0)
+                return false;
+            if (ind == s.length())
+                return count == 0;
+            if (s.charAt(ind) == '(')
+                return validParenthesisSolve(s, ind + 1, count + 1);
+            if (s.charAt(ind) == ')')
+                return validParenthesisSolve(s, ind + 1, count - 1);
+            return (validParenthesisSolve(s, ind + 1, count + 1) || validParenthesisSolve(s, ind + 1, count - 1) || validParenthesisSolve(s, ind + 1, count));
+        }
+
+        public boolean validParenthesisRecursiveMemo(String s) {
+            int n = s.length();
+            int dp[][] = new int[n][n];
+            int ind = 0, count = 0;
+            for (int i = 0; i < n; i++)
+                Arrays.fill(dp[i], -1);
+            return validParenthesisSolveMemo(s, ind, count, dp);
+        }
+
+        private boolean validParenthesisSolveMemo(String s, int ind, int count, int[][] dp) {
+            if (count < 0)
+                return false;
+            if (ind == s.length())
+                return count == 0;
+            if (dp[ind][count] != -1) {
+                return dp[ind][count] == 1 ? true : false;
+            }
+            if (s.charAt(ind) == '(') {
+                boolean res1 = validParenthesisSolveMemo(s, ind + 1, count + 1, dp);
+                dp[ind][count] = res1 == true ? 1 : 0;
+                return res1;
+            }
+            if (s.charAt(ind) == ')') {
+                boolean res2 = validParenthesisSolveMemo(s, ind + 1, count - 1, dp);
+                dp[ind][count] = res2 == true ? 1 : 0;
+                return res2;
+            }
+            boolean res3 = (validParenthesisSolveMemo(s, ind + 1, count + 1, dp) ||
+                    validParenthesisSolveMemo(s, ind + 1, count - 1, dp) ||
+                    validParenthesisSolveMemo(s, ind + 1, count, dp));
+            dp[ind][count] = res3 == true ? 1 : 0;
+            return res3;
+        }
+
+        public boolean validParenthesisOptimal(String s) {
+            int n = s.length();
+            int min = 0, max = 0;
+            for (int i = 0; i < n; i++) {
+                if (s.charAt(i) == '(') {
+                    min += 1;
+                    max += 1;
+                } else if (s.charAt(i) == ')') {
+                    min = min - 1;
+                    max = max - 1;
+                } else {
+                    min = min - 1;
+                    max = max + 1;
+                }
+                if (min < 0) min = 0;
+                if (max < 0) return false;
+            }
+            return min == 0;
+        }
     }
     public static void main(String[] args) {
 
@@ -321,10 +393,27 @@ public class GreedyQuestions {
 //        }
 
         //minimum number of platforms required in a railway station
-        int arr[]={900, 940, 950, 1100, 1500, 1800};
-        int dep[]={910,1200, 1120, 1130,1900, 2000};
+//        int arr[]={900, 940, 950, 1100, 1500, 1800};
+//        int dep[]={910,1200, 1120, 1130,1900, 2000};
+//
+//        System.out.println(g.minNumberOfPlatformsRequiredInRailwayStation(arr,dep));
 
-        System.out.println(g.minNumberOfPlatformsRequiredInRailwayStation(arr,dep));
+        //Valid Parenthesis String
+
+        String s="(*()";
+
+//        String s="(**(";
+        //recursive
+//        System.out.println(g.validParenthesisRecursive(s));
+
+        //memoization
+//        System.out.println(g.validParenthesisRecursiveMemo(s));
+
+        //Optimal Using range concept
+        System.out.println(g.validParenthesisOptimal(s));
+
+
+
 
     }
 }
