@@ -380,6 +380,23 @@ public class GreedyQuestions {
             }
             return sum;
         }
+
+        public int fractionalKnapsackProblem(int[][] arr, int W) {
+            int maxProfit = 0;
+            int n = arr.length;
+            Arrays.sort(arr, (a, b) -> (b[0] / b[1]) - (a[0] / a[1]));
+
+            for (int i = 0; i < n; i++) {
+                if (arr[i][1] <= W) {
+                    maxProfit += arr[i][0];
+                    W -= arr[i][1];
+                } else {
+                    maxProfit += (int) (arr[i][0] / arr[i][1]) * W;
+                    break;
+                }
+            }
+            return maxProfit;
+        }
     }
     public static void main(String[] args) {
 
@@ -465,13 +482,18 @@ public class GreedyQuestions {
 //             --children with higher rating get more candies tha their neighbors
 //        int ratings[]={0,2,4,3,2,1,1,3,5,6,4,0,0};//OP:-27
 //        int ratings[]={1,0,2};//O/P:-5
-        int ratings[]={1,2,2};//OP:-4
+//        int ratings[]={1,2,2};//OP:-4
 
 
         //TC=O(3N) SC=O(2N)
 //        System.out.println(g.candy(ratings));
 
-        System.out.println(g.candySpaceAndTimeReduced(ratings));
+//        System.out.println(g.candySpaceAndTimeReduced(ratings));
+
+        //Fractional Knapsack Problem
+        int arr[][]={{100,20},{60,10},{100,50},{200,50}};//{profit,weight}
+        int W=90;
+        System.out.println(g.fractionalKnapsackProblem(arr,W));
 
 
 
