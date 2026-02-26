@@ -1,14 +1,15 @@
-package LLD.ObserverPattern.PushModel.Observable;
+package LLD.ObserverPattern.PullModel.Observable;
 
-import LLD.ObserverPattern.PushModel.Observer.WeatherObserver;
-import LLD.ObserverPattern.PushModel.WeatherData;
+import LLD.ObserverPattern.PullModel.Observer.WeatherObserver;
+import LLD.ObserverPattern.PullModel.WeatherData;
+
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class WeatherStation implements WeatherObservable {
     private List<WeatherObserver> observers;
-    private WeatherData weatherData;
+    public WeatherData weatherData;
 
     public WeatherStation() {
         this.observers = new ArrayList<>();
@@ -30,7 +31,7 @@ public class WeatherStation implements WeatherObservable {
     public void notifyObservers() {
         // Implementation to notify observers with the latest weather data
         for(WeatherObserver observer : observers) {
-            observer.update(weatherData);//updating to all observers
+            observer.update();//no need  to pass weather data as observer will have Observables reference and can pull data from it
         }
     }
 
