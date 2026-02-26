@@ -23,7 +23,9 @@ public class Stream {
         empLis.add(new Employee("Mohan", 45, 60000, "HR"));
         empLis.add(new Employee("Kamal", 33, 56000, "QA"));
 
-        //
+
+        //if it is primitive data type then use boxed
+        //   Arrays.stream(arr).boxed().collect(Collectors.groupingBy(Function.identity(),Collectors.counting())).forEach();
 
         empLis.stream().collect(Collectors.groupingBy(Employee::getDepartment, Collectors.counting())).forEach((x, y) -> System.out.println(x + " : " + y));
         System.out.println("-------------------------------------------------------------");
