@@ -73,9 +73,7 @@ public class Stream {
 
         // i want employee details in each department who is earning more than 30000
 
-        empLis.stream().collect(Collectors.groupingBy(Employee::getDepartment))
-                .entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, e->e.getValue().stream().filter(e1->e1.getSalary()>30000).collect(Collectors.toList())))
-                .forEach((x,y)-> System.out.println(x+" : "+y));
+        empLis.stream().filter(e->e.getSalary()>30000).collect(Collectors.groupingBy(Employee::getDepartment)).forEach((x,y)-> System.out.println(x+" : "+y));
 
 
         //PartitionBy-- when we want two groups one which is satisfying the condition and other which in not satisfying condition

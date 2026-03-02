@@ -6,11 +6,14 @@ public class Employee {
     private String phone;
     private int salary;
 
-    public Employee(int eId,String name, String phone,int salary){
+    private String department;
+
+    public Employee(int eId,String name, String phone,int salary,String department) {
         this .eId=eId;
         this.name=name;
         this.phone=phone;
         this.salary=salary;
+        this.department=department;
     }
 
     public int getSalary() {
@@ -33,6 +36,13 @@ public class Employee {
         return phone;
     }
 
+    public String getDepartment() {
+        return department;
+    }
+    public void setDepartment(String department) {
+        this.department = department;
+    }
+
     @Override
     public String toString() {
         return "Employee{" +
@@ -40,6 +50,7 @@ public class Employee {
                 ", name='" + name + '\'' +
                 ", phone='" + phone + '\'' +
                 ", salary=" + salary +
+                ", department='" + department + '\'' +
                 '}';
     }
 }

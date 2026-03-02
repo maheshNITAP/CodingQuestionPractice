@@ -7,13 +7,13 @@ public class StreamPrectice {
     public static void main(String args[]){
         List<Employee> emp= new ArrayList<>();
 
-        emp.add(new Employee(5,"Mahesh","911912234",10000));
-        emp.add(new Employee(2,"Mahesh","8922345438",20000));
-        emp.add(new Employee(1,"Akash","7463534853",30000));
-        emp.add(new Employee(6,"Ravi","853748764574",40000));
-        emp.add(new Employee(9,"Ravi","91191912344",30000));
-        emp.add(new Employee(8,"Hari","9363436453",20000));
-        emp.add(new Employee(7,"Ram","7845362544",10000));
+        emp.add(new Employee(5,"Mahesh","911912234",10000,"DEV"));
+        emp.add(new Employee(2,"Mahesh","8922345438",20000,"HR"));
+        emp.add(new Employee(1,"Akash","7463534853",30000,"QA"));
+        emp.add(new Employee(6,"Ravi","853748764574",40000,"DEV"));
+        emp.add(new Employee(9,"Ravi","91191912344",30000, "HR"));
+        emp.add(new Employee(8,"Hari","9363436453",20000,"QA"));
+        emp.add(new Employee(7,"Ram","7845362544",10000,"DEV"));
 
 //        print id of employees who's anme starts with m'
         List<Integer> idsWhosNameStartsWithm=emp.stream().filter(e->e.getName().toLowerCase().startsWith("m")).map(Employee::geteId).collect(Collectors.toList());
