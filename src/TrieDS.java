@@ -106,12 +106,12 @@ public class TrieDS {
 //        System.out.println(wordBreak(key));
 
         //starts with problem
-//        String words[]={"apple", "app", "mango", "man","woman"};
-//        String prefix="app";
-//        for (int i=0;i<words.length;i++){
-//            insert(words[i]);
-//        }
-//        System.out.println(startsWith(prefix));
+        String words[]={"apple", "app", "mango", "man","woman"};
+        String prefix="app";
+        for (int i=0;i<words.length;i++){
+            insert(words[i]);
+        }
+        System.out.println(startsWith(prefix));
 //        System.out.println(startsWith("moon"));
 //        System.out.println(startsWith("woma"));
 
@@ -124,12 +124,12 @@ public class TrieDS {
 //        System.out.println(countNodes(root));
 
         //Longest Word with all prefixes
-        String words[]={"a","banana", "app", "appl", "ap", "apply", "apple"};
-        for(int i=0;i< words.length;i++){
-            insert(words[i]);
-        }
-        longestWord(root,new StringBuilder(""));
-        System.out.println(ans);
+//        String words[]={"a","banana", "app", "appl", "ap", "apply", "apple"};
+//        for(int i=0;i< words.length;i++){
+//            insert(words[i]);
+//        }
+//        longestWord(root,new StringBuilder(""));
+//        System.out.println(ans);
 
 
 
