@@ -56,6 +56,10 @@ public class Stream {
 
         System.out.println("-------------------------------------------------------------");
 
+//        i want all employee Salary in each department
+
+        empLis.stream().collect(Collectors.groupingBy(Employee::getDepartment,Collectors.mapping(Employee::getSalary,Collectors.toList()))).forEach((x,y)-> System.out.println(x+" "+y));
+
 
         //i only want to know employee name in each department who is earning min salary
 
