@@ -96,7 +96,7 @@ public class Stream {
         String s="Rajendra";
 
         s.chars().mapToObj(c->(char)c)//mapToObj to convert int stream to char stream
-                .map(e->Character.toLowerCase(e))//to convert lowercase
+                .map(Character::toLowerCase)//to convert lowercase
                 .collect(Collectors.groupingBy(Function.identity(),Collectors.counting()))
                 .forEach((x,y)-> System.out.println(x+" : "+y));
 
