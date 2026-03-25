@@ -96,10 +96,20 @@ public class Stream {
         String s="Rajendra";
 
         s.chars().mapToObj(c->(char)c)//mapToObj to convert int stream to char stream
-                .map(e->Character.toLowerCase(e))//to convert lowercase
+                .map(Character::toLowerCase)//to convert lowercase
                 .collect(Collectors.groupingBy(Function.identity(),Collectors.counting()))
                 .forEach((x,y)-> System.out.println(x+" : "+y));
 
+
+        //kth max frequent element
+        String s1 = "abbbbcccd";
+        int k=2;
+        Character ch=s1.chars().mapToObj(c-> (char) c).collect(Collectors.groupingBy(Function.identity(),Collectors.counting()))
+                .entrySet().stream().sorted((a,b)->Long.compare(b.getValue(),a.getValue())).skip(k-1).map(a->a.getKey()).findFirst().orElse(null);
+        System.out.println(ch);
+
+        //employee with top max 5 sal
+        empLis.stream().sorted((a,b)->Integer.compare(b.getSalary(),a.getSalary())).limit(5).map(Employee::getName).forEach(x-> System.out.println(x));
 
 
 
