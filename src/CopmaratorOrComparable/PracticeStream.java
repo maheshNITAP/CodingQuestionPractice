@@ -1,6 +1,7 @@
 package CopmaratorOrComparable;
 
 import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class PracticeStream {
@@ -89,5 +90,11 @@ public class PracticeStream {
 
 
 
+        //count of each car in string as string
+        String input = "aaabbbcca";
+        StringBuilder res= new StringBuilder();
+        String s= input.chars().mapToObj(c->(char) c).collect(Collectors.groupingBy(Function.identity(),Collectors.counting()))
+                .entrySet().stream().map(e->e.getKey()+String.valueOf(e.getValue())).collect(Collectors.joining());
+        System.out.println(s);
     }
 }
