@@ -49,8 +49,16 @@ public class StreamPractice {
         Map<String, Optional<Employee>> map3= empLis.stream().collect(Collectors.groupingBy(Employee::getDepartment,Collectors.maxBy(Comparator.comparingInt(Employee::getSalary))));
         System.out.println(map3);
 
+        //get max salary in each department just sal as 2nd param, can be used for any other singe info
+        Map<String, Integer> map1= empLis.stream().collect(Collectors.groupingBy(Employee::getDepartment,
+                Collectors.collectingAndThen(Collectors.maxBy(Comparator.comparingInt(Employee::getSalary)),e->e.map(Employee::getSalary).orElse(0))));
+
         //get min salary in each department
         empLis.stream().collect(Collectors.groupingBy(Employee::getDepartment, Collectors.minBy(Comparator.comparingInt(Employee::getSalary)))).forEach((x,y)-> System.out.println(x+" "+y));
+
+        //get minname who is earning min salary in each department
+        Map<String,String> mapp=empLis.stream().collect(Collectors.groupingBy(Employee::getDepartment,Collectors.collectingAndThen(Collectors.minBy(Comparator.comparingInt(Employee::getSalary)),e->e.map(Employee::getName).orElse(""))));
+        System.out.println(mapp);
 
         //i want only employee max salary in each department not full details of employee
         empLis.stream().collect(Collectors.groupingBy(Employee::getDepartment,Collectors.minBy(Comparator.comparingInt(Employee::getSalary)))).forEach((x,y)-> System.out.println(x+ " "+y.get().getSalary()));
